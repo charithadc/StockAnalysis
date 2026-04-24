@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Visa Inc. (V) Deep Analysis — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ══════════════════════════════════════════
+   EPUB READER SHELL
+══════════════════════════════════════════ */
+
+:root {
+  /* Light mode (default) */
+  --bg:          #f4f7fb;
+  --surface:     #ffffff;
+  --surface-2:   #edf3fb;
+  --text:        #111d29;
+  --text-muted:  #3a526a;
+  --border:      #d0dcea;
+  --navy:        #0f2444;
+  --blue:        #1a5fa8;
+  --sky:         #3b8fd4;
+  --gold:        #f5c842;
+  --accent:      #e8a020;
+  --green:       #1a7a4a;
+  --green-bg:    #e8f5ee;
+  --red:         #b93232;
+  --red-bg:      #fbeaea;
+  --orange:      #c45c10;
+  --card-shadow: 0 2px 16px rgba(15,36,68,0.10);
+
+  /* Typography scale — controlled by JS */
+  --fs-base: 16px;
+  --lh-base: 1.75;
+}
+
+/* Dark mode overrides */
+body.dark {
+  --bg:          #0e1520;
+  --surface:     #172032;
+  --surface-2:   #1e2d44;
+  --text:        #dde4ef;
+  --text-muted:  #8fa3be;
+  --border:      #2a3d58;
+  --navy:        #1e3a60;
+  --blue:        #4b8ed4;
+  --sky:         #6ab0e8;
+  --gold:        #f5c842;
+  --green:       #2ecc78;
+  --green-bg:    #0e2a1c;
+  --red:         #e05555;
+  --red-bg:      #2a1212;
+  --card-shadow: 0 2px 20px rgba(0,0,0,0.40);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: var(--fs-base); }
+
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+  line-height: var(--lh-base);
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.25s, color 0.25s;
+}
+
+/* ── FLOATING READER TOOLBAR ── */
+.epub-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--navy);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50px;
+  padding: 8px 14px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.epub-bar-label {
+  font-family: 'Source Serif 4', serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-right: 4px;
+  user-select: none;
+}
+.epub-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: #fff;
+  border-radius: 50px;
+  padding: 5px 13px;
+  font-family: 'Source Serif 4', serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  line-height: 1;
+}
+.epub-btn:active { transform: scale(0.93); }
+.epub-btn:hover  { background: rgba(255,255,255,0.16); }
+.epub-btn.size-display {
+  background: transparent;
+  border-color: transparent;
+  color: rgba(255,255,255,0.55);
+  font-size: 12px;
+  pointer-events: none;
+  padding: 5px 6px;
+  min-width: 36px;
+  text-align: center;
+}
+.epub-sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.15);
+  margin: 0 6px;
+}
+.epub-btn.mode-btn {
+  font-size: 16px;
+  padding: 4px 10px;
+}
+/* Bar scrolls off on tall content — keep it comfortably above scroll */
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(145deg, #0a1e38 0%, #0f2f5c 50%, #1a5fa8 100%);
+  padding: 48px 24px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,160,32,0.18) 0%, transparent 70%);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,143,212,0.20) 0%, transparent 70%);
+}
+.ticker-badge {
+  display: inline-block;
+  background: rgba(232,160,32,0.2);
+  border: 1px solid rgba(232,160,32,0.5);
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.75rem, 7vw, 2.875rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.hero h1 span { color: var(--gold); }
+.hero-sub {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.meta-chip {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.85);
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+
+/* ── LAYOUT ── */
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 100px; /* extra bottom for toolbar */
+}
+
+/* ── SECTION ── */
+.section { margin-top: 36px; }
+.section-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.67rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.35rem, 5vw, 1.875rem);
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.25;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin: 24px 0 10px;
+}
+p { margin-bottom: 14px; font-weight: 400; }
+p strong { font-weight: 600; color: var(--navy); }
+body.dark p strong { color: var(--sky); }
+body.dark h2 { color: #c8d8f0; }
+body.dark h3 { color: var(--sky); }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  transition: background 0.25s, border-color 0.25s;
+}
+.card-blue {
+  background: linear-gradient(135deg, #e8f0fb 0%, #f4f7ff 100%);
+  border-color: #b8d0f0;
+}
+body.dark .card-blue {
+  background: linear-gradient(135deg, #152440 0%, #1a2e4a 100%);
+  border-color: #2a4060;
+}
+
+/* ── SNAPSHOT GRID ── */
+.snapshot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
+.snap-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 14px 12px;
+  box-shadow: 0 1px 6px rgba(15,36,68,0.06);
+  transition: background 0.25s;
+}
+.snap-label { font-size: 0.67rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
+.snap-value { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--navy); line-height: 1.2; }
+.snap-note { font-size: 0.67rem; color: var(--text-muted); margin-top: 3px; font-style: italic; }
+body.dark .snap-value { color: #c8d8f0; }
+.snap-item.highlight { background: linear-gradient(135deg, #0f2444 0%, #1a5fa8 100%); border-color: transparent; }
+.snap-item.highlight .snap-label { color: rgba(255,255,255,0.80); }
+.snap-item.highlight .snap-value { color: var(--gold); }
+.snap-item.highlight .snap-note  { color: rgba(255,255,255,0.75); }
+.snap-item.green-hi { border-left: 4px solid var(--green); }
+.snap-item.green-hi .snap-value  { color: var(--green); }
+
+/* ── FORECAST TABLE ── */
+.forecast-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 520px; background: var(--surface); }
+thead th {
+  background: var(--navy);
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  padding: 12px 10px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+thead th:first-child { text-align: left; border-radius: 12px 0 0 0; }
+thead th:last-child  { border-radius: 0 12px 0 0; }
+tbody tr:nth-child(even) td { background: var(--surface-2); }
+tbody tr:nth-child(odd)  td { background: var(--surface); }
+tbody td {
+  padding: 11px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+  transition: background 0.25s;
+}
+tbody td:first-child {
+  font-weight: 600;
+  color: var(--navy);
+  font-size: 0.8rem;
+  background: var(--surface-2) !important;
+  border-right: 2px solid var(--border);
+  min-width: 130px;
+}
+body.dark tbody td:first-child { color: #c8d8f0; }
+tbody td:not(:first-child) { text-align: center; }
+.act-col { background: #e8f0f8 !important; color: var(--navy) !important; }
+body.dark .act-col { background: #1a2e4a !important; color: #c8d8f0 !important; }
+thead th.act-col { background: #c8ddf5 !important; color: var(--navy) !important; }
+body.dark thead th.act-col { background: #223a5c !important; color: #c8d8f0 !important; }
+.pos-val { color: var(--green); font-weight: 600; }
+.neg-val { color: var(--red); font-weight: 600; }
+.scroll-hint { font-size: 0.73rem; color: var(--text-muted); text-align: center; padding: 6px 0 0; font-style: italic; }
+
+/* ── YEAR CARDS ── */
+.year-card {
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 10px rgba(15,36,68,0.07);
+  transition: background 0.25s;
+}
+.year-header {
+  background: linear-gradient(90deg, #0f2444 0%, #1a5fa8 100%);
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.year-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #fff; }
+.year-badge {
+  background: rgba(232,160,32,0.25);
+  border: 1px solid rgba(232,160,32,0.5);
+  color: var(--gold);
+  font-size: 0.73rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.year-body { padding: 16px 18px; }
+.year-metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.ym {
+  text-align: center;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 14px 10px;
+  border: 1px solid var(--border);
+  transition: background 0.25s;
+}
+.ym-label { font-size: 0.73rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
+.ym-val { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--navy); }
+body.dark .ym-val { color: #c8d8f0; }
+.year-rationale { font-size: 0.93rem; color: var(--text); line-height: 1.6; margin-bottom: 0; }
+
+/* ── BULLETS ── */
+.bull-list { list-style: none; padding: 0; margin: 0; }
+.bull-list li {
+  padding: 10px 14px 10px 42px;
+  position: relative;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  border-bottom: 1px solid var(--border);
+}
+.bull-list li:last-child { border-bottom: none; }
+.bull-list li::before { content: attr(data-icon); position: absolute; left: 12px; top: 10px; font-size: 1.05rem; }
+.bull-list li strong { font-weight: 600; color: var(--navy); }
+body.dark .bull-list li strong { color: var(--sky); }
+
+/* ── SEGMENT BARS ── */
+.seg-list { list-style: none; padding: 0; margin: 0; }
+.seg-item {
+  display: grid;
+  grid-template-columns: 150px 1fr 52px;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.87rem;
+}
+.seg-item:last-child { border-bottom: none; }
+.seg-name { font-weight: 600; color: var(--navy); font-size: 0.8rem; }
+body.dark .seg-name { color: #c8d8f0; }
+.seg-bar-wrap { background: var(--surface-2); border-radius: 6px; height: 14px; overflow: hidden; }
+.seg-bar { height: 100%; background: linear-gradient(90deg, #1a5fa8, #3b8fd4); border-radius: 6px; }
+.seg-bar.red-bar { background: linear-gradient(90deg, #b93232, #e05050); }
+.seg-pct { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.8rem; color: var(--navy); text-align: right; }
+body.dark .seg-pct { color: #c8d8f0; }
+
+/* ── RISK ITEMS ── */
+.risk-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+}
+.risk-item.high   { background: #fce8e8; border-color: #e8a0a0; }
+.risk-item.medium { background: #fdeede; border-color: #e8b880; }
+.risk-item.low    { background: #daf2e8; border-color: #90c8ac; }
+body.dark .risk-item.high   { background: #2a1010; border-color: #6a2020; }
+body.dark .risk-item.medium { background: #2a1e08; border-color: #6a4010; }
+body.dark .risk-item.low    { background: #0a2016; border-color: #204a2a; }
+.risk-badge {
+  flex-shrink: 0;
+  font-size: 0.67rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+.risk-item.high   .risk-badge { background: #b93232; color: #fff; }
+.risk-item.medium .risk-badge { background: #c45c10; color: #fff; }
+.risk-item.low    .risk-badge { background: #1a7a4a; color: #fff; }
+.risk-content strong { font-size: 0.93rem; color: #0f2444; font-weight: 700; display: block; margin-bottom: 4px; }
+.risk-content span   { font-size: 0.87rem; color: #1c3044; line-height: 1.55; }
+body.dark .risk-content strong { color: #c8d8f0; }
+body.dark .risk-content span   { color: #9ab0c8; }
+
+/* ── PROS/CONS GRID ── */
+.pc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 16px; }
+.pc-card {
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: background 0.25s;
+}
+.pc-header { padding: 12px 18px; font-family: 'Playfair Display', serif; font-size: 0.93rem; font-weight: 700; letter-spacing: 0.5px; }
+.pc-header.pro { background: var(--green-bg); color: var(--green); border-bottom: 1px solid #b8dfc8; }
+.pc-header.con { background: var(--red-bg);   color: var(--red);   border-bottom: 1px solid #e8c0c0; }
+.pc-body { padding: 4px 0; }
+.pc-body li { padding: 9px 18px 9px 42px; position: relative; font-size: 0.9rem; border-bottom: 1px solid var(--border); line-height: 1.55; }
+.pc-body li:last-child { border-bottom: none; }
+.pc-body li::before { content: attr(data-icon); position: absolute; left: 14px; top: 9px; font-size: 0.87rem; }
+.pc-body li strong { font-weight: 600; color: var(--navy); }
+body.dark .pc-body li strong { color: var(--sky); }
+
+/* ── SCENARIO BARS ── */
+.scen-wrap { margin: 16px 0; }
+.scen-row { display: grid; grid-template-columns: 60px 1fr 90px; gap: 10px; align-items: center; margin: 8px 0; font-size: 0.87rem; }
+.scen-label { font-weight: 700; color: var(--navy); font-size: 0.8rem; font-family: 'Playfair Display', serif; }
+body.dark .scen-label { color: #c8d8f0; }
+.scen-bar-wrap { background: var(--surface-2); border-radius: 8px; height: 26px; overflow: hidden; }
+.scen-bar { height: 100%; border-radius: 8px; }
+.scen-bar.bear { background: linear-gradient(90deg, #b93232, #d04040); }
+.scen-bar.base { background: linear-gradient(90deg, #0f2444, #1a5fa8); }
+.scen-bar.bull { background: linear-gradient(90deg, #1a7a4a, #2aa060); }
+.scen-val { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; color: var(--navy); text-align: right; }
+body.dark .scen-val { color: #c8d8f0; }
+
+/* ── CONCLUSION ── */
+.conclusion-box {
+  background: linear-gradient(135deg, #0f2444 0%, #0d3568 100%);
+  border-radius: 16px;
+  padding: 28px 22px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.conclusion-box::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,160,32,0.15) 0%, transparent 70%);
+}
+.conclusion-box h2    { color: var(--gold); border-bottom-color: rgba(255,255,255,0.15); margin-bottom: 16px; }
+.conclusion-box p     { color: rgba(255,255,255,0.92); }
+.conclusion-box strong { color: var(--gold); font-weight: 600; }
+.target-row { display: flex; gap: 12px; margin: 20px 0 16px; }
+.target-box {
+  flex: 1;
+  text-align: center;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 14px 8px;
+}
+.target-box .tb-label { font-size: 0.67rem; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
+.target-box .tb-val   { font-family: 'Playfair Display', serif; font-size: 1.375rem; font-weight: 700; color: var(--gold); }
+.target-box .tb-sub   { font-size: 0.67rem; color: rgba(255,255,255,0.70); margin-top: 2px; }
+
+/* ── TOC ── */
+.toc-card {
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  padding: 20px;
+  margin-top: 20px;
+  transition: background 0.25s;
+}
+.toc-card h3 { margin-top: 0; margin-bottom: 12px; font-size: 1rem; }
+.toc-list { list-style: none; padding: 0; margin: 0; counter-reset: tocn; }
+.toc-list li {
+  counter-increment: tocn;
+  padding: 7px 0;
+  border-bottom: 1px dotted var(--border);
+  font-size: 0.93rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.toc-list li:last-child { border-bottom: none; }
+.toc-list li::before {
+  content: counter(tocn, decimal-leading-zero);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.73rem;
+  color: var(--sky);
+  font-weight: 700;
+  flex-shrink: 0;
+  width: 22px;
+}
+.toc-list a { color: var(--text); text-decoration: none; }
+.toc-list a:hover { color: var(--blue); }
+
+/* ── DISCLAIMER ── */
+.disclaimer {
+  margin-top: 36px;
+  padding: 16px 18px;
+  background: var(--surface-2);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.7;
+}
+.disclaimer strong { font-style: normal; font-weight: 600; color: var(--navy); }
+body.dark .disclaimer strong { color: #c8d8f0; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.section { animation: fadeUp 0.5s ease both; }
+.section:nth-child(2) { animation-delay: 0.05s; }
+.section:nth-child(3) { animation-delay: 0.10s; }
+.section:nth-child(4) { animation-delay: 0.15s; }
+.section:nth-child(5) { animation-delay: 0.20s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 400px) {
+  .snapshot-grid { grid-template-columns: 1fr; }
+  .year-metrics  { grid-template-columns: 1fr 1fr; }
+  .target-row    { flex-direction: column; }
+  .seg-item      { grid-template-columns: 110px 1fr 44px; }
+  .epub-bar      { padding: 8px 10px; }
+  .epub-bar-label { display: none; }
+}
+@media (min-width: 560px) {
+  .pc-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ FLOATING EPUB TOOLBAR ══ -->
+<div class="epub-bar" role="toolbar" aria-label="Reader controls">
+  <span class="epub-bar-label">Text</span>
+  <button class="epub-btn" id="fDecrease" onclick="changeFont(-1)" aria-label="Decrease font size">A−</button>
+  <span  class="epub-btn size-display" id="fsDisplay">16px</span>
+  <button class="epub-btn" id="fIncrease" onclick="changeFont(1)"  aria-label="Increase font size">A+</button>
+  <div class="epub-sep"></div>
+  <button class="epub-btn mode-btn" id="modeBtn" onclick="toggleMode()" aria-label="Toggle dark mode">🌙</button>
+</div>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="ticker-badge">NYSE: V · Visa Inc.</div>
+  <h1>Visa Inc.<br><span>Deep Analysis</span></h1>
+  <p class="hero-sub">Revenue/Share · EPS · Margins · ROIC · P/E · Price Forecast FY2026–FY2029</p>
+  <div class="hero-meta">
+    <span class="meta-chip">📅 April 24, 2026</span>
+    <span class="meta-chip">💰 ~$309.94 / share</span>
+    <span class="meta-chip">⭐ Strong Buy Consensus</span>
+    <span class="meta-chip">📉 Down 12% YTD</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc-card">
+    <h3>In This Report</h3>
+    <ul class="toc-list">
+      <li><a href="#s1">Executive Summary</a></li>
+      <li><a href="#s2">Current Status &amp; Business Model</a></li>
+      <li><a href="#s3">Revenue Sources &amp; Segments</a></li>
+      <li><a href="#s4">Revenue Per Share Forecast</a></li>
+      <li><a href="#s5">Margin Forecast</a></li>
+      <li><a href="#s6">EPS Forecast</a></li>
+      <li><a href="#s7">ROIC Forecast</a></li>
+      <li><a href="#s8">P/E Multiple Forecast</a></li>
+      <li><a href="#s9">Price Targets &amp; Scenarios</a></li>
+      <li><a href="#s10">Year-by-Year Forecast Rationale</a></li>
+      <li><a href="#s11">Yearly ROI from Today</a></li>
+      <li><a href="#s12">Risks &amp; Advantages</a></li>
+      <li><a href="#s13">Macro, Regulation &amp; Competition</a></li>
+      <li><a href="#s14">Investment Conclusion</a></li>
+    </ul>
+  </div>
+
+  <!-- 01 EXECUTIVE SUMMARY -->
+  <div class="section" id="s1">
+    <p class="section-label">01 — Overview</p>
+    <h2>Executive Summary</h2>
+    <div class="card card-blue">
+      <p>Visa enters mid-2026 trading at roughly <strong>$310</strong>, down ~12% year-to-date despite fundamentals that remain the envy of global financial services. The stock's 2026 drawdown is a <strong>narrative problem, not a numbers problem</strong> — reflecting three overlapping fears: the re-introduced Credit Card Competition Act, the DOJ's debit antitrust case, and stablecoin disintermediation risk.</p>
+      <p style="margin-bottom:0">Underneath, FY2025 delivered <strong>$40.0B revenue +11%</strong>, <strong>non-GAAP EPS $11.47 +14%</strong>, and 66% operating margins. This report forecasts Revenue per Share, EPS, Margins, ROIC and P/E for FY2026–FY2029 and compares each against public analyst consensus.</p>
+    </div>
+    <p style="font-size:0.8rem; color:var(--text-muted); font-style:italic;">Note: Visa's fiscal year ends in September. FY2025 = October 2024–September 2025. FY2026 = October 2025–September 2026.</p>
+  </div>
+
+  <!-- 02 CURRENT STATUS -->
+  <div class="section" id="s2">
+    <p class="section-label">02 — Current Snapshot</p>
+    <h2>Where Visa Stands Today</h2>
+    <div class="snapshot-grid">
+      <div class="snap-item highlight"><div class="snap-label">Current Price</div><div class="snap-value">$309.94</div><div class="snap-note">As of April 24, 2026</div></div>
+      <div class="snap-item highlight"><div class="snap-label">Market Cap</div><div class="snap-value">~$593B</div><div class="snap-note">52W range: $293–$375</div></div>
+      <div class="snap-item"><div class="snap-label">FY25 Non-GAAP EPS</div><div class="snap-value">$11.47</div><div class="snap-note">+14% YoY</div></div>
+      <div class="snap-item"><div class="snap-label">Trailing P/E</div><div class="snap-value">~29.5×</div><div class="snap-note">vs. 5-yr avg ~34×</div></div>
+      <div class="snap-item"><div class="snap-label">Forward P/E (FY26)</div><div class="snap-value">~23.9×</div><div class="snap-note">Based on ~$13.10 est. EPS</div></div>
+      <div class="snap-item green-hi"><div class="snap-label">FY25 Net Revenue</div><div class="snap-value">$40.0B</div><div class="snap-note">+11% YoY</div></div>
+      <div class="snap-item"><div class="snap-label">Operating Margin</div><div class="snap-value">66.4%</div><div class="snap-note">Industry-leading</div></div>
+      <div class="snap-item green-hi"><div class="snap-label">Analyst Consensus</div><div class="snap-value">Strong Buy</div><div class="snap-note">34 of 41 analysts Buy</div></div>
+      <div class="snap-item"><div class="snap-label">ROIC</div><div class="snap-value">~30%</div><div class="snap-note">vs. 7.75% WACC</div></div>
+      <div class="snap-item"><div class="snap-label">FCF (TTM)</div><div class="snap-value">$22.9B</div><div class="snap-note">~57% FCF margin</div></div>
+      <div class="snap-item"><div class="snap-label">Shares Outstanding</div><div class="snap-value">1.91B</div><div class="snap-note">−3% YoY (buybacks)</div></div>
+      <div class="snap-item"><div class="snap-label">Payment Volume</div><div class="snap-value">$15.6T</div><div class="snap-note">FY2025 processed</div></div>
+    </div>
+    <div class="card" style="margin-top:14px; background:#fffbea; border-color:#f0d870;">
+      <p style="margin:0; font-size:0.87rem;"><strong>💡 Key insight:</strong> Visa's P/E of ~29.5× is about <strong>13–15% below its 5-year historical average of ~34×</strong>, suggesting the stock is attractively valued relative to its own history — even as the business keeps compounding double-digit EPS growth.</p>
+    </div>
+    <h3>Why the Moat is So Durable</h3>
+    <p>Visa is a textbook <strong>two-sided network</strong>: more merchants attract more cardholders, and vice versa. Once a payment network reaches Visa's scale — roughly <strong>60% global card share</strong> outside China — the unit economics become nearly impossible to replicate. Every additional transaction costs Visa almost nothing incrementally, which is why operating margins have sat in the mid-60s for more than a decade.</p>
+    <p style="margin-bottom:0">Visa's infrastructure processes up to <strong>65,000 messages per second</strong> with <strong>99.999% uptime</strong>. Capital expenditure runs under 4% of revenue. Visa itself does not issue cards, does not extend credit, and does not take credit risk — it simply runs the rails and charges a toll on volume.</p>
+  </div>
+
+  <!-- 03 REVENUE SOURCES -->
+  <div class="section" id="s3">
+    <p class="section-label">03 — Business</p>
+    <h2>Revenue Sources &amp; Segments</h2>
+    <p>Visa reports four core revenue buckets before netting out client incentives. Each line has a different growth rate and sensitivity profile.</p>
+    <div class="card" style="padding:16px 20px;">
+      <ul class="seg-list">
+        <li class="seg-item"><span class="seg-name">Data Processing</span><div class="seg-bar-wrap"><div class="seg-bar" style="width:100%"></div></div><span class="seg-pct">~50%</span></li>
+        <li class="seg-item"><span class="seg-name">Intl. Transaction</span><div class="seg-bar-wrap"><div class="seg-bar" style="width:70%"></div></div><span class="seg-pct">~36%</span></li>
+        <li class="seg-item"><span class="seg-name">Service Revenue</span><div class="seg-bar-wrap"><div class="seg-bar" style="width:62%"></div></div><span class="seg-pct">~32%</span></li>
+        <li class="seg-item"><span class="seg-name">Value-Added Svcs</span><div class="seg-bar-wrap"><div class="seg-bar" style="width:20%"></div></div><span class="seg-pct">~10%</span></li>
+        <li class="seg-item"><span class="seg-name">Client Incentives</span><div class="seg-bar-wrap"><div class="seg-bar red-bar" style="width:53%"></div></div><span class="seg-pct">−27%</span></li>
+      </ul>
+      <p style="margin:10px 0 0; font-size:0.73rem; color:var(--text-muted); font-style:italic;">Bars relative to largest gross component. FY25 data. Client incentives are contra-revenue.</p>
+    </div>
+    <ul class="bull-list" style="margin-top:8px;">
+      <li data-icon="💻"><strong>Data Processing ($20.0B, +13% in FY25)</strong> — Authorization, clearing, settlement, tokenization, fraud scoring. Scales with transaction count. Highest-margin line, growing fastest.</li>
+      <li data-icon="🌍"><strong>International Transaction ($14.2B)</strong> — Cross-border and FX revenue. Travel-sensitive; +13% cross-border volume growth in FY25. The highest-margin volume and the line most exposed to stablecoin disintermediation.</li>
+      <li data-icon="📋"><strong>Service Revenue (~$17B gross)</strong> — Fees to issuers based on prior-quarter payment volume. Slowest-growing but most stable.</li>
+      <li data-icon="⚙️"><strong>Value-Added Services (~$8.5B, ~22% CAGR)</strong> — Visa Direct, Verifi dispute tools, CyberSource gateway, consulting, risk &amp; identity. This is the real second growth engine and the key offset to interchange pressure.</li>
+    </ul>
+  </div>
+
+  <!-- 04 REVENUE PER SHARE -->
+  <div class="section" id="s4">
+    <p class="section-label">04 — Revenue Forecast</p>
+    <h2>Revenue Per Share — 4-Year Forecast</h2>
+    <p>FY for Visa ends in September. Share count is modeled to continue declining ~2.5–3% per year from buybacks (~$17B annual pace). The buyback tailwind is why Revenue/Share grows faster than total revenue.</p>
+    <div class="forecast-wrap">
+      <table>
+        <thead><tr><th>Metric</th><th class="act-col">FY25 Actual</th><th>FY26E</th><th>FY27E</th><th>FY28E</th><th>FY29E</th></tr></thead>
+        <tbody>
+          <tr><td>My Revenue ($B)</td><td class="act-col">$40.0</td><td>$44.0</td><td>$48.5</td><td>$53.2</td><td>$57.8</td></tr>
+          <tr><td>Revenue YoY Growth</td><td class="act-col">+11%</td><td class="pos-val">+10.0%</td><td class="pos-val">+10.2%</td><td class="pos-val">+9.7%</td><td class="pos-val">+8.6%</td></tr>
+          <tr><td>Street Revenue ($B)</td><td class="act-col">$40.0</td><td>$44.3</td><td>$49.1</td><td>$54.1</td><td>$59.3</td></tr>
+          <tr><td>Shares Out. (B)</td><td class="act-col">1.91</td><td>1.86</td><td>1.81</td><td>1.76</td><td>1.71</td></tr>
+          <tr><td>My Rev / Share</td><td class="act-col">$20.94</td><td>$23.66</td><td>$26.80</td><td>$30.23</td><td>$33.80</td></tr>
+          <tr><td>Rev/Share YoY Growth</td><td class="act-col">—</td><td class="pos-val">+13.0%</td><td class="pos-val">+13.3%</td><td class="pos-val">+12.8%</td><td class="pos-val">+11.8%</td></tr>
+          <tr><td>Street Rev / Share</td><td class="act-col">$20.94</td><td>$23.82</td><td>$27.13</td><td>$30.74</td><td>$34.68</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+    <div class="card" style="margin-top:12px; background:#fffbea; border-color:#f0d870;">
+      <p style="margin:0; font-size:0.87rem;"><strong>Why I'm slightly below Street:</strong> I model ~5–10 bps of take-rate erosion annually from FY27 as regulators tighten, some cross-border volume migrating to on-chain rails (thinner Visa margin), and travel growth normalising from +13% to high-single-digits by FY27. The offset is Value-Added Services compounding at 18–22%.</p>
+    </div>
+  </div>
+
+  <!-- 05 MARGINS -->
+  <div class="section" id="s5">
+    <p class="section-label">05 — Margins</p>
+    <h2>Margin Forecast</h2>
+    <p>Visa's margins are the real prize. GAAP operating margin has sat in a tight 63–67% band since 2018. The question isn't whether they'll collapse — they won't — but whether they can expand further.</p>
+    <div class="forecast-wrap">
+      <table>
+        <thead><tr><th>Metric</th><th class="act-col">FY25 Actual</th><th>FY26E</th><th>FY27E</th><th>FY28E</th><th>FY29E</th></tr></thead>
+        <tbody>
+          <tr><td>My Op. Margin</td><td class="act-col">66.4%</td><td>66.5%</td><td>66.8%</td><td>66.5%</td><td>65.8%</td></tr>
+          <tr><td>Street Op. Margin</td><td class="act-col">66.4%</td><td>67.0%</td><td>67.5%</td><td>67.5%</td><td>67.0%</td></tr>
+          <tr><td>My Net Margin</td><td class="act-col">50.2%</td><td>50.8%</td><td>51.3%</td><td>50.8%</td><td>50.0%</td></tr>
+          <tr><td>Street Net Margin</td><td class="act-col">50.2%</td><td>51.0%</td><td>51.8%</td><td>51.8%</td><td>51.2%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+    <ul class="bull-list" style="margin-top:12px;">
+      <li data-icon="📉"><strong>Rising VAS mix (headwind).</strong> Value-added services carry lower margins (~40–50%) than core network (~75%). As VAS grows from ~21% to ~28% of revenue, blended margin naturally compresses ~100 bps by FY29.</li>
+      <li data-icon="⚖️"><strong>Litigation &amp; compliance spend.</strong> The DOJ case, merchant class actions, and data-sovereignty infrastructure (EU, India) add ~$400–600M annual cost.</li>
+      <li data-icon="🤖"><strong>AI automation offset.</strong> AI-driven fraud tooling and dispute automation (new in 2026) genuinely reduce personnel cost per transaction — this is why I'm not modelling below 65%.</li>
+    </ul>
+  </div>
+
+  <!-- 06 EPS -->
+  <div class="section" id="s6">
+    <p class="section-label">06 — Earnings Per Share</p>
+    <h2>EPS Forecast</h2>
+    <p>The buyback is doing significant work here. Visa returns ~$17–19B/year to shareholders, roughly 80% of which is repurchases. That alone compounds EPS ~2.5% annually even if net income were flat. Combined with ~10% revenue growth and stable margins, the EPS CAGR lands squarely in the 12–13% range.</p>
+    <div class="forecast-wrap">
+      <table>
+        <thead><tr><th>Metric</th><th class="act-col">FY25 Actual</th><th>FY26E</th><th>FY27E</th><th>FY28E</th><th>FY29E</th></tr></thead>
+        <tbody>
+          <tr><td>My Non-GAAP EPS</td><td class="act-col">$11.47</td><td>$12.95</td><td>$14.60</td><td>$16.35</td><td>$18.30</td></tr>
+          <tr><td>My EPS YoY Growth</td><td class="act-col">+14%</td><td class="pos-val">+12.9%</td><td class="pos-val">+12.7%</td><td class="pos-val">+12.0%</td><td class="pos-val">+11.9%</td></tr>
+          <tr><td>Street Avg EPS</td><td class="act-col">$11.47</td><td>$13.10</td><td>$14.81</td><td>$16.63</td><td>~$18.50</td></tr>
+          <tr><td>Street EPS YoY</td><td class="act-col">+14%</td><td class="pos-val">+14.2%</td><td class="pos-val">+13.1%</td><td class="pos-val">+12.3%</td><td class="pos-val">+11.2%</td></tr>
+          <tr><td>Street Low EPS</td><td class="act-col">—</td><td>$12.41</td><td>$13.83</td><td>$15.32</td><td>~$17.0</td></tr>
+          <tr><td>Street High EPS</td><td class="act-col">—</td><td>$13.86</td><td>$15.72</td><td>$17.72</td><td>~$19.8</td></tr>
+          <tr><td>My vs. Street Avg</td><td class="act-col">—</td><td class="neg-val">−1.1%</td><td class="neg-val">−1.4%</td><td class="neg-val">−1.7%</td><td class="neg-val">−1.1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+    <div class="card" style="margin-top:12px; background:var(--green-bg); border-color:#b8dfc8;">
+      <p style="margin:0 0 6px; font-size:0.87rem; font-weight:700; color:var(--green);">What could push EPS to the high end</p>
+      <ul class="bull-list" style="margin:0;">
+        <li data-icon="✅" style="font-size:0.87rem;"><strong>CCCA fails to pass</strong> — removes the primary US interchange overhang.</li>
+        <li data-icon="✅" style="font-size:0.87rem;"><strong>Cross-border travel</strong> sustains double-digit growth longer than modelled.</li>
+        <li data-icon="✅" style="font-size:0.87rem;"><strong>AI-agent commerce</strong> (Visa's "Intelligent Commerce" launched April 2026) monetises earlier than expected.</li>
+        <li data-icon="✅" style="font-size:0.87rem;"><strong>Accelerated buybacks</strong> at depressed prices — Visa authorised $30B+ in programs since 2024.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 07 ROIC -->
+  <div class="section" id="s7">
+    <p class="section-label">07 — Capital Efficiency</p>
+    <h2>ROIC Forecast</h2>
+    <p>Visa's ROIC is one of the most impressive numbers in public markets — running at <strong>29–33%</strong> versus a WACC of ~7.75%. That 22-point spread is the clearest signal that the network is still under-earning economically rather than over-earning.</p>
+    <div class="forecast-wrap">
+      <table>
+        <thead><tr><th>FY</th><th class="act-col">Status</th><th>My ROIC</th><th>Street Range</th><th>Commentary</th></tr></thead>
+        <tbody>
+          <tr><td>FY2023</td><td class="act-col">Actual</td><td>25.0%</td><td>25–27%</td><td>Post-COVID rebasing</td></tr>
+          <tr><td>FY2024</td><td class="act-col">Actual</td><td>28.5%</td><td>27–30%</td><td>Normalising</td></tr>
+          <tr><td>FY2025</td><td class="act-col">Actual</td><td>30.5%</td><td>29–33%</td><td>Full recovery</td></tr>
+          <tr><td>FY2026</td><td class="act-col">Estimate</td><td>31.0%</td><td>30–33%</td><td>Peak cycle</td></tr>
+          <tr><td>FY2027</td><td class="act-col">Estimate</td><td>31.5%</td><td>31–34%</td><td>VAS scales</td></tr>
+          <tr><td>FY2028</td><td class="act-col">Estimate</td><td>30.5%</td><td>30–33%</td><td>Margin mix shift</td></tr>
+          <tr><td>FY2029</td><td class="act-col">Estimate</td><td>29.5%</td><td>29–32%</td><td>Maturity drag</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+    <p style="margin-top:14px;">I expect ROIC to plateau around 30–32% and very gently fade. The fade is <em>not</em> because returns on new investment are bad — they are excellent — but because the capital base grows with stablecoin validator infrastructure, data centers, and the tokenization platform. This is <strong>good capital deployment at slightly declining incremental returns</strong>, not deterioration. At Visa's ROIC, every incremental $1B of invested capital generates ~$300M in operating profit.</p>
+  </div>
+
+  <!-- 08 PE -->
+  <div class="section" id="s8">
+    <p class="section-label">08 — Valuation Multiple</p>
+    <h2>P/E Multiple Forecast</h2>
+    <p>P/E is the hardest variable to forecast and the most important for price. Visa's 10-year average is ~33.8×, the 5-year is ~34×, and it's trading at <strong>29.5× trailing</strong> today — a clear de-rating that we believe is partly structural and partly reversible.</p>
+    <div class="forecast-wrap">
+      <table>
+        <thead><tr><th>FY</th><th class="act-col">Historical</th><th>My P/E</th><th>Street Implied</th><th>vs. 5-yr Avg</th></tr></thead>
+        <tbody>
+          <tr><td>FY2026E</td><td class="act-col">34× (5yr avg)</td><td>27×</td><td>~30×</td><td class="neg-val">−20%</td></tr>
+          <tr><td>FY2027E</td><td class="act-col">34× (5yr avg)</td><td>29×</td><td>~30×</td><td class="neg-val">−15%</td></tr>
+          <tr><td>FY2028E</td><td class="act-col">34× (5yr avg)</td><td>30×</td><td>~31×</td><td class="neg-val">−12%</td></tr>
+          <tr><td>FY2029E</td><td class="act-col">34× (5yr avg)</td><td>28×</td><td>~30×</td><td class="neg-val">−18%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+    <ul class="bull-list" style="margin-top:12px;">
+      <li data-icon="📊"><strong>Rate regime.</strong> The structural rate environment is higher than 2015–2021. That compresses multiples for stable compounders even after Fed cuts.</li>
+      <li data-icon="⚖️"><strong>Regulatory overhang.</strong> CCCA, DOJ, and EU interchange cap keep a discount intact through at least 2027.</li>
+      <li data-icon="🔒"><strong>Growth slowing.</strong> Revenue growth decelerates from low-teens to high-single-digits by FY29. PEG ratios discipline the multiple even if earnings remain pristine.</li>
+      <li data-icon="🛡️"><strong>Why I don't go below 27×.</strong> That's a level Visa has only visited briefly (Sep 2022 at 25.3×). The business quality doesn't warrant a lower floor.</li>
+    </ul>
+  </div>
+
+  <!-- 09 PRICE TARGETS -->
+  <div class="section" id="s9">
+    <p class="section-label">09 — Price Targets</p>
+    <h2>Price Targets &amp; Scenarios</h2>
+    <p>Price = EPS × P/E. Applying three scenarios (bear / base / bull) against the EPS and multiple ranges above:</p>
+    <div class="forecast-wrap">
+      <table>
+        <thead><tr><th>FY End</th><th class="act-col">Bear (Low)</th><th>Base</th><th>Bull (High)</th><th>Street 1-Y Target</th></tr></thead>
+        <tbody>
+          <tr><td>Sep 2026</td><td class="act-col">$275</td><td>$350</td><td>$405</td><td>$396–405</td></tr>
+          <tr><td>Sep 2027</td><td class="act-col">$325</td><td>$425</td><td>$495</td><td>—</td></tr>
+          <tr><td>Sep 2028</td><td class="act-col">$375</td><td>$490</td><td>$575</td><td>—</td></tr>
+          <tr><td>Sep 2029</td><td class="act-col">$370</td><td>$510</td><td>$640</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+    <p style="font-size:0.8rem; color:var(--text-muted); font-style:italic; margin-top:4px;">Bear = 24× on low EPS. Base = 28–30× on mid EPS. Bull = 32–33× on high EPS.</p>
+    <h3>FY2029 Scenario Composition</h3>
+    <div class="scen-wrap">
+      <div class="scen-row"><span class="scen-label">Bear</span><div class="scen-bar-wrap"><div class="scen-bar bear" style="width:38%"></div></div><span class="scen-val">$370</span></div>
+      <div class="scen-row"><span class="scen-label">Base</span><div class="scen-bar-wrap"><div class="scen-bar base" style="width:68%"></div></div><span class="scen-val">$510</span></div>
+      <div class="scen-row"><span class="scen-label">Bull</span><div class="scen-bar-wrap"><div class="scen-bar bull" style="width:100%"></div></div><span class="scen-val">$640</span></div>
+    </div>
+    <div class="card card-blue" style="margin-top:8px;">
+      <p style="margin:0; font-size:0.87rem;"><strong>Why I diverge from Street on price:</strong> Street's 12-month average target of ~$400 is within my FY2026 bear-to-base band — the <em>numbers</em> agree. The structural difference: Street extrapolates ~30× multiple forever; I fade to 28× by FY29 to reflect decelerating growth. Over four years, that ~2-turn spread explains almost all of the variance between my base ($510) and a naive Street extension (~$555).</p>
+    </div>
+  </div>
+
+  <!-- 10 YEAR BY YEAR -->
+  <div class="section" id="s10">
+    <p class="section-label">10 — Year by Year</p>
+    <h2>Forecast Rationale</h2>
+
+    <div class="year-card">
+      <div class="year-header"><span class="year-title">FY2026</span><span class="year-badge">EPS +12.9%</span></div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$23.66</div></div>
+          <div class="ym"><div class="ym-label">Non-GAAP EPS</div><div class="ym-val">$12.95</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">24–32×</div></div>
+        </div>
+        <p class="year-rationale">Q1 FY26 already reported: revenue +15%, non-GAAP EPS +15%. Strong holiday season and resilient consumer spending confirm momentum. Cross-border travel remains elevated. Stablecoin settlement cards live in 18 countries, on track for 100+. Q2 earnings on April 28 are the key catalyst — consensus expects $3.10 non-GAAP EPS.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header"><span class="year-title">FY2027</span><span class="year-badge">EPS +12.7%</span></div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$26.80</div></div>
+          <div class="ym"><div class="ym-label">Non-GAAP EPS</div><div class="ym-val">$14.60</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">26–32×</div></div>
+        </div>
+        <p class="year-rationale">Cross-border travel growth normalises to high-single-digits. Value-Added Services cross 24% of net revenue, providing meaningful diversification. DOJ trial expected 2027 — if Visa settles on behavioural remedies (our base case), the regulatory discount begins to compress and the multiple starts recovering toward historical averages.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header"><span class="year-title">FY2028</span><span class="year-badge">EPS +12.0%</span></div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$30.23</div></div>
+          <div class="ym"><div class="ym-label">Non-GAAP EPS</div><div class="ym-val">$16.35</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">27–33×</div></div>
+        </div>
+        <p class="year-rationale">AI-agent commerce begins contributing real volume. Visa's "Intelligent Commerce" platform — letting AI agents pay on behalf of consumers — could add 1–2% incremental processed volume by FY28. Stablecoin settlement volumes compound. Buyback continues removing ~2.5% of float annually, mechanically accelerating per-share metrics.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header"><span class="year-title">FY2029</span><span class="year-badge">EPS +11.9%</span></div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$33.80</div></div>
+          <div class="ym"><div class="ym-label">Non-GAAP EPS</div><div class="ym-val">$18.30</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">24–32×</div></div>
+        </div>
+        <p class="year-rationale">Revenue growth has decelerated to high-single-digits but quality remains elite. EPS growth sustains double digits solely from buyback and modest margin discipline. The network processes an estimated $20T+ in annual payment volume. Cash-to-digital conversion in emerging markets (Africa, South Asia, Southeast Asia) remains a multi-decade structural tailwind.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11 ROI -->
+  <div class="section" id="s11">
+    <p class="section-label">11 — Returns</p>
+    <h2>Yearly ROI From Today ($309.94)</h2>
+    <p>Total-return on price appreciation from the current price. Add ~0.7% dividend yield per year for total return (roughly +2.8 pp compounded over 4 years).</p>
+    <div class="forecast-wrap">
+      <table>
+        <thead><tr><th>Horizon</th><th class="act-col">Bear Cumul.</th><th>Bear Ann.</th><th>Base Cumul.</th><th>Base Ann.</th><th>Bull Cumul.</th><th>Bull Ann.</th></tr></thead>
+        <tbody>
+          <tr><td>1Y — FY26</td><td class="act-col neg-val">−11.3%</td><td class="neg-val">−11.3%</td><td class="pos-val">+12.9%</td><td class="pos-val">+12.9%</td><td class="pos-val">+30.7%</td><td class="pos-val">+30.7%</td></tr>
+          <tr><td>2Y — FY27</td><td class="act-col pos-val">+4.9%</td><td>+2.4%</td><td class="pos-val">+37.1%</td><td class="pos-val">+17.1%</td><td class="pos-val">+59.7%</td><td class="pos-val">+26.4%</td></tr>
+          <tr><td>3Y — FY28</td><td class="act-col pos-val">+21.0%</td><td class="pos-val">+6.6%</td><td class="pos-val">+58.1%</td><td class="pos-val">+16.5%</td><td class="pos-val">+85.5%</td><td class="pos-val">+22.9%</td></tr>
+          <tr><td>4Y — FY29</td><td class="act-col pos-val">+19.4%</td><td>+4.5%</td><td class="pos-val">+64.5%</td><td class="pos-val">+13.3%</td><td class="pos-val">+106.5%</td><td class="pos-val">+19.9%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+    <div class="card" style="margin-top:12px; background:var(--green-bg); border-color:#b8dfc8;">
+      <ul class="bull-list" style="margin:0;">
+        <li data-icon="🏦" style="font-size:0.87rem;"><strong>Bear case floor:</strong> Even in the bear case, a buyer at $310 is unlikely to lose money over 4 years. Worst realistic outcome: ~4–5% annualised.</li>
+        <li data-icon="📈" style="font-size:0.87rem;"><strong>Base case ~13% annualised</strong> beats the long-run S&amp;P 500 return (~10%), appropriate for a lower-beta (0.87) compounder.</li>
+        <li data-icon="🚀" style="font-size:0.87rem;"><strong>Bull case ~20% annualised</strong> requires CCCA to fail and Value-Added Services to hit 30%+ of revenue by FY29.</li>
+        <li data-icon="💰" style="font-size:0.87rem;"><strong>Including the ~0.7% dividend yield</strong> and buyback support, total return floors are ~1.5–2 pp higher than shown.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12 RISKS & ADVANTAGES -->
+  <div class="section" id="s12">
+    <p class="section-label">12 — Risks &amp; Advantages</p>
+    <h2>Structural Advantages &amp; Key Risks</h2>
+    <div class="pc-grid">
+      <div class="pc-card">
+        <div class="pc-header pro">✅ Structural Advantages</div>
+        <ul class="pc-body">
+          <li data-icon="🌐"><strong>Network effects at maximum scale.</strong> 4.6B cards, 150M+ merchants. Replication cost measured in decades.</li>
+          <li data-icon="💡"><strong>Capital-light economics.</strong> ~4% of revenue in capex; ~57% FCF margin — extraordinary for a $40B revenue business.</li>
+          <li data-icon="🌍"><strong>Geographic diversification.</strong> International transactions ($14.2B) hedge against any single regulator's reach.</li>
+          <li data-icon="🔗"><strong>Stablecoin positioning is defensive.</strong> Visa is validating on Tempo, settling USDC/USDT, issuing stablecoin-linked cards in 100+ countries. It's absorbing the "threat."</li>
+          <li data-icon="⚙️"><strong>Value-added services second engine.</strong> ~20% of revenue, compounding at 18–22%, with genuine pricing power independent of card volume.</li>
+          <li data-icon="💳"><strong>Balance sheet.</strong> $13B cash, investment-grade ratings. Meaningful optionality for buybacks or strategic M&amp;A.</li>
+          <li data-icon="🤖"><strong>AI leverage.</strong> Scale in transaction data makes Visa's fraud and dispute automation genuinely differentiated versus any new entrant.</li>
+        </ul>
+      </div>
+      <div class="pc-card">
+        <div class="pc-header con">⚠️ Primary Risks</div>
+        <ul class="pc-body">
+          <li data-icon="🏛️"><strong>Credit Card Competition Act (CCCA).</strong> Reintroduced January 2026. Would mandate routing alternatives, compressing interchange 5–15%. Probability of passage: ~20% — but impact is severe if it passes.</li>
+          <li data-icon="⚖️"><strong>DOJ debit antitrust case.</strong> 2024 lawsuit heading toward a 2027 trial targeting Visa's debit tokenisation and client contracts.</li>
+          <li data-icon="🇪🇺"><strong>EU/UK interchange caps.</strong> Ongoing pressure; EU cross-border interchange review pending 2026. Could compress international margins.</li>
+          <li data-icon="₿"><strong>Stablecoin disintermediation risk.</strong> If stablecoins gain true retail product-market fit, cross-border margins could compress. Visa's position is hedged but imperfect.</li>
+          <li data-icon="📱"><strong>Real-time payment systems.</strong> UPI (India), Pix (Brazil), FedNow (US) — domestic A2A rails that bypass card networks entirely. A genuine long-term emerging-market growth cap.</li>
+          <li data-icon="✈️"><strong>Travel / consumer slowdown.</strong> Cross-border is the highest-margin volume. A global tourism pullback hits EPS disproportionately.</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Risk Severity Assessment</h3>
+    <div class="risk-item high"><span class="risk-badge">HIGH</span><div class="risk-content"><strong>CCCA / Regulatory Interchange Compression</strong><span>If enacted in current form, could reduce Visa's net revenue by 8–12% and compress EPS by $1.50–2.50. Small probability but large magnitude — the single most important risk to monitor.</span></div></div>
+    <div class="risk-item medium"><span class="risk-badge">MEDIUM</span><div class="risk-content"><strong>DOJ Debit Antitrust Case</strong><span>2027 trial targeting debit tokenisation and exclusivity contracts. Base case is behavioural remedies. Structural divestiture remains a tail risk that could damage the debit moat.</span></div></div>
+    <div class="risk-item medium"><span class="risk-badge">MEDIUM</span><div class="risk-content"><strong>Global Consumer Slowdown / Recession</strong><span>Cross-border travel is the highest-margin volume source. A moderate recession would cut cross-border growth by 400–600 bps. The network doesn't break — 2020 is the reference case — but EPS estimates need downward revision of ~8–12%.</span></div></div>
+    <div class="risk-item low"><span class="risk-badge">LOW</span><div class="risk-content"><strong>Stablecoin Disintermediation</strong><span>Bitcoin settled more than Visa+Mastercard combined in 2025, but that's institutional flow, not consumer P2M. For consumer payments, stablecoin adoption remains ~1% of volume. Visa is embedding itself as the settler — net-neutral for now.</span></div></div>
+    <div class="risk-item low"><span class="risk-badge">LOW</span><div class="risk-content"><strong>A2A / Real-Time Rail Displacement</strong><span>UPI, Pix, and FedNow are powerful in domestic contexts but have not eroded Visa's cross-border or credit card volume meaningfully. The long-term emerging-market risk is real but plays out over 10+ years, not 4.</span></div></div>
+  </div>
+
+  <!-- 13 MACRO & COMPETITION -->
+  <div class="section" id="s13">
+    <p class="section-label">13 — Context</p>
+    <h2>Macro, Regulation &amp; Competition</h2>
+    <h3>Macroeconomic Factors</h3>
+    <ul class="bull-list">
+      <li data-icon="📊"><strong>Cash-to-digital tailwind.</strong> ~15% of global transactions still settled in cash — worth an estimated $4–5T in incremental annual volume by 2030. This is Visa's most durable secular driver.</li>
+      <li data-icon="📉"><strong>Rates &amp; multiples.</strong> A 50–100 bps Fed cutting cycle would re-expand Visa's P/E 2–3 turns — the single biggest factor in the bull case and the one macro factor that is actually in motion.</li>
+      <li data-icon="💵"><strong>USD direction.</strong> Consensus expects a modestly weaker dollar in FY26–27, adding ~1–2% to reported revenue growth from international translation.</li>
+      <li data-icon="📈"><strong>Inflation.</strong> Net positive for Visa (fees scale with nominal transaction values) up to ~6%. Above that level, consumer spending softness outweighs the nominal volume lift.</li>
+    </ul>
+    <h3>Regulatory Landscape</h3>
+    <div class="card" style="background:#fffbea; border-color:#f0d870;">
+      <p style="margin:0 0 8px; font-weight:700; color:var(--navy); font-size:0.93rem;">Base Case Regulatory Assumptions</p>
+      <ul class="bull-list" style="margin:0;">
+        <li data-icon="🟢" style="font-size:0.87rem;"><strong>CCCA does not pass</strong> (~80% probability given divided Congress dynamics).</li>
+        <li data-icon="🟢" style="font-size:0.87rem;"><strong>DOJ case settles</strong> on behavioural remedies, not structural divestitures (~75% probability).</li>
+        <li data-icon="🟡" style="font-size:0.87rem;"><strong>EU cross-border interchange</strong> revised down 2–5 bps in 2027 (~60% probability).</li>
+        <li data-icon="🟢" style="font-size:0.87rem;"><strong>US GENIUS Act stablecoin framework</strong> remains constructive, enabling Visa's settlement strategy (~90% probability).</li>
+      </ul>
+      <p style="margin:10px 0 0; font-size:0.8rem; color:var(--text-muted); font-style:italic;">If any two of the first three go against Visa, the base case shifts to the bear scenario — roughly 10–15% lower price estimates.</p>
+    </div>
+    <h3>Competitive Landscape</h3>
+    <ul class="bull-list">
+      <li data-icon="🔵"><strong>Mastercard.</strong> The "competitor" that moves in the same direction. The duopoly is stable — they barely compete on price. Visa is larger in debit; Mastercard slightly more exposed to VAS. Both face identical regulatory risks.</li>
+      <li data-icon="💳"><strong>Stripe, Adyen, Block.</strong> Merchant-side gateways. They <em>run on</em> Visa rails most of the time. Competitive only at the acquiring layer Visa doesn't operate in. Partners, not threats.</li>
+      <li data-icon="📱"><strong>PayPal, Apple Pay, Google Pay.</strong> Wallets, not networks. Almost all transactions still settle over Visa/Mastercard. They are distribution channels that actually expand Visa's addressable volume.</li>
+      <li data-icon="🏛️"><strong>A2A real-time rails (UPI, Pix, FedNow).</strong> The most important long-term competitive vector. India's UPI processes volumes approaching Visa's global scale domestically. Government-backed, free-to-consumer, and explicitly designed to bypass card networks. Visa's biggest non-US structural risk over a 10-year horizon.</li>
+      <li data-icon="₿"><strong>Stablecoins / on-chain.</strong> Visa is co-opting rather than competing — running validator nodes on Tempo, settling USDC, issuing stablecoin-linked cards. The threat is being absorbed into the network, which is exactly what Visa has done with every prior "disruptor."</li>
+    </ul>
+  </div>
+
+  <!-- 14 CONCLUSION -->
+  <div class="section" id="s14">
+    <p class="section-label">14 — Conclusion</p>
+    <div class="conclusion-box">
+      <h2>Investment Conclusion</h2>
+      <p>Visa at <strong>$310</strong> is priced for a world in which regulators win every fight, stablecoins kill the card, and value-added services never scale. The data suggests none of those are happening.</p>
+      <p>A buyer here is paying <strong>23.9× forward earnings</strong> for a franchise with 30% ROIC, 66% operating margins, double-digit revenue growth, and a management team that returns virtually every dollar of free cash flow to shareholders.</p>
+      <div class="target-row">
+        <div class="target-box"><div class="tb-label">1-Year Target</div><div class="tb-val">$350–405</div><div class="tb-sub">Base to Street consensus</div></div>
+        <div class="target-box"><div class="tb-label">4-Year Base</div><div class="tb-val">$510</div><div class="tb-sub">~13.3% annualised</div></div>
+        <div class="target-box"><div class="tb-label">4-Year Bull</div><div class="tb-val">$640</div><div class="tb-sub">~20% annualised</div></div>
+      </div>
+      <p>The <strong>base-case 4-year outcome</strong> is a price in the $490–530 range by late 2029 — a total return of ~65% including the dividend, or roughly <strong>13–14% annualised</strong>. The bear case pays ~4–5% annualised; the bull case pays ~20%. Asymmetry favours the long side.</p>
+      <p>The thesis breaks only if Congress passes the CCCA <em>and</em> the DOJ prevails on structural remedies <em>and</em> A2A rails take meaningful US share. That is a conjunction of tail events, not a base case.</p>
+      <p style="margin-bottom:0; font-size:0.87rem; color:rgba(255,255,255,0.75); font-style:italic;">Visa is best suited as a core long-term compounding position. Beta of 0.87 means lower volatility than the broader market — the stock moves less, but earns more per unit of risk than most large-cap peers.</p>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This report is for informational and educational purposes only and does not constitute investment advice or a recommendation to buy or sell securities. All forecasts are model outputs conditional on stated assumptions; actual results will differ materially. Figures reflect publicly available data as of 24 April 2026. Sources: Visa Inc. 8-K filings, FY2025 earnings release, Wall Street analyst consensus (WallStreetZen, Yahoo Finance, MarketBeat, Simply Wall St, 24/7 Wall St.), GuruFocus, Macrotrends, StockAnalysis.com, TIKR, Alpha Spread, EBC Financial Group, Reuters, and corporate.visa.com. Past performance is not indicative of future results. Always consult a qualified financial advisor before making any investment decisions.
+  </div>
+
+</div><!-- /container -->
+
+<!-- ══ EPUB READER SCRIPT ══ -->
+<script>
+  const MIN_FS = 12, MAX_FS = 26, STEP = 1;
+  let currentFs = parseInt(localStorage.getItem('v_fs') || '16', 10);
+  let isDark     = localStorage.getItem('v_dark') === '1';
+
+  function applyFont(size) {
+    currentFs = Math.min(MAX_FS, Math.max(MIN_FS, size));
+    document.documentElement.style.setProperty('--fs-base', currentFs + 'px');
+    document.getElementById('fsDisplay').textContent = currentFs + 'px';
+    document.getElementById('fDecrease').disabled = currentFs <= MIN_FS;
+    document.getElementById('fIncrease').disabled = currentFs >= MAX_FS;
+    localStorage.setItem('v_fs', currentFs);
+  }
+
+  function changeFont(delta) { applyFont(currentFs + delta * STEP); }
+
+  function applyMode() {
+    document.body.classList.toggle('dark', isDark);
+    document.getElementById('modeBtn').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('v_dark', isDark ? '1' : '0');
+  }
+
+  function toggleMode() { isDark = !isDark; applyMode(); }
+
+  // Init on load
+  applyFont(currentFs);
+  applyMode();
+</script>
+</body>
+</html>

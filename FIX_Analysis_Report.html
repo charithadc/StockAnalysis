@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIX Deep Analysis — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2444;
+    --blue: #1a5fa8;
+    --sky: #3b8fd4;
+    --accent: #e8a020;
+    --gold: #f5c842;
+    --light: #f4f7fb;
+    --white: #ffffff;
+    --text: #111d29;
+    --muted: #3a526a;
+    --border: #d0dcea;
+    --green: #1a7a4a;
+    --green-bg: #e8f5ee;
+    --red: #b93232;
+    --red-bg: #fbeaea;
+    --orange: #c45c10;
+    --orange-bg: #fdf0e4;
+    --card-shadow: 0 2px 16px rgba(15,36,68,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--light);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(145deg, #0a1e38 0%, #0f2f5c 50%, #1a5fa8 100%);
+    padding: 48px 24px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.18) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,143,212,0.20) 0%, transparent 70%);
+  }
+  .ticker-badge {
+    display: inline-block;
+    background: rgba(232,160,32,0.2);
+    border: 1px solid rgba(232,160,32,0.5);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 7vw, 46px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .meta-chip {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 720px; margin: 0 auto; padding: 0 16px 60px; }
+
+  /* ── SECTION ── */
+  .section { margin-top: 36px; }
+  .section-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.25;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue);
+    margin: 24px 0 10px;
+  }
+  p { margin-bottom: 14px; font-weight: 400; }
+  p strong { font-weight: 600; color: var(--navy); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .card-blue {
+    background: linear-gradient(135deg, #e8f0fb 0%, #f4f7ff 100%);
+    border-color: #b8d0f0;
+  }
+
+  /* ── SNAPSHOT GRID ── */
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .snap-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+    box-shadow: 0 1px 6px rgba(15,36,68,0.06);
+  }
+  .snap-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-family: 'Source Serif 4', serif;
+  }
+  .snap-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .snap-note {
+    font-size: 11px;
+    color: #3a526a;
+    margin-top: 3px;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .snap-item.highlight {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    border-color: transparent;
+  }
+  .snap-item.highlight .snap-label { color: rgba(255,255,255,0.80); }
+  .snap-item.highlight .snap-value { color: var(--gold); }
+  .snap-item.highlight .snap-note { color: rgba(255,255,255,0.75); }
+  .snap-item.green-hi { border-left: 4px solid var(--green); }
+  .snap-item.green-hi .snap-value { color: var(--green); }
+
+  /* ── FORECAST TABLE ── */
+  .forecast-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 520px;
+    background: var(--white);
+  }
+  thead th {
+    background: var(--navy);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    padding: 12px 10px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  thead th:first-child { text-align: left; border-radius: 12px 0 0 0; }
+  thead th:last-child { border-radius: 0 12px 0 0; }
+  tbody tr:nth-child(even) td { background: #f4f8fd; }
+  tbody tr:nth-child(odd) td { background: var(--white); }
+  tbody td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  tbody td:first-child {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 13px;
+    background: #edf3fb !important;
+    border-right: 2px solid var(--border);
+    min-width: 130px;
+  }
+  tbody td:not(:first-child) { text-align: center; }
+  .act-col { background: #e8f0f8 !important; color: var(--navy) !important; }
+  thead th.act-col { background: #c8ddf5 !important; color: var(--navy) !important; }
+  .scroll-hint {
+    font-size: 12px;
+    color: #3a526a;
+    text-align: center;
+    padding: 6px 0 0;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* ── YEAR CARDS ── */
+  .year-card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(15,36,68,0.07);
+  }
+  .year-header {
+    background: linear-gradient(90deg, var(--navy) 0%, var(--blue) 100%);
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .year-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .year-badge {
+    background: rgba(232,160,32,0.25);
+    border: 1px solid rgba(232,160,32,0.5);
+    color: var(--gold);
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .year-body { padding: 16px 18px; }
+  .year-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .ym {
+    text-align: center;
+    background: var(--light);
+    border-radius: 10px;
+    padding: 14px 10px;
+    border: 1px solid var(--border);
+  }
+  .ym-label { font-size: 12px; color: #3a526a; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
+  .ym-val { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--navy); }
+  .year-rationale { font-size: 15px; color: var(--text); font-weight: 400; line-height: 1.6; }
+
+  /* ── BULLETS ── */
+  .bull-list { list-style: none; padding: 0; margin: 0; }
+  .bull-list li {
+    padding: 10px 14px 10px 42px;
+    position: relative;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+  .bull-list li:last-child { border-bottom: none; }
+  .bull-list li::before {
+    content: attr(data-icon);
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    font-size: 17px;
+  }
+  .bull-list li strong { font-weight: 600; color: var(--navy); }
+
+  /* ── RISK TABLE ── */
+  .risk-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+  }
+  .risk-item.high { background: #fce8e8; border-color: #e8a0a0; }
+  .risk-item.medium { background: #fdeede; border-color: #e8b880; }
+  .risk-item.low { background: #daf2e8; border-color: #90c8ac; }
+  .risk-badge {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .risk-item.high .risk-badge { background: var(--red); color: #fff; }
+  .risk-item.medium .risk-badge { background: var(--orange); color: #fff; }
+  .risk-item.low .risk-badge { background: var(--green); color: #fff; }
+  .risk-content strong { font-size: 15px; color: #0f2444; font-weight: 700; display: block; margin-bottom: 4px; }
+  .risk-content span { font-size: 14px; color: #1c3044; font-weight: 400; line-height: 1.55; }
+
+  /* ── CONCLUSION ── */
+  .conclusion-box {
+    background: linear-gradient(135deg, var(--navy) 0%, #0d3568 100%);
+    border-radius: 16px;
+    padding: 28px 22px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .conclusion-box::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.15) 0%, transparent 70%);
+  }
+  .conclusion-box h2 {
+    color: var(--gold);
+    border-bottom-color: rgba(255,255,255,0.15);
+    margin-bottom: 16px;
+  }
+  .conclusion-box p { color: rgba(255,255,255,0.92); font-weight: 400; }
+  .conclusion-box strong { color: var(--gold); font-weight: 600; }
+  .target-row {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0 16px;
+  }
+  .target-box {
+    flex: 1;
+    text-align: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 14px 8px;
+  }
+  .target-box .tb-label { font-size: 11px; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
+  .target-box .tb-val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--gold); }
+  .target-box .tb-sub { font-size: 11px; color: rgba(255,255,255,0.70); margin-top: 2px; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    margin-top: 36px;
+    padding: 16px 18px;
+    background: #f0f4f9;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: #3a526a;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+  .disclaimer strong { font-style: normal; font-weight: 600; color: var(--navy); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 32px 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section { animation: fadeUp 0.5s ease both; }
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+  .section:nth-child(5) { animation-delay: 0.2s; }
+
+  @media (max-width: 400px) {
+    .snapshot-grid { grid-template-columns: 1fr; }
+    .year-metrics { grid-template-columns: 1fr 1fr; }
+    .target-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="ticker-badge">NYSE: FIX</div>
+  <h1>Comfort Systems USA<br><span>Deep Analysis</span></h1>
+  <p class="hero-sub">Revenue/Share · EPS · P/E Forecast · FY2026–FY2029</p>
+  <div class="hero-meta">
+    <span class="meta-chip">📅 April 23, 2026</span>
+    <span class="meta-chip">💰 ~$1,650 / share</span>
+    <span class="meta-chip">⭐ Strong Buy Consensus</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section">
+    <p class="section-label">01 — Overview</p>
+    <h2>Executive Summary</h2>
+    <div class="card card-blue">
+      <p>Comfort Systems USA is America's dominant mechanical and electrical contractor — the indispensable pick-and-shovel play powering the AI data center construction supercycle. As of April 2026, FIX is up over 370% in one year, yet its <strong>record $11.94B backlog</strong> — nearly double year-ago levels — provides extraordinary multi-year revenue visibility that the market is only beginning to price in.</p>
+      <p style="margin-bottom:0">This report forecasts <strong>Revenue per Share, EPS, and P/E ranges</strong> for FY2026–FY2029, anchored in analyst consensus, Q4 2025 earnings, and Comfort Systems' structural tailwinds from hyperscaler data center buildout, modular construction expansion, and a decades-long track record of operational excellence.</p>
+    </div>
+    <p style="font-size:13px; color:var(--muted); font-style:italic;">Note: Comfort Systems' fiscal year ends December 31. All figures are calendar-year based. Share count ~35.2M diluted shares as of April 2026.</p>
+  </div>
+
+  <!-- SNAPSHOT -->
+  <div class="section">
+    <p class="section-label">02 — Current Snapshot</p>
+    <h2>Where FIX Stands Today</h2>
+    <div class="snapshot-grid">
+      <div class="snap-item highlight">
+        <div class="snap-label">Current Price</div>
+        <div class="snap-value">~$1,650</div>
+        <div class="snap-note">As of April 22, 2026</div>
+      </div>
+      <div class="snap-item highlight">
+        <div class="snap-label">Market Cap</div>
+        <div class="snap-value">~$58B</div>
+        <div class="snap-note">~35.2M diluted shares</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">FY2025 EPS (GAAP)</div>
+        <div class="snap-value">$28.88</div>
+        <div class="snap-note">+98% YoY vs. $14.60 in 2024</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Trailing P/E</div>
+        <div class="snap-value">~57x</div>
+        <div class="snap-note">Based on FY25 EPS of $28.88</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Forward P/E (FY26E)</div>
+        <div class="snap-value">~44x</div>
+        <div class="snap-note">Based on ~$37 est. EPS</div>
+      </div>
+      <div class="snap-item green-hi">
+        <div class="snap-label">FY2025 Revenue</div>
+        <div class="snap-value">$9.10B</div>
+        <div class="snap-note">+29.5% YoY</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Revenue / Share</div>
+        <div class="snap-value">~$258</div>
+        <div class="snap-note">Based on ~35.2M shares</div>
+      </div>
+      <div class="snap-item green-hi">
+        <div class="snap-label">Record Backlog</div>
+        <div class="snap-value">$11.94B</div>
+        <div class="snap-note">+99% YoY — all-time high</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px; background: #fffbea; border-color: #f0d870;">
+      <p style="margin:0; font-size:14px;"><strong>💡 Key insight:</strong> FIX's backlog of $11.94B now exceeds its full-year revenue — a historically unprecedented coverage ratio that provides <strong>more than 12 months of locked-in work</strong>. Technology customers (hyperscaler data centers) jumped from 33% to 45% of FY2025 revenue, and demand continues to accelerate.</p>
+    </div>
+  </div>
+
+  <!-- SEGMENTS -->
+  <div class="section">
+    <p class="section-label">03 — Business</p>
+    <h2>Two Core Segments</h2>
+    <ul class="bull-list">
+      <li data-icon="🔧"><strong>Mechanical Segment (~75% of revenue)</strong> — HVAC, plumbing, piping, controls, and off-site modular construction for data centers, manufacturing, and commercial buildings. The primary growth engine, capturing the bulk of hyperscaler construction spend. Modular capacity is expanding from 3M to 4M sq ft by end of 2026, enabling prefabricated, faster-to-deploy data center modules.</li>
+      <li data-icon="⚡"><strong>Electrical Segment (~25% of revenue)</strong> — Power distribution, electrical systems, fire protection, and monitoring. Boosted by the October 2025 acquisitions of Feyen-Zylstra (Michigan) and Meisner Electric (Florida), adding $200M+ in annual revenue and deepening the electrical footprint in industrial and healthcare markets.</li>
+    </ul>
+    <p style="margin-top:16px; font-size:15px;">Revenue mix is <strong>actively shifting toward high-complexity, high-margin data center and industrial work</strong>. New construction rose from 56.7% to 63.2% of revenue in FY2025, reflecting the greenfield data center wave. Gross margin exceeded 25% in Q4 2025 for the first time in company history.</p>
+  </div>
+
+  <!-- FORECAST TABLE -->
+  <div class="section">
+    <p class="section-label">04 — Forecast</p>
+    <h2>4-Year Forecast Summary</h2>
+    <div class="forecast-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="act-col">FY25 Actual</th>
+            <th>FY26E</th>
+            <th>FY27E</th>
+            <th>FY28E</th>
+            <th>FY29E</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Revenue ($B)</td>
+            <td class="act-col">$9.10B</td>
+            <td>$10.9–11.1B</td>
+            <td>$12.5–13.4B</td>
+            <td>$13.8–15.0B</td>
+            <td>$15.0–16.5B</td>
+          </tr>
+          <tr>
+            <td>Rev / Share ($)</td>
+            <td class="act-col">$258</td>
+            <td>$309–315</td>
+            <td>$355–380</td>
+            <td>$392–426</td>
+            <td>$426–469</td>
+          </tr>
+          <tr>
+            <td>EPS ($)</td>
+            <td class="act-col">$28.88</td>
+            <td>$36–38</td>
+            <td>$43–47</td>
+            <td>$50–56</td>
+            <td>$57–65</td>
+          </tr>
+          <tr>
+            <td>EPS Growth</td>
+            <td class="act-col">+98%</td>
+            <td>~+25–32%</td>
+            <td>~+19–24%</td>
+            <td>~+16–19%</td>
+            <td>~+14–16%</td>
+          </tr>
+          <tr>
+            <td>P/E Range</td>
+            <td class="act-col">—</td>
+            <td>35x–50x</td>
+            <td>28x–42x</td>
+            <td>24x–36x</td>
+            <td>20x–30x</td>
+          </tr>
+          <tr>
+            <td>Price Low ($)</td>
+            <td class="act-col">—</td>
+            <td>$1,260</td>
+            <td>$1,204</td>
+            <td>$1,200</td>
+            <td>$1,140</td>
+          </tr>
+          <tr>
+            <td>Price High ($)</td>
+            <td class="act-col">—</td>
+            <td>$1,900</td>
+            <td>$1,974</td>
+            <td>$2,016</td>
+            <td>$1,950</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+  </div>
+
+  <!-- YEAR BY YEAR -->
+  <div class="section">
+    <p class="section-label">05 — Year by Year</p>
+    <h2>Forecast Rationale</h2>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2026</span>
+        <span class="year-badge">EPS +25–32%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$309–315</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$36–38</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">35–50x</div></div>
+        </div>
+        <p class="year-rationale">FY2026 is anchored by the record $11.94B backlog entering the year — the most visible earnings setup in FIX history. Management guided mid-to-high teen same-store revenue growth. Analyst consensus sits at ~$10.95B revenue and ~$36.76 EPS. Modular capacity expands to 4M sq ft, enabling faster data center project delivery. Q4 2025's 25%+ gross margin is now the new baseline, not a one-off. The forward P/E range of 35–50x reflects ongoing scarcity premium for the best-positioned data center infrastructure contractor in the US.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2027</span>
+        <span class="year-badge">EPS +19–24%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$355–380</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$43–47</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">28–42x</div></div>
+        </div>
+        <p class="year-rationale">Per TIKR analysis, the record backlog backlog revenue does not fully hit revenue recognition until 2027 and 2028 — meaning FY2026 is only the first chapter of a multi-year ramp. As booked contracts convert to recognised revenue, EPS growth should remain robust at 19–24%. Analyst consensus of $12.54B revenue for FY2027 implies continued 13%+ growth on a larger base. Margin profile should hold or modestly expand as operational leverage deepens on the new capacity. P/E begins to compress as growth moderates from hyper-growth rates.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2028</span>
+        <span class="year-badge">EPS +16–19%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$392–426</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$50–56</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">24–36x</div></div>
+        </div>
+        <p class="year-rationale">By FY2028, the data center construction supercycle should be approaching its peak revenue recognition phase as projects begun in 2025–2026 reach completion. Service and maintenance revenue from commissioned data centers provides an increasingly durable recurring layer — historically high-margin and sticky. Share buybacks and continued acquisitions (FIX has 27 consecutive years of positive free cash flow) should mechanically lift EPS. The valuation premium moderates as the market transitions FIX from a hyper-growth story to a quality compounder narrative.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2029</span>
+        <span class="year-badge">EPS +14–16%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$426–469</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$57–65</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">20–30x</div></div>
+        </div>
+        <p class="year-rationale">FY2029 represents Comfort Systems' maturation as a large-cap industrial compounder. Long-term service contracts for operational data centers, manufacturing facility maintenance, and institutional clients provide a thick floor of recurring revenue beneath new construction wins. EPS continues double-digit growth driven by margin discipline, bolt-on acquisitions, and a smaller share count. P/E settles into a 20–30x range more consistent with high-quality industrials — though sustained above-market EPS growth could support a premium at the high end.</p>
+      </div>
+    </div>
+
+    <h3>Why P/E Will Compress — But That's Expected</h3>
+    <div class="card">
+      <ul class="bull-list" style="margin:0;">
+        <li data-icon="🐻" style="font-size:14px;"><strong>Bear case (20–28x):</strong> Hyperscaler CapEx slows materially post-2027, backlog doesn't replenish, and FIX re-rates toward the broader industrials sector average of ~20x. Stock could trade $1,140–$1,820.</li>
+        <li data-icon="📈" style="font-size:14px;"><strong>Base case (28–38x):</strong> Data center demand sustains through the decade, backlog replenishes via next construction cycle, and operating margin holds 13–15%. This is the most probable outcome.</li>
+        <li data-icon="🚀" style="font-size:14px;"><strong>Bull case (40–50x):</strong> AI infrastructure spending accelerates beyond current projections, FIX captures emerging nuclear/advanced energy infrastructure contracts, and revenue growth stays above 20% through 2028.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BULL DRIVERS -->
+  <div class="section">
+    <p class="section-label">06 — Catalysts</p>
+    <h2>Key Bull Case Drivers</h2>
+    <ul class="bull-list">
+      <li data-icon="🏗️"><strong>Data center construction supercycle:</strong> Hyperscalers (Microsoft, Google, Amazon, Meta) have committed to hundreds of billions in AI infrastructure CapEx. FIX is one of a handful of contractors with the scale, workforce, and modular capability to execute at this level.</li>
+      <li data-icon="📦"><strong>Modular capacity expansion:</strong> Growing from 3M to 4M square feet of modular manufacturing capacity by end of 2026 allows FIX to prefabricate data center components off-site — faster delivery, higher margins, and better cost control for customers.</li>
+      <li data-icon="🔄"><strong>Recurring service revenue:</strong> Once a data center is built, FIX typically holds long-term service and maintenance contracts. This converts each construction project into a durable revenue stream, building an increasingly predictable earnings base beneath new wins.</li>
+      <li data-icon="💸"><strong>Free cash flow compounding:</strong> $1.04B in FY2025 free cash flow — 27 consecutive years of positive FCF. This funds bolt-on acquisitions (adding ~$200M annual revenue per deal), dividends raised 14 consecutive years, and opportunistic buybacks.</li>
+      <li data-icon="🏆"><strong>Unmatched backlog visibility:</strong> A $11.94B backlog — nearly 1.3x annual revenue — is unprecedented for an industrial contractor of this size. It provides a structural earnings floor regardless of near-term macroeconomic conditions.</li>
+    </ul>
+  </div>
+
+  <!-- RISKS -->
+  <div class="section">
+    <p class="section-label">07 — Risks</p>
+    <h2>Key Risk Factors</h2>
+
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-content">
+        <strong>Hyperscaler CapEx Deceleration</strong>
+        <span>If large cloud providers slow or pause data center spending due to macro pressure, AI demand disappointment, or capital reallocation, FIX's backlog replenishment could stall post-2027. This is the single biggest structural risk.</span>
+      </div>
+    </div>
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-content">
+        <strong>Valuation Premium Risk</strong>
+        <span>At ~44x forward earnings, FIX carries a significant growth premium. Any earnings miss or guidance cut could trigger a sharp de-rating. The stock dropped sharply after prior periods of market-wide risk-off sentiment despite solid fundamentals.</span>
+      </div>
+    </div>
+    <div class="risk-item medium">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-content">
+        <strong>Labor Cost Inflation &amp; Workforce Constraints</strong>
+        <span>FIX employs 22,700+ skilled tradespeople across 190 locations. Tight skilled labor markets and wage inflation could compress margins if project complexity increases faster than the workforce can scale. Robotics and automation investments partially mitigate this.</span>
+      </div>
+    </div>
+    <div class="risk-item medium">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-content">
+        <strong>Macro / Tariff Shock</strong>
+        <span>A recession or significant tariff-driven materials cost spike could delay commercial construction decisions. While FIX's data center exposure is relatively insulated, broader commercial building (~30% of mix) is more economically sensitive.</span>
+      </div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-content">
+        <strong>Acquisition Integration Risk</strong>
+        <span>FIX regularly acquires regional contractors. With two significant electrical acquisitions in October 2025, integration missteps could create temporary margin drag and management distraction. FIX's track record of successful integration is strong.</span>
+      </div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-content">
+        <strong>Seasonal Q1 Weakness</strong>
+        <span>Q1 is historically FIX's weakest quarter due to weather impacts on construction activity. Investors should expect lower sequential EPS in Q1 2026 — this is structural, not fundamental deterioration.</span>
+      </div>
+    </div>
+
+    <p style="margin-top:16px; font-size:14px; color:#1c3044; font-style:italic;">Overall assessment: FIX's primary risk is valuation-driven — the business fundamentals are exceptional. A $11.94B backlog, 27 consecutive years of positive free cash flow, and dominant market position in a structurally growing end-market provide a substantial margin of safety against execution risk.</p>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="section">
+    <p class="section-label">08 — Conclusion</p>
+    <div class="conclusion-box">
+      <h2>Investment Conclusion</h2>
+      <p>Comfort Systems USA is arguably the <strong>most compelling infrastructure compounder</strong> in the US industrial sector right now. Its position as the indispensable mechanical and electrical contractor for the AI data center buildout is unmatched — and the record $11.94B backlog ensures the earnings growth story has only begun to unfold through 2028.</p>
+
+      <div class="target-row">
+        <div class="target-box">
+          <div class="tb-label">Analyst High Target</div>
+          <div class="tb-val">$1,800</div>
+          <div class="tb-sub">DA Davidson (Strong Buy)</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">4-Year Bull Case</div>
+          <div class="tb-val">$1,950–2,016</div>
+          <div class="tb-sub">EPS growth + sustained premium</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">Rating</div>
+          <div class="tb-val">⭐ Buy</div>
+          <div class="tb-sub">Core infrastructure hold</div>
+        </div>
+      </div>
+
+      <p>The combination of <strong>25–32% EPS growth in FY2026</strong>, moderating to a still-robust 14–16% by FY2029, backed by a unprecedented backlog and free cash flow engine, makes FIX a rare case where the growth rate partially justifies a premium valuation. The main risk is not business execution — it's paying today's premium if AI infrastructure spending surprises to the downside.</p>
+      <p style="margin-bottom:0; font-size:14px; color:rgba(255,255,255,0.8); font-style:italic;">FIX is best suited as a high-conviction infrastructure holding within a diversified equity portfolio. Its 10-year EPS CAGR of ~36.5% is genuinely exceptional for a company of its size and stability. Position size should reflect the premium valuation risk.</p>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This report is for informational and educational purposes only and does not constitute investment advice. Forecasts are based on publicly available analyst estimates, management guidance, and company filings as of April 2026. Actual results may differ materially. Past performance is not indicative of future results. Always consult a qualified financial advisor before making any investment decisions.
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>

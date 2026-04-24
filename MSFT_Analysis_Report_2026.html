@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSFT Deep Analysis — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2444;
+    --blue: #1a5fa8;
+    --sky: #3b8fd4;
+    --accent: #e8a020;
+    --gold: #f5c842;
+    --light: #f4f7fb;
+    --white: #ffffff;
+    --text: #111d29;
+    --muted: #3a526a;
+    --border: #d0dcea;
+    --green: #1a7a4a;
+    --green-bg: #e8f5ee;
+    --red: #b93232;
+    --red-bg: #fbeaea;
+    --orange: #c45c10;
+    --orange-bg: #fdf0e4;
+    --card-shadow: 0 2px 16px rgba(15,36,68,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--light);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(145deg, #0a1e38 0%, #0f2f5c 50%, #1a5fa8 100%);
+    padding: 48px 24px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.18) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,143,212,0.20) 0%, transparent 70%);
+  }
+  .ticker-badge {
+    display: inline-block;
+    background: rgba(232,160,32,0.2);
+    border: 1px solid rgba(232,160,32,0.5);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 7vw, 46px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .meta-chip {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 720px; margin: 0 auto; padding: 0 16px 60px; }
+
+  /* ── SECTION ── */
+  .section { margin-top: 36px; }
+  .section-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.25;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue);
+    margin: 24px 0 10px;
+  }
+  p { margin-bottom: 14px; font-weight: 400; }
+  p strong { font-weight: 600; color: var(--navy); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .card-blue {
+    background: linear-gradient(135deg, #e8f0fb 0%, #f4f7ff 100%);
+    border-color: #b8d0f0;
+  }
+
+  /* ── SNAPSHOT GRID ── */
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .snap-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+    box-shadow: 0 1px 6px rgba(15,36,68,0.06);
+  }
+  .snap-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-family: 'Source Serif 4', serif;
+  }
+  .snap-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .snap-note {
+    font-size: 11px;
+    color: #3a526a;
+    margin-top: 3px;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .snap-item.highlight {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    border-color: transparent;
+  }
+  .snap-item.highlight .snap-label { color: rgba(255,255,255,0.80); }
+  .snap-item.highlight .snap-value { color: var(--gold); }
+  .snap-item.highlight .snap-note { color: rgba(255,255,255,0.75); }
+  .snap-item.green-hi { border-left: 4px solid var(--green); }
+  .snap-item.green-hi .snap-value { color: var(--green); }
+
+  /* ── FORECAST TABLE ── */
+  .forecast-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 520px;
+    background: var(--white);
+  }
+  thead th {
+    background: var(--navy);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    padding: 12px 10px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  thead th:first-child { text-align: left; border-radius: 12px 0 0 0; }
+  thead th:last-child { border-radius: 0 12px 0 0; }
+  tbody tr:nth-child(even) td { background: #f4f8fd; }
+  tbody tr:nth-child(odd) td { background: var(--white); }
+  tbody td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  tbody td:first-child {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 13px;
+    background: #edf3fb !important;
+    border-right: 2px solid var(--border);
+    min-width: 130px;
+  }
+  tbody td:not(:first-child) { text-align: center; }
+  .act-col { background: #e8f0f8 !important; color: var(--navy) !important; }
+  thead th.act-col { background: #c8ddf5 !important; color: var(--navy) !important; }
+  .scroll-hint {
+    font-size: 12px;
+    color: #3a526a;
+    text-align: center;
+    padding: 6px 0 0;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* ── YEAR CARDS ── */
+  .year-card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(15,36,68,0.07);
+  }
+  .year-header {
+    background: linear-gradient(90deg, var(--navy) 0%, var(--blue) 100%);
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .year-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .year-badge {
+    background: rgba(232,160,32,0.25);
+    border: 1px solid rgba(232,160,32,0.5);
+    color: var(--gold);
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .year-body { padding: 16px 18px; }
+  .year-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .ym {
+    text-align: center;
+    background: var(--light);
+    border-radius: 10px;
+    padding: 14px 10px;
+    border: 1px solid var(--border);
+  }
+  .ym-label { font-size: 12px; color: #3a526a; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
+  .ym-val { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--navy); }
+  .year-rationale { font-size: 15px; color: var(--text); font-weight: 400; line-height: 1.6; }
+
+  /* ── BULLETS ── */
+  .bull-list { list-style: none; padding: 0; margin: 0; }
+  .bull-list li {
+    padding: 10px 14px 10px 42px;
+    position: relative;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+  .bull-list li:last-child { border-bottom: none; }
+  .bull-list li::before {
+    content: attr(data-icon);
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    font-size: 17px;
+  }
+  .bull-list li strong { font-weight: 600; color: var(--navy); }
+
+  /* ── RISK TABLE ── */
+  .risk-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+  }
+  .risk-item.high { background: #fce8e8; border-color: #e8a0a0; }
+  .risk-item.medium { background: #fdeede; border-color: #e8b880; }
+  .risk-item.low { background: #daf2e8; border-color: #90c8ac; }
+  .risk-badge {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .risk-item.high .risk-badge { background: var(--red); color: #fff; }
+  .risk-item.medium .risk-badge { background: var(--orange); color: #fff; }
+  .risk-item.low .risk-badge { background: var(--green); color: #fff; }
+  .risk-content strong { font-size: 15px; color: #0f2444; font-weight: 700; display: block; margin-bottom: 4px; }
+  .risk-content span { font-size: 14px; color: #1c3044; font-weight: 400; line-height: 1.55; }
+
+  /* ── CONCLUSION ── */
+  .conclusion-box {
+    background: linear-gradient(135deg, var(--navy) 0%, #0d3568 100%);
+    border-radius: 16px;
+    padding: 28px 22px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .conclusion-box::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.15) 0%, transparent 70%);
+  }
+  .conclusion-box h2 {
+    color: var(--gold);
+    border-bottom-color: rgba(255,255,255,0.15);
+    margin-bottom: 16px;
+  }
+  .conclusion-box p { color: rgba(255,255,255,0.92); font-weight: 400; }
+  .conclusion-box strong { color: var(--gold); font-weight: 600; }
+  .target-row {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0 16px;
+  }
+  .target-box {
+    flex: 1;
+    text-align: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 14px 8px;
+  }
+  .target-box .tb-label { font-size: 11px; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
+  .target-box .tb-val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--gold); }
+  .target-box .tb-sub { font-size: 11px; color: rgba(255,255,255,0.70); margin-top: 2px; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    margin-top: 36px;
+    padding: 16px 18px;
+    background: #f0f4f9;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: #3a526a;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+  .disclaimer strong { font-style: normal; font-weight: 600; color: var(--navy); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 32px 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section { animation: fadeUp 0.5s ease both; }
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+  .section:nth-child(5) { animation-delay: 0.2s; }
+
+  @media (max-width: 400px) {
+    .snapshot-grid { grid-template-columns: 1fr; }
+    .year-metrics { grid-template-columns: 1fr 1fr; }
+    .target-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="ticker-badge">NASDAQ: MSFT</div>
+  <h1>Microsoft<br><span>Deep Analysis</span></h1>
+  <p class="hero-sub">Revenue/Share · EPS · P/E Forecast · FY2026–FY2029</p>
+  <div class="hero-meta">
+    <span class="meta-chip">📅 April 23, 2026</span>
+    <span class="meta-chip">💰 ~$422–428 / share</span>
+    <span class="meta-chip">⭐ Strong Buy Consensus</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section">
+    <p class="section-label">01 — Overview</p>
+    <h2>Executive Summary</h2>
+    <div class="card card-blue">
+      <p>Microsoft is one of the world's most formidable technology platforms — and as of April 2026, it trades at a <strong>meaningful discount to its own 5-year average valuation</strong>, while AI and cloud monetisation are just beginning to compound at scale.</p>
+      <p style="margin-bottom:0">This report forecasts <strong>Revenue per Share, EPS, and P/E ranges</strong> for FY2026–FY2029, anchored in analyst consensus, recent earnings results through Q2 FY2026, and Microsoft's structural tailwinds from Azure, Microsoft 365 Copilot, and the exclusive OpenAI partnership. All forecasts are non-GAAP unless otherwise stated.</p>
+    </div>
+    <p style="font-size:13px; color:var(--muted); font-style:italic;">Note: Microsoft's fiscal year ends June 30. FY2025 = July 2024–June 2025. FY2026 = July 2025–June 2026. FY2026 is currently underway with Q1 and Q2 results reported.</p>
+  </div>
+
+  <!-- SNAPSHOT -->
+  <div class="section">
+    <p class="section-label">02 — Current Snapshot</p>
+    <h2>Where MSFT Stands Today</h2>
+    <div class="snapshot-grid">
+      <div class="snap-item highlight">
+        <div class="snap-label">Current Price</div>
+        <div class="snap-value">$422–428</div>
+        <div class="snap-note">As of April 23, 2026</div>
+      </div>
+      <div class="snap-item highlight">
+        <div class="snap-label">Market Cap</div>
+        <div class="snap-value">~$3.14T</div>
+        <div class="snap-note">World's 2nd largest company</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Trailing P/E (GAAP)</div>
+        <div class="snap-value">~26.5x</div>
+        <div class="snap-note">vs. 5-yr avg ~28–33x</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Forward P/E (FY26E)</div>
+        <div class="snap-value">~24x</div>
+        <div class="snap-note">Based on ~$17.50 est. EPS</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Q2 FY26 EPS (Non-GAAP)</div>
+        <div class="snap-value">$4.14</div>
+        <div class="snap-note">Beat consensus of $3.97 by 4.3%</div>
+      </div>
+      <div class="snap-item green-hi">
+        <div class="snap-label">Revenue TTM</div>
+        <div class="snap-value">$305.5B</div>
+        <div class="snap-note">+15% YoY</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Revenue/Share (TTM)</div>
+        <div class="snap-value">~$41.1</div>
+        <div class="snap-note">Based on 7.43B diluted shares</div>
+      </div>
+      <div class="snap-item green-hi">
+        <div class="snap-label">Analyst Consensus</div>
+        <div class="snap-value">Strong Buy</div>
+        <div class="snap-note">35 of 37 analysts; avg target $575</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px; background: #fffbea; border-color: #f0d870;">
+      <p style="margin:0; font-size:14px;"><strong>💡 Key insight:</strong> MSFT's forward P/E of ~24x is <strong>roughly 20–30% below its 5-year historical average of 28–33x</strong>, presenting a rare valuation entry point into the world's leading enterprise AI platform. Q2 FY26 revenue of $81.3B (+17% YoY) beat consensus by over $1 billion, confirming the growth trajectory is intact.</p>
+    </div>
+  </div>
+
+  <!-- SEGMENTS -->
+  <div class="section">
+    <p class="section-label">03 — Business</p>
+    <h2>Three Core Segments</h2>
+    <ul class="bull-list">
+      <li data-icon="☁️"><strong>Intelligent Cloud (~43% of revenue)</strong> — Azure crossed $75B in trailing-twelve-month revenue in mid-2025, growing 39% YoY in Q2 FY26. The exclusive compute backbone for OpenAI's API products drives AI-specific cloud demand that outpaces broader Azure growth. This is the primary earnings engine.</li>
+      <li data-icon="📊"><strong>Productivity &amp; Business Processes (~32%)</strong> — Microsoft 365, Teams, LinkedIn, and Dynamics. Microsoft 365 Copilot surpassed 15 million paid seats as of Q2 FY26, growing over 160% YoY. At $30/user/month, even 20% penetration of 400M+ licensed seats would add ~$29B in near-100%-margin incremental revenue.</li>
+      <li data-icon="🖥️"><strong>More Personal Computing (~25%)</strong> — Windows OEM, Xbox, Bing/Search, and Surface. The relative laggard. Xbox gaming revenue has been soft, while Bing saw low double-digit growth boosted by Copilot integration. Management's Q3 FY26 guidance for this segment was the primary trigger of the January 2026 selloff.</li>
+    </ul>
+    <p style="margin-top:16px; font-size:15px;">Revenue mix is <strong>actively shifting toward high-margin, recurring cloud and AI software</strong> — structurally expanding operating leverage. Microsoft's operating margin of 47% leads all mega-cap technology peers by a significant margin.</p>
+  </div>
+
+  <!-- FORECAST TABLE -->
+  <div class="section">
+    <p class="section-label">04 — Forecast</p>
+    <h2>4-Year Forecast Summary</h2>
+    <div class="forecast-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="act-col">FY25 Actual</th>
+            <th>FY26E</th>
+            <th>FY27E</th>
+            <th>FY28E</th>
+            <th>FY29E</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Revenue ($B)</td>
+            <td class="act-col">$281.7</td>
+            <td>$332–340</td>
+            <td>$378–398</td>
+            <td>$432–462</td>
+            <td>$490–530</td>
+          </tr>
+          <tr>
+            <td>Rev Growth YoY</td>
+            <td class="act-col">+15%</td>
+            <td>~+18–21%</td>
+            <td>~+14–17%</td>
+            <td>~+14–16%</td>
+            <td>~+13–15%</td>
+          </tr>
+          <tr>
+            <td>Rev / Share ($)</td>
+            <td class="act-col">$37.9</td>
+            <td>$44.7–45.8</td>
+            <td>$51–54</td>
+            <td>$58–62</td>
+            <td>$66–72</td>
+          </tr>
+          <tr>
+            <td>EPS Non-GAAP ($)</td>
+            <td class="act-col">$13.64</td>
+            <td>$16.80–17.50</td>
+            <td>$19.0–20.0</td>
+            <td>$21.8–23.5</td>
+            <td>$25.0–27.5</td>
+          </tr>
+          <tr>
+            <td>EPS Growth</td>
+            <td class="act-col">+16%</td>
+            <td>~+23–28%</td>
+            <td>~+13–15%</td>
+            <td>~+15–18%</td>
+            <td>~+15–17%</td>
+          </tr>
+          <tr>
+            <td>P/E Range</td>
+            <td class="act-col">—</td>
+            <td>22x–30x</td>
+            <td>22x–31x</td>
+            <td>22x–31x</td>
+            <td>21x–30x</td>
+          </tr>
+          <tr>
+            <td>Price Low ($)</td>
+            <td class="act-col">—</td>
+            <td>$370</td>
+            <td>$418</td>
+            <td>$480</td>
+            <td>$525</td>
+          </tr>
+          <tr>
+            <td>Price High ($)</td>
+            <td class="act-col">—</td>
+            <td>$525</td>
+            <td>$620</td>
+            <td>$728</td>
+            <td>$825</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+  </div>
+
+  <!-- YEAR BY YEAR -->
+  <div class="section">
+    <p class="section-label">05 — Year by Year</p>
+    <h2>Forecast Rationale</h2>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2026 (Current Year)</span>
+        <span class="year-badge">EPS +23–28%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$44–46</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$16.80–17.50</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">22–30x</div></div>
+        </div>
+        <p class="year-rationale">Two quarters are already in: Q1 FY26 delivered $70.1B (+13% YoY) and Q2 FY26 delivered $81.3B (+17% YoY), both beating consensus. Non-GAAP EPS of $4.14 in Q2 beat by 4.3%. The higher YoY EPS growth versus revenue reflects strong operating leverage — Azure's gross margin above 70% means cloud revenue flows disproportionately to the bottom line. FY26 consensus non-GAAP EPS sits around $16.80–$17.50, implying a full-year jump of 23–28% from FY25's $13.64. The wide P/E range (22–30x) reflects macro uncertainty: rate fears and capex scrutiny keep the bear case multiple compressed, while AI monetisation upside anchors the bull case near historical norms.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2027</span>
+        <span class="year-badge">EPS +13–15%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$51–54</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$19.0–20.0</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">22–31x</div></div>
+        </div>
+        <p class="year-rationale">Copilot adoption broadens into the mid-market and small business tier. Microsoft 365 Copilot is expected to reach 30–50 million paid seats by FY27 as IT budgets normalise. Intelligent Cloud crosses 50% of total revenue mix for the first time. The CapEx buildout (currently ~$80B annually) begins to moderate as data centre capacity needs are partially satisfied — this is the key catalyst for free cash flow expansion. Share buybacks at ~$9–10B/quarter mechanically lift EPS as diluted share count continues its gradual decline.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2028</span>
+        <span class="year-badge">EPS +15–18%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$58–62</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$21.8–23.5</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">22–31x</div></div>
+        </div>
+        <p class="year-rationale">Full absorption of FY25–26 AI infrastructure investment. As capex stabilises, margins expand — operating margin could approach 50%+ if AI revenue mix grows as expected. Microsoft 365 Copilot at $30/user/month becomes a distinct, reportable revenue segment rather than a growth driver embedded in existing lines. Azure AI inference demand continues to grow as enterprises shift from model training to large-scale production deployment. EPS growth re-accelerates versus FY27 as FCF leverage improves.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2029</span>
+        <span class="year-badge">EPS +15–17%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$66–72</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$25.0–27.5</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">21–30x</div></div>
+        </div>
+        <p class="year-rationale">AI agent licensing, autonomous workflow revenue streams, and long-term cloud commitment deals become material incremental line items. EPS growth sustains double digits in what should be the full harvest phase of Microsoft's AI investment cycle. The $625 billion remaining performance obligations (RPO) backlog — which more than doubled YoY — locks in long-dated revenue with high visibility. Management's approach to "planting seeds for the long term" (as Bernstein's Mark Moerdler noted) should show full fruition by FY29.</p>
+      </div>
+    </div>
+
+    <h3>Why P/E May Re-Rate Upward</h3>
+    <div class="card">
+      <ul class="bull-list" style="margin:0;">
+        <li data-icon="🐻" style="font-size:14px;"><strong>Bear case (21–24x):</strong> Fed keeps rates elevated through FY27, Azure growth decelerates below 25%, Copilot monetisation disappoints, or a broad enterprise IT spending recession hits cloud commit deal volumes.</li>
+        <li data-icon="📈" style="font-size:14px;"><strong>Base case (26–28x):</strong> Current compressed multiple partly normalises. Steady AI adoption, moderate rates, consistent double-digit EPS growth — this represents the most likely 4-year outcome.</li>
+        <li data-icon="🚀" style="font-size:14px;"><strong>Bull case (30–32x):</strong> Return toward the 5-year average of 28–33x. Achievable if Azure re-accelerates above 40%, Copilot penetration surprises the market, or Fed rate cuts broadly re-rate long-duration technology equities.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BULL DRIVERS -->
+  <div class="section">
+    <p class="section-label">06 — Catalysts</p>
+    <h2>Key Bull Case Drivers</h2>
+    <ul class="bull-list">
+      <li data-icon="🔵"><strong>Azure AI infrastructure lead:</strong> Microsoft is spending $80B+ annually on AI compute buildout. Azure is the exclusive cloud provider for OpenAI's API products and grows at 39% YoY — nearly double AWS's 20% growth rate. The $625B RPO backlog locks in future revenue with unmatched visibility across the sector.</li>
+      <li data-icon="💼"><strong>Copilot monetisation inflection:</strong> At $30/user/month and 160%+ YoY seat growth, Microsoft 365 Copilot is accelerating. Guggenheim analyst John DiFucci estimated Copilot could add ~30% revenue uplift to the M365 segment at near-100% incremental margins. Even 10% of 400M+ seats = ~$14.4B in annual high-margin revenue.</li>
+      <li data-icon="📐"><strong>Industry-leading operating leverage:</strong> Operating margin of 47% leads all mega-cap tech peers (vs Amazon 11.2%, Alphabet ~32%). As cloud and AI software mix grows, margins compound further. EPS has consistently grown faster than revenue — this dynamic accelerates as capex moderates.</li>
+      <li data-icon="💸"><strong>Capital return engine:</strong> Microsoft returns $9–10B/quarter via dividends and buybacks. With 7.43B diluted shares declining ~0.12% annually, buybacks mechanically lift EPS without requiring any multiple expansion. ROE of 34.4% and ROIC of 28.8% confirm exceptional capital allocation quality.</li>
+      <li data-icon="📉"><strong>Compressed valuation creates margin of safety:</strong> At ~24x forward earnings, MSFT trades at its lowest forward multiple in three years — well below the 5-year average of 28–33x. Every prior comparable drawdown (COVID -28%, 2022 inflation -37.6%) resolved with full recovery within 12–18 months.</li>
+    </ul>
+  </div>
+
+  <!-- RISKS -->
+  <div class="section">
+    <p class="section-label">07 — Risks</p>
+    <h2>Key Risk Factors</h2>
+
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-content">
+        <strong>Azure Growth Deceleration</strong>
+        <span>Azure growth slipped from 40% to 39% in Q2 FY26 — a trivial miss on a 39.4% consensus — yet triggered a 10% single-day stock drop. Markets are pricing in continued acceleration; any further deceleration below 30% would likely cause a significant multiple compression and drive the bear case price target.</span>
+      </div>
+    </div>
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-content">
+        <strong>CapEx-to-Revenue Conversion Risk</strong>
+        <span>Microsoft spent $37.5B in capex in Q2 FY26 alone (up 66% YoY), causing free cash flow to decline by $5.9B. Sustained $80B+ annual capex without proportional AI revenue ramp-up would compress FCF margins and weigh on valuations. The market is watching capex efficiency carefully after the January selloff.</span>
+      </div>
+    </div>
+    <div class="risk-item medium">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-content">
+        <strong>Macro / Tariff &amp; Rate Shock</strong>
+        <span>Enterprise IT budget cuts in a recession scenario would slow cloud commit deals and seat growth. Tariff uncertainty in 2026 adds macro risk to hardware supply chains and business confidence. Prolonged high rates reduce the present value of future earnings and compress growth stock multiples.</span>
+      </div>
+    </div>
+    <div class="risk-item medium">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-content">
+        <strong>Copilot Adoption Stalls</strong>
+        <span>Enterprise AI adoption faces friction from data security concerns, workforce change management, and inconsistent productivity ROI evidence. If Copilot seat growth slows materially from 160%+ YoY, the bull case scenario collapses and EPS forecasts would require meaningful downward revision.</span>
+      </div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-content">
+        <strong>OpenAI Investment GAAP Drag</strong>
+        <span>Non-GAAP results already exclude the volatile OpenAI investment impact, but GAAP swings from these positions create earnings noise. In Q2 FY26, GAAP EPS was $5.16 vs. non-GAAP $4.14 due to OpenAI gains, but the relationship can reverse — creating sentiment headwinds even when operating performance is strong.</span>
+      </div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-content">
+        <strong>FX &amp; Competitive Headwinds</strong>
+        <span>Strong USD reduces international revenue when translated back. Microsoft guides roughly 1–2% constant-currency headwind under current conditions. Google Cloud and AWS remain formidable Azure competitors; any loss of AI infrastructure share could slow the primary growth engine.</span>
+      </div>
+    </div>
+
+    <p style="margin-top:16px; font-size:14px; color:#1c3044; font-style:italic;">Overall assessment: MSFT carries low fundamental business risk relative to the sector. Its diversified, recurring-revenue base and industry-leading free cash flow generation provide significant resilience. The primary near-term risks are valuation-related (macro, rates, capex sentiment) rather than structural threats to the core business.</p>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="section">
+    <p class="section-label">08 — Conclusion</p>
+    <div class="conclusion-box">
+      <h2>Investment Conclusion</h2>
+      <p>Microsoft is a rare combination of <strong>scale, quality, and durable growth</strong>. The stock is trading at a meaningful discount to its own historical valuation — the lowest forward P/E in three years — while the earnings growth outlook for FY2026–FY2029 remains robust at 13–28% annually.</p>
+
+      <div class="target-row">
+        <div class="target-box">
+          <div class="tb-label">12-Month Target</div>
+          <div class="tb-val">$575–584</div>
+          <div class="tb-sub">Wall Street consensus avg</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">4-Year Bull Case</div>
+          <div class="tb-val">$750–825</div>
+          <div class="tb-sub">EPS growth + P/E re-rating</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">Rating</div>
+          <div class="tb-val">⭐ Buy</div>
+          <div class="tb-sub">Core long-term hold</div>
+        </div>
+      </div>
+
+      <p>The combination of <strong>13–28% annual EPS growth</strong>, a potential P/E re-rating from ~24x back toward the 28–32x historical average, and continued capital returns via buybacks creates a compelling multi-year setup. Analyst consensus is overwhelmingly bullish: 94% of covering analysts rate MSFT a Buy or Strong Buy, with a median 12-month price target of $600 implying approximately 42% upside from current levels.</p>
+      <p style="margin-bottom:0; font-size:14px; color:rgba(255,255,255,0.8); font-style:italic;">MSFT is best suited as a core long-term holding in a diversified equity portfolio. Beta of ~1.11 implies modest sensitivity to broader market swings. Next earnings (Q3 FY26) is scheduled for April 29, 2026, after market close — a potential near-term catalyst.</p>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This report is for informational and educational purposes only and does not constitute investment advice. Forecasts are based on publicly available analyst estimates, management guidance, and reported financial results as of April 23, 2026. Actual results may differ materially. Past performance is not indicative of future results. EPS and revenue forecasts represent a range derived from sell-side consensus and are inherently uncertain. Always consult a qualified financial advisor before making any investment decisions.
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>

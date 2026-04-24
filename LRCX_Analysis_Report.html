@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LRCX Deep Analysis — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2444;
+    --blue: #1a5fa8;
+    --sky: #3b8fd4;
+    --accent: #e8a020;
+    --gold: #f5c842;
+    --light: #f4f7fb;
+    --white: #ffffff;
+    --text: #111d29;
+    --muted: #3a526a;
+    --border: #d0dcea;
+    --green: #1a7a4a;
+    --green-bg: #e8f5ee;
+    --red: #b93232;
+    --red-bg: #fbeaea;
+    --orange: #c45c10;
+    --orange-bg: #fdf0e4;
+    --card-shadow: 0 2px 16px rgba(15,36,68,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--light);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(145deg, #0a1e38 0%, #12304a 50%, #1a6e8a 100%);
+    padding: 48px 24px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,200,180,0.18) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,200,212,0.20) 0%, transparent 70%);
+  }
+  .ticker-badge {
+    display: inline-block;
+    background: rgba(0,210,190,0.2);
+    border: 1px solid rgba(0,210,190,0.5);
+    color: #4ef0e0;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 7vw, 46px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: #4ef0e0; }
+  .hero-sub {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .meta-chip {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 720px; margin: 0 auto; padding: 0 16px 60px; }
+
+  /* ── SECTION ── */
+  .section { margin-top: 36px; }
+  .section-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.25;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue);
+    margin: 24px 0 10px;
+  }
+  p { margin-bottom: 14px; font-weight: 400; }
+  p strong { font-weight: 600; color: var(--navy); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .card-blue {
+    background: linear-gradient(135deg, #e8f5fb 0%, #f4fbff 100%);
+    border-color: #b8ddf0;
+  }
+
+  /* ── SNAPSHOT GRID ── */
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .snap-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+    box-shadow: 0 1px 6px rgba(15,36,68,0.06);
+  }
+  .snap-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-family: 'Source Serif 4', serif;
+  }
+  .snap-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .snap-note {
+    font-size: 11px;
+    color: #3a526a;
+    margin-top: 3px;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .snap-item.highlight {
+    background: linear-gradient(135deg, #0a2040 0%, #1a6e8a 100%);
+    border-color: transparent;
+  }
+  .snap-item.highlight .snap-label { color: rgba(255,255,255,0.80); }
+  .snap-item.highlight .snap-value { color: #4ef0e0; }
+  .snap-item.highlight .snap-note { color: rgba(255,255,255,0.75); }
+  .snap-item.green-hi { border-left: 4px solid var(--green); }
+  .snap-item.green-hi .snap-value { color: var(--green); }
+
+  /* ── FORECAST TABLE ── */
+  .forecast-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 520px;
+    background: var(--white);
+  }
+  thead th {
+    background: var(--navy);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    padding: 12px 10px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  thead th:first-child { text-align: left; border-radius: 12px 0 0 0; }
+  thead th:last-child { border-radius: 0 12px 0 0; }
+  tbody tr:nth-child(even) td { background: #f4f8fd; }
+  tbody tr:nth-child(odd) td { background: var(--white); }
+  tbody td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  tbody td:first-child {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 13px;
+    background: #edf3fb !important;
+    border-right: 2px solid var(--border);
+    min-width: 130px;
+  }
+  tbody td:not(:first-child) { text-align: center; }
+  .act-col { background: #e8f0f8 !important; color: var(--navy) !important; }
+  thead th.act-col { background: #c8ddf5 !important; color: var(--navy) !important; }
+  .scroll-hint {
+    font-size: 12px;
+    color: #3a526a;
+    text-align: center;
+    padding: 6px 0 0;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* ── YEAR CARDS ── */
+  .year-card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(15,36,68,0.07);
+  }
+  .year-header {
+    background: linear-gradient(90deg, #0a2040 0%, #1a6e8a 100%);
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .year-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .year-badge {
+    background: rgba(0,210,190,0.25);
+    border: 1px solid rgba(0,210,190,0.5);
+    color: #4ef0e0;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .year-body { padding: 16px 18px; }
+  .year-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .ym {
+    text-align: center;
+    background: var(--light);
+    border-radius: 10px;
+    padding: 14px 10px;
+    border: 1px solid var(--border);
+  }
+  .ym-label { font-size: 12px; color: #3a526a; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
+  .ym-val { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--navy); }
+  .year-rationale { font-size: 15px; color: var(--text); font-weight: 400; line-height: 1.6; }
+
+  /* ── BULLETS ── */
+  .bull-list { list-style: none; padding: 0; margin: 0; }
+  .bull-list li {
+    padding: 10px 14px 10px 42px;
+    position: relative;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+  .bull-list li:last-child { border-bottom: none; }
+  .bull-list li::before {
+    content: attr(data-icon);
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    font-size: 17px;
+  }
+  .bull-list li strong { font-weight: 600; color: var(--navy); }
+
+  /* ── RISK TABLE ── */
+  .risk-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+  }
+  .risk-item.high { background: #fce8e8; border-color: #e8a0a0; }
+  .risk-item.medium { background: #fdeede; border-color: #e8b880; }
+  .risk-item.low { background: #daf2e8; border-color: #90c8ac; }
+  .risk-badge {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .risk-item.high .risk-badge { background: var(--red); color: #fff; }
+  .risk-item.medium .risk-badge { background: var(--orange); color: #fff; }
+  .risk-item.low .risk-badge { background: var(--green); color: #fff; }
+  .risk-content strong { font-size: 15px; color: #0f2444; font-weight: 700; display: block; margin-bottom: 4px; }
+  .risk-content span { font-size: 14px; color: #1c3044; font-weight: 400; line-height: 1.55; }
+
+  /* ── CONCLUSION ── */
+  .conclusion-box {
+    background: linear-gradient(135deg, #0a2040 0%, #0d4560 100%);
+    border-radius: 16px;
+    padding: 28px 22px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .conclusion-box::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,210,190,0.15) 0%, transparent 70%);
+  }
+  .conclusion-box h2 {
+    color: #4ef0e0;
+    border-bottom-color: rgba(255,255,255,0.15);
+    margin-bottom: 16px;
+  }
+  .conclusion-box p { color: rgba(255,255,255,0.92); font-weight: 400; }
+  .conclusion-box strong { color: #4ef0e0; font-weight: 600; }
+  .target-row {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0 16px;
+  }
+  .target-box {
+    flex: 1;
+    text-align: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 14px 8px;
+  }
+  .target-box .tb-label { font-size: 11px; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
+  .target-box .tb-val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #4ef0e0; }
+  .target-box .tb-sub { font-size: 11px; color: rgba(255,255,255,0.70); margin-top: 2px; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    margin-top: 36px;
+    padding: 16px 18px;
+    background: #f0f4f9;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: #3a526a;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+  .disclaimer strong { font-style: normal; font-weight: 600; color: var(--navy); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 32px 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section { animation: fadeUp 0.5s ease both; }
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+  .section:nth-child(5) { animation-delay: 0.2s; }
+
+  @media (max-width: 400px) {
+    .snapshot-grid { grid-template-columns: 1fr; }
+    .year-metrics { grid-template-columns: 1fr 1fr; }
+    .target-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="ticker-badge">NASDAQ: LRCX</div>
+  <h1>Lam Research<br><span>Deep Analysis</span></h1>
+  <p class="hero-sub">Revenue/Share · EPS · P/E Forecast · FY2026–FY2029</p>
+  <div class="hero-meta">
+    <span class="meta-chip">📅 April 23, 2026</span>
+    <span class="meta-chip">💰 ~$262–270 / share</span>
+    <span class="meta-chip">⭐ Strong Buy Consensus</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section">
+    <p class="section-label">01 — Overview</p>
+    <h2>Executive Summary</h2>
+    <div class="card card-blue">
+      <p>Lam Research is one of the world's most critical semiconductor equipment makers — supplying the etch, deposition, and clean tools essential to every advanced chip fabricated on the planet. As of April 2026, the company just posted <strong>record Q3 FY2026 revenue of $5.84 billion</strong> and guided to $6.60 billion for Q4, with AI-driven wafer fab equipment (WFE) spending projected to reach <strong>$140 billion in CY2026</strong> — a major demand tailwind.</p>
+      <p style="margin-bottom:0">This report forecasts <strong>Revenue per Share, EPS, and P/E ranges</strong> for FY2026–FY2029, anchored in the latest earnings results, management guidance, analyst consensus, and Lam's structural positioning across memory, foundry, and advanced packaging.</p>
+    </div>
+    <p style="font-size:13px; color:var(--muted); font-style:italic;">Note: Lam Research's fiscal year ends in late June. FY2025 = July 2024–June 2025. FY2026 = July 2025–June 2026. Note: LRCX completed a 10-for-1 stock split on October 2, 2024; all per-share figures reflect post-split pricing.</p>
+  </div>
+
+  <!-- SNAPSHOT -->
+  <div class="section">
+    <p class="section-label">02 — Current Snapshot</p>
+    <h2>Where LRCX Stands Today</h2>
+    <div class="snapshot-grid">
+      <div class="snap-item highlight">
+        <div class="snap-label">Current Price</div>
+        <div class="snap-value">~$262–270</div>
+        <div class="snap-note">As of April 23, 2026</div>
+      </div>
+      <div class="snap-item highlight">
+        <div class="snap-label">Market Cap</div>
+        <div class="snap-value">~$330B</div>
+        <div class="snap-note">~1.26B diluted shares</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Trailing EPS (GAAP)</div>
+        <div class="snap-value">$4.87</div>
+        <div class="snap-note">TTM as of Q3 FY26</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Trailing P/E</div>
+        <div class="snap-value">~54x</div>
+        <div class="snap-note">Elevated vs. semis avg</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Forward P/E (FY26E)</div>
+        <div class="snap-value">~42–44x</div>
+        <div class="snap-note">Based on ~$6.10 EPS est.</div>
+      </div>
+      <div class="snap-item green-hi">
+        <div class="snap-label">Revenue TTM</div>
+        <div class="snap-value">$20.56B</div>
+        <div class="snap-note">+27% YoY</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Revenue/Share (TTM)</div>
+        <div class="snap-value">~$16.30</div>
+        <div class="snap-note">Based on ~1.26B shares</div>
+      </div>
+      <div class="snap-item green-hi">
+        <div class="snap-label">Analyst Consensus</div>
+        <div class="snap-value">Strong Buy</div>
+        <div class="snap-note">25 of 26 analysts</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px; background: #e8fbf7; border-color: #6dd8c8;">
+      <p style="margin:0; font-size:14px;"><strong>💡 Key insight:</strong> Lam's Q3 FY26 EPS of <strong>$1.47 beat the top of its own guidance range</strong>, and Q4 guidance of $1.65 EPS on $6.6B revenue marks a step-change acceleration. WFE industry spend rising to $140B in 2026 is a powerful industry tailwind — Lam commands ~17–18% WFE market share.</p>
+    </div>
+  </div>
+
+  <!-- SEGMENTS -->
+  <div class="section">
+    <p class="section-label">03 — Business</p>
+    <h2>Revenue Streams &amp; Markets Served</h2>
+    <ul class="bull-list">
+      <li data-icon="⚙️"><strong>Systems Revenue (~60% of total)</strong> — New etch, deposition, and clean capital equipment sold to chipmakers. Foundry accounted for 54% of systems revenue in Q3 FY26 (up 35% YoY), fuelled by leading-edge logic and AI accelerator fab expansion at TSMC and Samsung.</li>
+      <li data-icon="🔧"><strong>Customer Support Business Group (~40%)</strong> — Spares, upgrades, services, and Reliant (non-leading-edge) tools. Hit $2.1 billion in Q3 FY26 — its first $2B+ quarter — growing 25% YoY and providing highly predictable, high-margin recurring revenue.</li>
+      <li data-icon="🧠"><strong>Memory Segment (~39% of systems)</strong> — DRAM and NAND. DRAM surged 36% QoQ in Q2 FY26 driven by HBM (High Bandwidth Memory) for AI. NAND is in early recovery, with Lam uniquely exposed to NAND tech transitions through its etch and deposition dominance.</li>
+    </ul>
+    <p style="margin-top:16px; font-size:15px;">Lam's customer mix spans the globe: <strong>China 34%, Korea 23%, Taiwan 23%</strong> (Q3 FY26). Geographic diversification is both a strength and a risk — particularly given ongoing US export control restrictions targeting China's advanced chip sector.</p>
+  </div>
+
+  <!-- FORECAST TABLE -->
+  <div class="section">
+    <p class="section-label">04 — Forecast</p>
+    <h2>4-Year Forecast Summary</h2>
+    <div class="forecast-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="act-col">FY25 Actual</th>
+            <th>FY26E</th>
+            <th>FY27E</th>
+            <th>FY28E</th>
+            <th>FY29E</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Revenue ($B)</td>
+            <td class="act-col">$18.44</td>
+            <td>$22.5–23.5</td>
+            <td>$26.0–28.5</td>
+            <td>$30.0–33.5</td>
+            <td>$34.0–38.5</td>
+          </tr>
+          <tr>
+            <td>Rev / Share ($)</td>
+            <td class="act-col">$14.40</td>
+            <td>$17.8–18.6</td>
+            <td>$20.9–23.0</td>
+            <td>$24.5–27.5</td>
+            <td>$28.0–32.0</td>
+          </tr>
+          <tr>
+            <td>EPS Non-GAAP ($)</td>
+            <td class="act-col">$4.92</td>
+            <td>$5.90–6.20</td>
+            <td>$7.20–8.00</td>
+            <td>$8.80–10.00</td>
+            <td>$10.50–12.00</td>
+          </tr>
+          <tr>
+            <td>EPS Growth</td>
+            <td class="act-col">+24%</td>
+            <td>~+20–26%</td>
+            <td>~+22–29%</td>
+            <td>~+22–25%</td>
+            <td>~+19–20%</td>
+          </tr>
+          <tr>
+            <td>P/E Range</td>
+            <td class="act-col">—</td>
+            <td>36x–48x</td>
+            <td>28x–42x</td>
+            <td>24x–36x</td>
+            <td>22x–32x</td>
+          </tr>
+          <tr>
+            <td>Price Low ($)</td>
+            <td class="act-col">—</td>
+            <td>$212</td>
+            <td>$202</td>
+            <td>$211</td>
+            <td>$231</td>
+          </tr>
+          <tr>
+            <td>Price High ($)</td>
+            <td class="act-col">—</td>
+            <td>$298</td>
+            <td>$336</td>
+            <td>$360</td>
+            <td>$384</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+    <p style="font-size:13px; color:var(--muted); font-style:italic; margin-top:8px;">Revenue/Share assumes gradual share count reduction from ~1.26B (FY26) to ~1.21B (FY29) via continued buybacks. EPS is non-GAAP. P/E ranges reflect semi-equipment sector cyclicality.</p>
+  </div>
+
+  <!-- YEAR BY YEAR -->
+  <div class="section">
+    <p class="section-label">05 — Year by Year</p>
+    <h2>Forecast Rationale</h2>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2026</span>
+        <span class="year-badge">EPS +20–26%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$17.8–18.6</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$5.90–6.20</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">36–48x</div></div>
+        </div>
+        <p class="year-rationale">FY26 is shaping up as a breakout year. Q3 delivered record $5.84B revenue with EPS of $1.47 (above guidance). Q4 guidance of $6.60B revenue and $1.65 EPS implies a full-year run rate of ~$23.5B. WFE industry spending is now pegged at $140B for CY2026, with Lam holding a durable ~17% share. Memory recovery (DRAM for HBM, NAND conversion cycles) and surging foundry capex are the twin drivers. Operating margins reaching 36.5% in Q4 demonstrate exceptional leverage.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2027</span>
+        <span class="year-badge">EPS +22–29%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$20.9–23.0</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$7.20–8.00</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">28–42x</div></div>
+        </div>
+        <p class="year-rationale">AI chip demand continues to pull forward foundry investments at TSMC, Samsung, and Intel Foundry. Next-generation HBM4 memory requires intensified etch cycles per wafer — a direct revenue multiplier for Lam. NAND spending recovers further as inventory normalisation completes. The Customer Support business group crosses $9B annually, adding high-margin, recession-resistant revenue. Gate-all-around (GAA) transistor transitions require Lam's advanced etch and deposition capabilities, protecting market share.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2028</span>
+        <span class="year-badge">EPS +22–25%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$24.5–27.5</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$8.80–10.00</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">24–36x</div></div>
+        </div>
+        <p class="year-rationale">By FY2028, AI server buildout is in full swing. Every AI training cluster requires thousands of advanced memory chips (HBM) and logic dies — all etched and deposited using Lam tools. Advanced packaging (hybrid bonding) adds an incremental equipment intensity layer. Margin expansion accelerates as the CSBG installed base continues to grow compounding service revenue. Share buybacks shrink the diluted share count, amplifying per-share metrics above revenue growth.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">FY2029</span>
+        <span class="year-badge">EPS +19–20%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$28.0–32.0</div></div>
+          <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$10.50–12.00</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">22–32x</div></div>
+        </div>
+        <p class="year-rationale">Lam's installed base generates a powerful compounding flywheel — as more tools are deployed worldwide, service and upgrade revenue grows passively. Edge AI, automotive, and industrial semiconductor demand diversify end-market exposure beyond data centres. The P/E range compresses toward the mid-cycle historical average (~25–30x) as growth matures, but absolute EPS growth remains double-digit. Structural semiconductor capex — a multi-decade megatrend — ensures sustained WFE demand.</p>
+      </div>
+    </div>
+
+    <h3>P/E Re-Rating Scenarios</h3>
+    <div class="card">
+      <ul class="bull-list" style="margin:0;">
+        <li data-icon="🐻" style="font-size:14px;"><strong>Bear case (22–28x):</strong> WFE cycle peaks earlier than expected, China revenue curtailed further by export controls, NAND oversupply returns, or macro recession cuts enterprise chip demand.</li>
+        <li data-icon="📈" style="font-size:14px;"><strong>Base case (28–36x):</strong> Steady WFE growth of 10–15% annually, HBM and GAA transitions sustain etch intensity, operating margins hold 34–37%. Most likely outcome given current trajectory.</li>
+        <li data-icon="🚀" style="font-size:14px;"><strong>Bull case (38–48x):</strong> AI chip demand meaningfully exceeds expectations, WFE surpasses $160B by 2028, NAND recovery faster than anticipated, and Lam gains share in advanced logic etch. P/E could sustain elevated levels akin to current pricing.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BULL DRIVERS -->
+  <div class="section">
+    <p class="section-label">06 — Catalysts</p>
+    <h2>Key Bull Case Drivers</h2>
+    <ul class="bull-list">
+      <li data-icon="🤖"><strong>AI-driven WFE supercycle:</strong> WFE spending is now forecast at $140B for CY2026 — up from $135B prior guidance — and biased to the upside. Every AI chip fab buildout requires Lam's etch and deposition tools at the critical patterning and memory formation steps.</li>
+      <li data-icon="💾"><strong>HBM memory intensity:</strong> High-Bandwidth Memory for AI accelerators requires significantly more etch steps per wafer than conventional DRAM, boosting Lam's revenue per wafer start. DRAM grew 36% QoQ in Q2 FY26 as HBM demand accelerated.</li>
+      <li data-icon="🏭"><strong>Foundry capex expansion:</strong> TSMC, Samsung, and Intel Foundry are all aggressively expanding. Foundry represented 54% of systems revenue in Q3 FY26 — its highest share in years — as GAA transistor transitions require new etch and deposition tools.</li>
+      <li data-icon="🔁"><strong>Recurring services flywheel:</strong> The Customer Support Business Group hit a milestone $2.1B quarter. As Lam's installed base compounds, spares and upgrade revenue grows passively and predictably — a structural margin tailwind.</li>
+      <li data-icon="💸"><strong>Aggressive capital return:</strong> Lam spent $3.4B on buybacks in FY2025 alone, shrinking the share count. With $4.8B in cash and strong free cash flow generation, this programme is set to continue — mechanically boosting EPS above revenue growth.</li>
+    </ul>
+  </div>
+
+  <!-- RISKS -->
+  <div class="section">
+    <p class="section-label">07 — Risks</p>
+    <h2>Key Risk Factors</h2>
+
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-content">
+        <strong>China Export Control Escalation</strong>
+        <span>China represented 34% of Q3 FY26 revenue. Any tightening of US export rules — restricting advanced etch or deposition tools — could materially impact near-term revenues and is the single largest overhang on the stock.</span>
+      </div>
+    </div>
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-content">
+        <strong>WFE Cycle Downturn</strong>
+        <span>Semiconductor equipment spending is inherently cyclical. A memory oversupply cycle (particularly NAND) or a pause in foundry capex could result in sharp order cancellations and revenue declines, as seen in FY2023's down-cycle.</span>
+      </div>
+    </div>
+    <div class="risk-item medium">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-content">
+        <strong>Competitive Pressure from Tokyo Electron &amp; Applied Materials</strong>
+        <span>AMAT and TEL compete directly in etch and deposition. Customers qualifying multiple suppliers creates pricing pressure. Loss of a key tool qualification at a major customer would be a significant revenue headwind.</span>
+      </div>
+    </div>
+    <div class="risk-item medium">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-content">
+        <strong>Macro / Tariff Shock</strong>
+        <span>A global recession or escalating tariff regime between the US and key trading partners (South Korea, Taiwan, China) could freeze capex decisions and delay equipment orders across Lam's customer base.</span>
+      </div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-content">
+        <strong>Supply Chain &amp; Execution Risk</strong>
+        <span>Complex tool manufacturing requires sourcing specialised components. Disruptions could create delivery delays. However, Lam's $2.22B deferred revenue balance indicates strong backlog and production visibility.</span>
+      </div>
+    </div>
+
+    <p style="margin-top:16px; font-size:14px; color:#1c3044; font-style:italic;">Overall assessment: LRCX carries moderate cyclical risk inherent to the semiconductor equipment industry. China concentration is the primary near-term concern. However, the multi-year AI and memory upgrade cycle provides a durable structural offset that makes this a fundamentally compelling business through at least FY2029.</p>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="section">
+    <p class="section-label">08 — Conclusion</p>
+    <div class="conclusion-box">
+      <h2>Investment Conclusion</h2>
+      <p>Lam Research occupies an irreplaceable position in the global semiconductor supply chain. It is one of only a handful of companies on earth capable of supplying the precision etch and deposition tools required for every advanced chip — from AI accelerators to HBM memory and next-generation logic at TSMC and Samsung.</p>
+
+      <div class="target-row">
+        <div class="target-box">
+          <div class="tb-label">12-Month Target</div>
+          <div class="tb-val">$275–310</div>
+          <div class="tb-sub">Analyst consensus range</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">4-Year Bull Case</div>
+          <div class="tb-val">$340–385</div>
+          <div class="tb-sub">EPS growth + sustained PE</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">Rating</div>
+          <div class="tb-val">⭐ Buy</div>
+          <div class="tb-sub">Core semi-cycle holding</div>
+        </div>
+      </div>
+
+      <p>The combination of <strong>20–29% annual EPS growth</strong> over the next 3 years, a durable WFE supercycle driven by AI and memory transitions, and a powerful recurring services flywheel creates a compelling multi-year investment case — even at today's premium valuation.</p>
+      <p style="margin-bottom:0; font-size:14px; color:rgba(255,255,255,0.8); font-style:italic;">LRCX is best suited as a core holding within a diversified semiconductor or technology portfolio. Investors should size positions to accommodate inherent semiconductor cycle volatility — the stock has historically traded in wide ranges during WFE downturns.</p>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This report is for informational and educational purposes only and does not constitute investment advice. Forecasts are based on publicly available analyst estimates, management guidance, and earnings results as of April 2026. Actual results may differ materially. Past performance is not indicative of future results. Semiconductor equipment stocks are inherently cyclical. Always consult a qualified financial advisor before making any investment decisions.
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FERG Deep Analysis — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2e1a;
+    --blue: #2a6b2a;
+    --sky: #4aad4a;
+    --accent: #e8a020;
+    --gold: #f5c842;
+    --light: #f4f8f4;
+    --white: #ffffff;
+    --text: #111d11;
+    --muted: #3a524a;
+    --border: #c8dcc8;
+    --green: #1a7a4a;
+    --green-bg: #e8f5ee;
+    --red: #b93232;
+    --red-bg: #fbeaea;
+    --orange: #c45c10;
+    --orange-bg: #fdf0e4;
+    --card-shadow: 0 2px 16px rgba(15,40,15,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--light);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(145deg, #0e1f0e 0%, #1a3a1a 50%, #2a6b2a 100%);
+    padding: 48px 24px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.18) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,173,74,0.20) 0%, transparent 70%);
+  }
+  .ticker-badge {
+    display: inline-block;
+    background: rgba(232,160,32,0.2);
+    border: 1px solid rgba(232,160,32,0.5);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 7vw, 46px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .meta-chip {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 720px; margin: 0 auto; padding: 0 16px 60px; }
+
+  /* ── SECTION ── */
+  .section { margin-top: 36px; }
+  .section-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.25;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue);
+    margin: 24px 0 10px;
+  }
+  p { margin-bottom: 14px; font-weight: 400; }
+  p strong { font-weight: 600; color: var(--navy); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .card-green {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f4fff4 100%);
+    border-color: #b8d8b8;
+  }
+
+  /* ── SNAPSHOT GRID ── */
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .snap-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+    box-shadow: 0 1px 6px rgba(15,40,15,0.06);
+  }
+  .snap-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-family: 'Source Serif 4', serif;
+  }
+  .snap-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .snap-note {
+    font-size: 11px;
+    color: #3a524a;
+    margin-top: 3px;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .snap-item.highlight {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    border-color: transparent;
+  }
+  .snap-item.highlight .snap-label { color: rgba(255,255,255,0.80); }
+  .snap-item.highlight .snap-value { color: var(--gold); }
+  .snap-item.highlight .snap-note { color: rgba(255,255,255,0.75); }
+  .snap-item.green-hi { border-left: 4px solid var(--green); }
+  .snap-item.green-hi .snap-value { color: var(--green); }
+
+  /* ── FORECAST TABLE ── */
+  .forecast-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 520px;
+    background: var(--white);
+  }
+  thead th {
+    background: var(--navy);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    padding: 12px 10px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  thead th:first-child { text-align: left; border-radius: 12px 0 0 0; }
+  thead th:last-child { border-radius: 0 12px 0 0; }
+  tbody tr:nth-child(even) td { background: #f4faf4; }
+  tbody tr:nth-child(odd) td { background: var(--white); }
+  tbody td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  tbody td:first-child {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 13px;
+    background: #edf5ed !important;
+    border-right: 2px solid var(--border);
+    min-width: 130px;
+  }
+  tbody td:not(:first-child) { text-align: center; }
+  .act-col { background: #e0f0e0 !important; color: var(--navy) !important; }
+  thead th.act-col { background: #c0dcc0 !important; color: var(--navy) !important; }
+  .scroll-hint {
+    font-size: 12px;
+    color: #3a524a;
+    text-align: center;
+    padding: 6px 0 0;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* ── YEAR CARDS ── */
+  .year-card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(15,40,15,0.07);
+  }
+  .year-header {
+    background: linear-gradient(90deg, var(--navy) 0%, var(--blue) 100%);
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .year-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .year-badge {
+    background: rgba(232,160,32,0.25);
+    border: 1px solid rgba(232,160,32,0.5);
+    color: var(--gold);
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .year-body { padding: 16px 18px; }
+  .year-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .ym {
+    text-align: center;
+    background: var(--light);
+    border-radius: 10px;
+    padding: 14px 10px;
+    border: 1px solid var(--border);
+  }
+  .ym-label { font-size: 12px; color: #3a524a; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
+  .ym-val { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--navy); }
+  .year-rationale { font-size: 15px; color: var(--text); font-weight: 400; line-height: 1.6; }
+
+  /* ── BULLETS ── */
+  .bull-list { list-style: none; padding: 0; margin: 0; }
+  .bull-list li {
+    padding: 10px 14px 10px 42px;
+    position: relative;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+  .bull-list li:last-child { border-bottom: none; }
+  .bull-list li::before {
+    content: attr(data-icon);
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    font-size: 17px;
+  }
+  .bull-list li strong { font-weight: 600; color: var(--navy); }
+
+  /* ── RISK ITEMS ── */
+  .risk-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+  }
+  .risk-item.high { background: #fce8e8; border-color: #e8a0a0; }
+  .risk-item.medium { background: #fdeede; border-color: #e8b880; }
+  .risk-item.low { background: #daf2e8; border-color: #90c8ac; }
+  .risk-badge {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .risk-item.high .risk-badge { background: var(--red); color: #fff; }
+  .risk-item.medium .risk-badge { background: var(--orange); color: #fff; }
+  .risk-item.low .risk-badge { background: var(--green); color: #fff; }
+  .risk-content strong { font-size: 15px; color: #0f2414; font-weight: 700; display: block; margin-bottom: 4px; }
+  .risk-content span { font-size: 14px; color: #1c3024; font-weight: 400; line-height: 1.55; }
+
+  /* ── CONCLUSION ── */
+  .conclusion-box {
+    background: linear-gradient(135deg, var(--navy) 0%, #0d3515 100%);
+    border-radius: 16px;
+    padding: 28px 22px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .conclusion-box::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.15) 0%, transparent 70%);
+  }
+  .conclusion-box h2 {
+    color: var(--gold);
+    border-bottom-color: rgba(255,255,255,0.15);
+    margin-bottom: 16px;
+  }
+  .conclusion-box p { color: rgba(255,255,255,0.92); font-weight: 400; }
+  .conclusion-box strong { color: var(--gold); font-weight: 600; }
+  .target-row {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0 16px;
+  }
+  .target-box {
+    flex: 1;
+    text-align: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 14px 8px;
+  }
+  .target-box .tb-label { font-size: 11px; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
+  .target-box .tb-val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--gold); }
+  .target-box .tb-sub { font-size: 11px; color: rgba(255,255,255,0.70); margin-top: 2px; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    margin-top: 36px;
+    padding: 16px 18px;
+    background: #eef4ee;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: #3a524a;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+  .disclaimer strong { font-style: normal; font-weight: 600; color: var(--navy); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 32px 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section { animation: fadeUp 0.5s ease both; }
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+  .section:nth-child(5) { animation-delay: 0.2s; }
+
+  @media (max-width: 400px) {
+    .snapshot-grid { grid-template-columns: 1fr; }
+    .year-metrics { grid-template-columns: 1fr 1fr; }
+    .target-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="ticker-badge">NYSE: FERG</div>
+  <h1>Ferguson<br><span>Deep Analysis</span></h1>
+  <p class="hero-sub">Revenue/Share · EPS · P/E Forecast · CY2026–CY2029</p>
+  <div class="hero-meta">
+    <span class="meta-chip">📅 April 24, 2026</span>
+    <span class="meta-chip">💰 ~$262 / share</span>
+    <span class="meta-chip">⭐ Buy Consensus</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section">
+    <p class="section-label">01 — Overview</p>
+    <h2>Executive Summary</h2>
+    <div class="card card-green">
+      <p>Ferguson Enterprises is North America's largest distributor of plumbing, HVAC, and waterworks products — a <strong>scale-advantaged, essential-infrastructure business</strong> serving professional contractors across 1,700+ locations in the US and Canada.</p>
+      <p style="margin-bottom:0">This report forecasts <strong>Revenue per Share, EPS, and P/E ranges</strong> for CY2026–CY2029, grounded in analyst consensus, recent earnings, and Ferguson's structural growth drivers: non-residential construction, data center buildout, tuck-in acquisitions, and a newly-aligned calendar fiscal year.</p>
+    </div>
+    <p style="font-size:13px; color:var(--muted); font-style:italic;">Note: Ferguson changed its fiscal year end from July 31 to December 31. CY2025 is now the first full calendar year under the new structure. CY2026 commenced January 1, 2026. All forecasts use the new calendar year alignment.</p>
+  </div>
+
+  <!-- SNAPSHOT -->
+  <div class="section">
+    <p class="section-label">02 — Current Snapshot</p>
+    <h2>Where FERG Stands Today</h2>
+    <div class="snapshot-grid">
+      <div class="snap-item highlight">
+        <div class="snap-label">Current Price</div>
+        <div class="snap-value">~$262</div>
+        <div class="snap-note">As of April 22, 2026</div>
+      </div>
+      <div class="snap-item highlight">
+        <div class="snap-label">Market Cap</div>
+        <div class="snap-value">~$52.8B</div>
+        <div class="snap-note">~194.4M shares outstanding</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Trailing EPS (GAAP)</div>
+        <div class="snap-value">$9.32</div>
+        <div class="snap-note">TTM diluted EPS</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Trailing P/E</div>
+        <div class="snap-value">~28x</div>
+        <div class="snap-note">vs. 3-yr avg ~22–26x</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Forward P/E (CY26)</div>
+        <div class="snap-value">~24x</div>
+        <div class="snap-note">Based on ~$11.14 est. EPS</div>
+      </div>
+      <div class="snap-item green-hi">
+        <div class="snap-label">Revenue TTM</div>
+        <div class="snap-value">$31.1B</div>
+        <div class="snap-note">CY2025: $31.3B (+3.6% YoY)</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Revenue/Share</div>
+        <div class="snap-value">~$161</div>
+        <div class="snap-note">Based on ~194M shares</div>
+      </div>
+      <div class="snap-item green-hi">
+        <div class="snap-label">Analyst Consensus</div>
+        <div class="snap-value">Buy</div>
+        <div class="snap-note">11 Buy / 3 Hold of 14 analysts</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px; background: #fffbea; border-color: #f0d870;">
+      <p style="margin:0; font-size:14px;"><strong>💡 Key insight:</strong> Despite a challenging residential housing backdrop, Ferguson's non-residential segment grew <strong>12% in Q1 CY2026</strong>, driven by data center and infrastructure projects. The company's $90B+ large capital project TAM is still in early innings.</p>
+    </div>
+  </div>
+
+  <!-- SEGMENTS -->
+  <div class="section">
+    <p class="section-label">03 — Business</p>
+    <h2>Three Core End Markets</h2>
+    <ul class="bull-list">
+      <li data-icon="🏗️"><strong>Non-Residential (~50% of US revenue)</strong> — The primary growth engine. Grew 12% YoY in Q1 CY2026. Key drivers include data center construction, infrastructure, industrial, and commercial projects. Ferguson's large capital project TAM has been upgraded to $90B. Data center proximity is a key competitive advantage cited by Bernstein and Jefferies.</li>
+      <li data-icon="🏠"><strong>Residential (~50% of US revenue)</strong> — A near-term headwind but long-term tailwind. Declining 1% YoY in CY2026 due to weak housing starts and HVAC replacement slowdown. Recovery tied to rate cuts and housing activity — a meaningful re-acceleration could materially exceed current forecasts.</li>
+      <li data-icon="🇨🇦"><strong>Canada (~3–4% of revenue)</strong> — Modest contributor. Sales grew 2.2% in Q1 CY2026 but operating profit declined 30% — reflecting margin pressure. Not a key driver for the investment thesis, but stable.</li>
+    </ul>
+    <p style="margin-top:16px; font-size:15px;">Ferguson's business model is <strong>distribution-scale with high customer stickiness</strong>. Gross margins held at 30.7% in Q1 CY2026, up 60bps YoY — demonstrating pricing discipline despite mixed revenue growth. Operating margin guidance for CY2026 is 9.4–9.8%.</p>
+  </div>
+
+  <!-- FORECAST TABLE -->
+  <div class="section">
+    <p class="section-label">04 — Forecast</p>
+    <h2>4-Year Forecast Summary</h2>
+    <div class="forecast-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="act-col">CY25 Actual</th>
+            <th>CY26E</th>
+            <th>CY27E</th>
+            <th>CY28E</th>
+            <th>CY29E</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Revenue ($B)</td>
+            <td class="act-col">$31.3</td>
+            <td>$33.0–33.5</td>
+            <td>$35.0–36.5</td>
+            <td>$37.5–39.5</td>
+            <td>$40.5–43.0</td>
+          </tr>
+          <tr>
+            <td>Rev / Share ($)</td>
+            <td class="act-col">~$158</td>
+            <td>$170–175</td>
+            <td>$185–198</td>
+            <td>$203–220</td>
+            <td>$223–243</td>
+          </tr>
+          <tr>
+            <td>EPS (Adj. Diluted)</td>
+            <td class="act-col">$10.58</td>
+            <td>$11.00–11.30</td>
+            <td>$12.50–13.50</td>
+            <td>$14.00–15.50</td>
+            <td>$15.75–17.50</td>
+          </tr>
+          <tr>
+            <td>EPS Growth</td>
+            <td class="act-col">+13%</td>
+            <td>~+4–7%</td>
+            <td>~+13–20%</td>
+            <td>~+12–15%</td>
+            <td>~+12–13%</td>
+          </tr>
+          <tr>
+            <td>P/E Range</td>
+            <td class="act-col">—</td>
+            <td>22x–28x</td>
+            <td>21x–27x</td>
+            <td>20x–26x</td>
+            <td>19x–25x</td>
+          </tr>
+          <tr>
+            <td>Price Low ($)</td>
+            <td class="act-col">—</td>
+            <td>$242</td>
+            <td>$263</td>
+            <td>$280</td>
+            <td>$299</td>
+          </tr>
+          <tr>
+            <td>Price High ($)</td>
+            <td class="act-col">—</td>
+            <td>$316</td>
+            <td>$365</td>
+            <td>$403</td>
+            <td>$438</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+    <p style="font-size:13px; color:var(--muted); font-style:italic; margin-top:10px;">Revenue/Share based on ~194M shares declining gradually to ~182M via continued buybacks. Morgan Stanley EPS consensus for CY2026: ~$11.14. Simply Wall St forecasts 11.6% earnings growth and 6% revenue growth per annum over 3 years.</p>
+  </div>
+
+  <!-- YEAR BY YEAR -->
+  <div class="section">
+    <p class="section-label">05 — Year by Year</p>
+    <h2>Forecast Rationale</h2>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">CY2026</span>
+        <span class="year-badge">EPS +4–7%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$170–175</div></div>
+          <div class="ym"><div class="ym-label">Adj. EPS</div><div class="ym-val">$11.00–11.30</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">22–28x</div></div>
+        </div>
+        <p class="year-rationale">CY2026 is a transitional year: this is Ferguson's first full calendar year under its new fiscal structure and the residential market remains in a soft patch. Company guidance calls for low-to-mid single-digit net sales growth (approx. 4–6%) and operating margins of 9.4–9.8%. EPS growth is modest because the prior year (CY2025) benefited from a non-recurring low tax rate. Non-residential tailwinds from data centers and infrastructure underpin the top line. Share buybacks — $0.9B repurchased in CY2025 alone — provide a mechanical EPS lift of ~1–2%.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">CY2027</span>
+        <span class="year-badge">EPS +13–20%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$185–198</div></div>
+          <div class="ym"><div class="ym-label">Adj. EPS</div><div class="ym-val">$12.50–13.50</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">21–27x</div></div>
+        </div>
+        <p class="year-rationale">The acceleration year. If the US Federal Reserve continues cutting rates through 2026, residential construction and HVAC replacement demand should normalise by mid-2027, unlocking the 50% of revenues currently in drag. Non-residential data center activity expands as hyperscaler CapEx commitments (Google, Amazon, Microsoft) flow into physical construction. Tuck-in acquisitions — Ferguson invested $276M in eight deals in CY2025 alone — layer in incremental revenue at above-market margins. Operating leverage on a recovering top line drives disproportionate EPS upside.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">CY2028</span>
+        <span class="year-badge">EPS +12–15%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$203–220</div></div>
+          <div class="ym"><div class="ym-label">Adj. EPS</div><div class="ym-val">$14.00–15.50</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">20–26x</div></div>
+        </div>
+        <p class="year-rationale">Full recovery of the residential cycle plus continued non-residential momentum. Ferguson's digital capabilities and supply chain automation investments (actively cited in management's strategic roadmap) begin delivering visible cost efficiencies, sustaining operating margin expansion toward 10%+. Acquisition activity continues to compound the revenue base. Return on equity is forecast to reach 31% by this period. Simply Wall St's bear-case model targets $36.5B in revenue and ~$2.4B net income by 2028, while the base case implies materially higher outcomes.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">CY2029</span>
+        <span class="year-badge">EPS +12–13%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$223–243</div></div>
+          <div class="ym"><div class="ym-label">Adj. EPS</div><div class="ym-val">$15.75–17.50</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">19–25x</div></div>
+        </div>
+        <p class="year-rationale">Compounding at scale. Ferguson's market — worth hundreds of billions across plumbing, HVAC and waterworks — remains highly fragmented. Ferguson currently holds just a ~15–18% share, leaving ample room for ongoing consolidation. At $40B+ in revenue, the company benefits from unmatched vendor pricing leverage, logistics density, and private-label penetration. EPS growth remains double digits through buybacks, margin expansion, and tuck-ins even if macro conditions are merely neutral.</p>
+      </div>
+    </div>
+
+    <h3>Why P/E May Expand or Contract</h3>
+    <div class="card">
+      <ul class="bull-list" style="margin:0;">
+        <li data-icon="🐻" style="font-size:14px;"><strong>Bear case (19–22x):</strong> Rates stay high, residential market stagnates through 2027, data center cycle peaks early. EPS growth remains low-single-digit; multiple compresses toward distributor-sector floor.</li>
+        <li data-icon="📈" style="font-size:14px;"><strong>Base case (23–25x):</strong> Current levels sustained. Gradual residential recovery, steady non-residential growth, consistent mid-to-high single-digit EPS. The most likely outcome given guidance and analyst consensus.</li>
+        <li data-icon="🚀" style="font-size:14px;"><strong>Bull case (26–28x):</strong> Rate cuts restore housing demand, Copilot-style digital tools boost distributor margins, large capital projects (data centres) sustain 10%+ non-res growth for 3+ years. Re-rating toward the top of Ferguson's historical range.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BULL DRIVERS -->
+  <div class="section">
+    <p class="section-label">06 — Catalysts</p>
+    <h2>Key Bull Case Drivers</h2>
+    <ul class="bull-list">
+      <li data-icon="🏢"><strong>Data center supercycle:</strong> Bernstein raised its price target to $310 citing Ferguson's proximity to upcoming data center construction sites. The large capital project TAM has been upgraded to $90B. Ferguson's scale and multi-product "One Ferguson" model wins disproportionate share on complex projects.</li>
+      <li data-icon="🏡"><strong>Residential recovery:</strong> If the Fed cuts rates meaningfully, housing starts, HVAC replacement, and residential RMI — together ~50% of US net sales — return to growth. Even a return to flat would remove a meaningful headwind currently suppressing EPS.</li>
+      <li data-icon="🔧"><strong>Acquisition engine:</strong> Ferguson invested $276M in eight acquisitions in CY2025 alone, generating $300M+ in annualised revenue. The market is deeply fragmented; the pipeline is extensive. Deals typically close at 6–8x EBITDA and are immediately accretive.</li>
+      <li data-icon="💸"><strong>Share buyback machine:</strong> $0.9B repurchased in CY2025, ~$800M program balance remaining plus a new $5B authorisation underway. At current prices, buybacks reduce the share count by ~3–4% annually, mechanically lifting EPS even with flat earnings.</li>
+      <li data-icon="📐"><strong>Operating leverage:</strong> Gross margin expanded 60bps to 30.7% in Q1 CY2026. As the revenue mix shifts toward higher-margin private label, digital channel sales, and large project wins, operating margins can expand from ~9.6% toward 10%+ without top-line heroics.</li>
+    </ul>
+  </div>
+
+  <!-- RISKS -->
+  <div class="section">
+    <p class="section-label">07 — Risks</p>
+    <h2>Key Risk Factors</h2>
+
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-content">
+        <strong>Prolonged Residential Weakness</strong>
+        <span>Residential is ~50% of US net sales and remains down ~1% YoY. High mortgage rates continue to suppress new housing starts and HVAC replacement demand. A "higher for longer" rate environment could delay recovery past 2027, materially compressing EPS growth versus this forecast.</span>
+      </div>
+    </div>
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-content">
+        <strong>Macro / Tariff Shock</strong>
+        <span>A US recession or escalating trade tariffs could cause contractors to defer large capital projects and cut discretionary spending. Ferguson's 2026 earnings call cited tariff uncertainty as an active watch item. Input cost inflation (currently ~3%) could also squeeze margins if demand weakens and pricing power fades.</span>
+      </div>
+    </div>
+    <div class="risk-item medium">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-content">
+        <strong>Competitive Pressure</strong>
+        <span>While the market is fragmented, regional distributors and national players (Watsco, Wesco, HD Supply) are also consolidating aggressively. Amazon Business and digital procurement platforms represent a longer-term structural challenge to the traditional distribution model.</span>
+      </div>
+    </div>
+    <div class="risk-item medium">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-content">
+        <strong>HVAC Refrigerant Transition Headwind</strong>
+        <span>The regulatory shift to A2L refrigerants (away from R-410A) created a pull-forward of demand in 2024 followed by a hangover in early CY2026. The comparison period is tough and HVAC revenue declined 1% YoY in Q1 CY2026. This normalises by mid-2026 but creates near-term noise.</span>
+      </div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-content">
+        <strong>Canada Margin Pressure</strong>
+        <span>Canadian adjusted operating profit fell 30.4% in Q1 CY2026, a sharp reversal. Canada is a small contributor (~3–4% of revenue) but highlights execution risk in non-US markets. Monitoring warranted but not thesis-critical.</span>
+      </div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-content">
+        <strong>Fiscal Year Transition Noise</strong>
+        <span>The five-month transition period (August–December 2025) complicates historical year-over-year comparisons. Analysts and investors are still recalibrating to the new calendar year structure. This creates short-term sentiment risk but no fundamental impact.</span>
+      </div>
+    </div>
+
+    <p style="margin-top:16px; font-size:14px; color:#1c3024; font-style:italic;">Overall assessment: FERG carries low fundamental business risk — essential products, sticky customers, mission-critical projects. Primary near-term risk is macro/rate-driven demand weakness, not competitive displacement. The balance sheet is conservative with net debt/EBITDA of just 1.1x, providing ample M&A and buyback firepower.</p>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="section">
+    <p class="section-label">08 — Conclusion</p>
+    <div class="conclusion-box">
+      <h2>Investment Conclusion</h2>
+      <p>Ferguson is a <strong>high-quality, durable compounder</strong> with a dominant market position in a structurally growing, fragmented industry. Despite near-term headwinds from residential weakness and the fiscal year transition, the non-residential growth engine is firing, margins are expanding, and the buyback engine continues to work.</p>
+
+      <div class="target-row">
+        <div class="target-box">
+          <div class="tb-label">12-Month Target</div>
+          <div class="tb-val">$270–$316</div>
+          <div class="tb-sub">Analyst range (Buy)</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">4-Year Bull Case</div>
+          <div class="tb-val">$400–$438</div>
+          <div class="tb-sub">EPS growth + re-rating</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">Rating</div>
+          <div class="tb-val">⭐ Buy</div>
+          <div class="tb-sub">Core long-term hold</div>
+        </div>
+      </div>
+
+      <p>The combination of <strong>4–13% annual EPS growth</strong> (accelerating as the residential cycle recovers), ongoing share buybacks reducing the float by ~3–4% annually, and a potential P/E re-rating as housing normalises creates a compelling multi-year setup. Investors prepared to look through 12–18 months of subdued residential demand are buying a high-quality franchise at a reasonable price.</p>
+      <p style="margin-bottom:0; font-size:14px; color:rgba(255,255,255,0.8); font-style:italic;">FERG is best suited as a core cyclical/quality holding in a diversified equity portfolio. Beta of ~1.0 means broadly market-like volatility — with above-market return potential as the cycle turns.</p>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This report is for informational and educational purposes only and does not constitute investment advice. Forecasts are based on publicly available analyst estimates, company guidance, and earnings releases as of April 2026. Actual results may differ materially. Past performance is not indicative of future results. Always consult a qualified financial advisor before making any investment decisions.
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>

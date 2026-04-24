@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LPLA Deep Analysis — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #0d3326;
+    --green: #165c3e;
+    --emerald: #1d8a5e;
+    --accent: #d4a520;
+    --gold: #f0c842;
+    --light: #f3f7f5;
+    --white: #ffffff;
+    --text: #0f1f18;
+    --muted: #3a5248;
+    --border: #ccddd6;
+    --pos-green: #1a7a4a;
+    --pos-green-bg: #e6f4ed;
+    --red: #b93232;
+    --red-bg: #fbeaea;
+    --orange: #c45c10;
+    --orange-bg: #fdf0e4;
+    --card-shadow: 0 2px 16px rgba(13,51,38,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--light);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(145deg, #071a10 0%, #0d3326 50%, #165c3e 100%);
+    padding: 48px 24px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,165,32,0.18) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(29,138,94,0.22) 0%, transparent 70%);
+  }
+  .ticker-badge {
+    display: inline-block;
+    background: rgba(212,165,32,0.2);
+    border: 1px solid rgba(212,165,32,0.5);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 7vw, 46px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .meta-chip {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 720px; margin: 0 auto; padding: 0 16px 60px; }
+
+  /* ── SECTION ── */
+  .section { margin-top: 36px; }
+  .section-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--emerald);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 700;
+    color: var(--forest);
+    line-height: 1.25;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--green);
+    margin: 24px 0 10px;
+  }
+  p { margin-bottom: 14px; font-weight: 400; }
+  p strong { font-weight: 600; color: var(--forest); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .card-green {
+    background: linear-gradient(135deg, #e6f4ed 0%, #f3f9f6 100%);
+    border-color: #a8d4bc;
+  }
+
+  /* ── SNAPSHOT GRID ── */
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .snap-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+    box-shadow: 0 1px 6px rgba(13,51,38,0.06);
+  }
+  .snap-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-family: 'Source Serif 4', serif;
+  }
+  .snap-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--forest);
+    line-height: 1.2;
+  }
+  .snap-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .snap-item.highlight {
+    background: linear-gradient(135deg, var(--forest) 0%, var(--green) 100%);
+    border-color: transparent;
+  }
+  .snap-item.highlight .snap-label { color: rgba(255,255,255,0.80); }
+  .snap-item.highlight .snap-value { color: var(--gold); }
+  .snap-item.highlight .snap-note { color: rgba(255,255,255,0.75); }
+  .snap-item.pos-hi { border-left: 4px solid var(--pos-green); }
+  .snap-item.pos-hi .snap-value { color: var(--pos-green); }
+
+  /* ── FORECAST TABLE ── */
+  .forecast-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 520px;
+    background: var(--white);
+  }
+  thead th {
+    background: var(--forest);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    padding: 12px 10px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  thead th:first-child { text-align: left; border-radius: 12px 0 0 0; }
+  thead th:last-child { border-radius: 0 12px 0 0; }
+  tbody tr:nth-child(even) td { background: #f1f7f4; }
+  tbody tr:nth-child(odd) td { background: var(--white); }
+  tbody td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  tbody td:first-child {
+    font-weight: 600;
+    color: var(--forest);
+    font-size: 13px;
+    background: #e8f2ed !important;
+    border-right: 2px solid var(--border);
+    min-width: 130px;
+  }
+  tbody td:not(:first-child) { text-align: center; }
+  .act-col { background: #d8ede4 !important; color: var(--forest) !important; }
+  thead th.act-col { background: #9fcfb6 !important; color: var(--forest) !important; }
+  .scroll-hint {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    padding: 6px 0 0;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* ── YEAR CARDS ── */
+  .year-card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(13,51,38,0.07);
+  }
+  .year-header {
+    background: linear-gradient(90deg, var(--forest) 0%, var(--green) 100%);
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .year-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .year-badge {
+    background: rgba(212,165,32,0.25);
+    border: 1px solid rgba(212,165,32,0.5);
+    color: var(--gold);
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .year-body { padding: 16px 18px; }
+  .year-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .ym {
+    text-align: center;
+    background: var(--light);
+    border-radius: 10px;
+    padding: 14px 10px;
+    border: 1px solid var(--border);
+  }
+  .ym-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
+  .ym-val { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--forest); }
+  .year-rationale { font-size: 15px; color: var(--text); font-weight: 400; line-height: 1.6; }
+
+  /* ── BULLETS ── */
+  .bull-list { list-style: none; padding: 0; margin: 0; }
+  .bull-list li {
+    padding: 10px 14px 10px 42px;
+    position: relative;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+  .bull-list li:last-child { border-bottom: none; }
+  .bull-list li::before {
+    content: attr(data-icon);
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    font-size: 17px;
+  }
+  .bull-list li strong { font-weight: 600; color: var(--forest); }
+
+  /* ── RISK TABLE ── */
+  .risk-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+  }
+  .risk-item.high { background: #fce8e8; border-color: #e8a0a0; }
+  .risk-item.medium { background: #fdeede; border-color: #e8b880; }
+  .risk-item.low { background: #daf2e8; border-color: #90c8ac; }
+  .risk-badge {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .risk-item.high .risk-badge { background: var(--red); color: #fff; }
+  .risk-item.medium .risk-badge { background: var(--orange); color: #fff; }
+  .risk-item.low .risk-badge { background: var(--pos-green); color: #fff; }
+  .risk-content strong { font-size: 15px; color: #0d3326; font-weight: 700; display: block; margin-bottom: 4px; }
+  .risk-content span { font-size: 14px; color: #1c3a30; font-weight: 400; line-height: 1.55; }
+
+  /* ── CONCLUSION ── */
+  .conclusion-box {
+    background: linear-gradient(135deg, var(--forest) 0%, #0a2e1c 100%);
+    border-radius: 16px;
+    padding: 28px 22px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .conclusion-box::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,165,32,0.15) 0%, transparent 70%);
+  }
+  .conclusion-box h2 {
+    color: var(--gold);
+    border-bottom-color: rgba(255,255,255,0.15);
+    margin-bottom: 16px;
+  }
+  .conclusion-box p { color: rgba(255,255,255,0.92); font-weight: 400; }
+  .conclusion-box strong { color: var(--gold); font-weight: 600; }
+  .target-row {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0 16px;
+  }
+  .target-box {
+    flex: 1;
+    text-align: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 14px 8px;
+  }
+  .target-box .tb-label { font-size: 11px; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
+  .target-box .tb-val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--gold); }
+  .target-box .tb-sub { font-size: 11px; color: rgba(255,255,255,0.70); margin-top: 2px; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    margin-top: 36px;
+    padding: 16px 18px;
+    background: #ecf3ef;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+  .disclaimer strong { font-style: normal; font-weight: 600; color: var(--forest); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 32px 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section { animation: fadeUp 0.5s ease both; }
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+  .section:nth-child(5) { animation-delay: 0.2s; }
+
+  @media (max-width: 400px) {
+    .snapshot-grid { grid-template-columns: 1fr; }
+    .year-metrics { grid-template-columns: 1fr 1fr; }
+    .target-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="ticker-badge">NASDAQ: LPLA</div>
+  <h1>LPL Financial<br><span>Deep Analysis</span></h1>
+  <p class="hero-sub">Revenue/Share · EPS · P/E Forecast · 2026–2029</p>
+  <div class="hero-meta">
+    <span class="meta-chip">📅 April 23, 2026</span>
+    <span class="meta-chip">💰 ~$313–320 / share</span>
+    <span class="meta-chip">⭐ Buy Consensus</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section">
+    <p class="section-label">01 — Overview</p>
+    <h2>Executive Summary</h2>
+    <div class="card card-green">
+      <p>LPL Financial is the nation's largest independent broker-dealer, having more than tripled its advisor base and assets under management in the past five years through a relentless acquisition and organic-growth strategy. As of April 2026, it manages <strong>$2.4 trillion in advisory and brokerage assets</strong> across 32,000+ advisors — and is still early in the operating leverage cycle.</p>
+      <p style="margin-bottom:0">This report forecasts <strong>Revenue per Share, EPS, and P/E ranges</strong> for 2026–2029, anchored in full-year 2025 actuals, analyst consensus, and LPL's structural tailwinds from advisor recruitment, Commonwealth integration, and its expanding advisory-fee mix.</p>
+    </div>
+    <p style="font-size:13px; color:var(--muted); font-style:italic;">Note: LPL Financial's fiscal year follows the calendar year (January–December). All EPS figures are Adjusted (non-GAAP) unless otherwise stated. GAAP EPS is materially lower due to acquisition-related amortisation.</p>
+  </div>
+
+  <!-- SNAPSHOT -->
+  <div class="section">
+    <p class="section-label">02 — Current Snapshot</p>
+    <h2>Where LPLA Stands Today</h2>
+    <div class="snapshot-grid">
+      <div class="snap-item highlight">
+        <div class="snap-label">Current Price</div>
+        <div class="snap-value">$313–320</div>
+        <div class="snap-note">As of April 22–23, 2026</div>
+      </div>
+      <div class="snap-item highlight">
+        <div class="snap-label">Market Cap</div>
+        <div class="snap-value">~$25.2B</div>
+        <div class="snap-note">Largest independent BD in the US</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Adj. EPS (FY2025)</div>
+        <div class="snap-value">$20.09</div>
+        <div class="snap-note">+22% YoY; 5-yr CAGR ~25.5%</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">GAAP EPS (FY2025)</div>
+        <div class="snap-value">$10.92</div>
+        <div class="snap-note">Down 22% YoY (acquisition costs)</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Trailing P/E (GAAP)</div>
+        <div class="snap-value">~28–29x</div>
+        <div class="snap-note">vs. 5-yr avg ~23–24x</div>
+      </div>
+      <div class="snap-item pos-hi">
+        <div class="snap-label">Total Revenue (FY2025)</div>
+        <div class="snap-value">~$17.0B</div>
+        <div class="snap-note">+37% YoY (incl. acquisitions)</div>
+      </div>
+      <div class="snap-item">
+        <div class="snap-label">Revenue/Share (FY2025)</div>
+        <div class="snap-value">~$215</div>
+        <div class="snap-note">Based on ~79.1M diluted shares</div>
+      </div>
+      <div class="snap-item pos-hi">
+        <div class="snap-label">Analyst Consensus</div>
+        <div class="snap-value">Buy</div>
+        <div class="snap-note">14 analysts; avg target ~$404</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px; background: #fffbea; border-color: #f0d870;">
+      <p style="margin:0; font-size:14px;"><strong>💡 Key insight:</strong> LPL's revenue/share figure appears large because it is a financial intermediary — advisory and commission flows pass through the P&amp;L. Gross profit and adjusted EPS are the correct lenses for profitability. Adj. EPS has compounded at <strong>~25.5% annually for five years</strong> — a remarkable rate for a firm this size.</p>
+    </div>
+  </div>
+
+  <!-- SEGMENTS -->
+  <div class="section">
+    <p class="section-label">03 — Business</p>
+    <h2>Three Revenue Pillars</h2>
+    <ul class="bull-list">
+      <li data-icon="📊"><strong>Advisory Fees (~51% of gross revenue)</strong> — Asset-based fees on $1.4T in advisory assets (58.8% of total). Advisory assets grew 46% YoY in 2025. This is the fastest-growing and highest-quality revenue stream — recurring, fee-based, and tied to market appreciation and net new assets.</li>
+      <li data-icon="💼"><strong>Commission Revenue (~31%)</strong> — Sales-based and trailing commissions from brokerage accounts. Grew 36% in 2025 driven by acquisitions. More transactional, but large scale provides defensibility.</li>
+      <li data-icon="🏦"><strong>Asset-Based &amp; Other (~18%)</strong> — Client cash sweep revenue ($50.6B in sweep balances as of Q4 2025), other asset-based fees, service and transaction fees, and interest income. Cash sweep income is rate-sensitive; current yield environment is supportive.</li>
+    </ul>
+    <p style="margin-top:16px; font-size:15px;">LPL's revenue mix is <strong>actively shifting toward recurring advisory fees</strong> — 58.8% of assets are now advisory (up from 55.0% a year ago) — which structurally raises earnings quality, operating leverage, and deserved P/E multiples.</p>
+  </div>
+
+  <!-- FORECAST TABLE -->
+  <div class="section">
+    <p class="section-label">04 — Forecast</p>
+    <h2>4-Year Forecast Summary</h2>
+    <div class="forecast-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="act-col">2025 Actual</th>
+            <th>2026E</th>
+            <th>2027E</th>
+            <th>2028E</th>
+            <th>2029E</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Total Revenue ($B)</td>
+            <td class="act-col">~$17.0B</td>
+            <td>$18.0–19.0B</td>
+            <td>$19.5–21.0B</td>
+            <td>$21.0–23.0B</td>
+            <td>$22.5–25.0B</td>
+          </tr>
+          <tr>
+            <td>Rev / Share ($)</td>
+            <td class="act-col">~$215</td>
+            <td>$225–238</td>
+            <td>$245–265</td>
+            <td>$265–292</td>
+            <td>$285–318</td>
+          </tr>
+          <tr>
+            <td>Adj. EPS ($)</td>
+            <td class="act-col">$20.09</td>
+            <td>$22.0–23.5</td>
+            <td>$24.5–26.5</td>
+            <td>$27.0–30.0</td>
+            <td>$30.0–33.5</td>
+          </tr>
+          <tr>
+            <td>EPS Growth (Adj.)</td>
+            <td class="act-col">+22%</td>
+            <td>~+10–17%</td>
+            <td>~+11–13%</td>
+            <td>~+10–13%</td>
+            <td>~+11–12%</td>
+          </tr>
+          <tr>
+            <td>P/E Range (Adj.)</td>
+            <td class="act-col">—</td>
+            <td>14x–18x</td>
+            <td>14x–18x</td>
+            <td>13x–17x</td>
+            <td>13x–17x</td>
+          </tr>
+          <tr>
+            <td>Price Low ($)</td>
+            <td class="act-col">—</td>
+            <td>$308</td>
+            <td>$343</td>
+            <td>$351</td>
+            <td>$390</td>
+          </tr>
+          <tr>
+            <td>Price High ($)</td>
+            <td class="act-col">—</td>
+            <td>$423</td>
+            <td>$477</td>
+            <td>$510</td>
+            <td>$570</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+    <p style="font-size:13px; color:var(--muted); margin-top:10px; font-style:italic;">P/E ranges applied to Adjusted EPS (the operative metric for LPLA). Analyst consensus 12-month price target is ~$404; high estimate $504. Revenue/share rises modestly as share count is broadly stable (slight buyback offset by share-based comp).</p>
+  </div>
+
+  <!-- YEAR BY YEAR -->
+  <div class="section">
+    <p class="section-label">05 — Year by Year</p>
+    <h2>Forecast Rationale</h2>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">2026</span>
+        <span class="year-badge">Adj. EPS +10–17%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$225–238</div></div>
+          <div class="ym"><div class="ym-label">Adj. EPS</div><div class="ym-val">$22–23.5</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">14–18x</div></div>
+        </div>
+        <p class="year-rationale">Management guided Q1 2026 Adj. EPS of $5.47 and Q2 2026 of $5.91, implying roughly $22–23 for the full year. The Commonwealth integration (August 2025 close) contributes its first full year of revenue, while Core G&amp;A is guided to rise 4.5–7%, moderating post-acquisition cost creep. Revenue growth decelerates from 2025's acquisitions-boosted 37%, settling closer to 6–12% organic. The forward P/E based on consensus Adj. EPS is approximately 14–15x — historically cheap for a company with LPL's growth and ROE profile.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">2027</span>
+        <span class="year-badge">Adj. EPS +11–13%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$245–265</div></div>
+          <div class="ym"><div class="ym-label">Adj. EPS</div><div class="ym-val">$24.5–26.5</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">14–18x</div></div>
+        </div>
+        <p class="year-rationale">Operating leverage from the Commonwealth, Atria, and Investment Center integrations begins to fully harvest. Headcount and technology costs stabilise as the integration wave subsides. Advisory asset growth continues at 8–10% organically — driven by advisor recruiting and market appreciation. Cash sweep income remains material if the Fed holds rates near current levels. Gross profit margins should expand as higher-margin advisory fees grow as a percentage of the mix. EPS growth accelerates from the digestion of 2025's M&amp;A spend.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">2028</span>
+        <span class="year-badge">Adj. EPS +10–13%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$265–292</div></div>
+          <div class="ym"><div class="ym-label">Adj. EPS</div><div class="ym-val">$27–30</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">13–17x</div></div>
+        </div>
+        <p class="year-rationale">LPL reaches full operating maturity post-Commonwealth. Automation and AI-powered compliance tools reduce G&amp;A intensity per advisor. The advisor count could approach 34,000–36,000, driving advisory AUM toward $2.8–3.0 trillion. Advisory fees — already 51% of revenue — could cross 55–58%, meaningfully expanding gross profit per dollar of revenue. LPL's ROE, forecast at 53% in three years by analysts, supports a higher P/E than the current discount implies.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header">
+        <span class="year-title">2029</span>
+        <span class="year-badge">Adj. EPS +11–12%</span>
+      </div>
+      <div class="year-body">
+        <div class="year-metrics">
+          <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$285–318</div></div>
+          <div class="ym"><div class="ym-label">Adj. EPS</div><div class="ym-val">$30–33.5</div></div>
+          <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">13–17x</div></div>
+        </div>
+        <p class="year-rationale">The great wealth transfer — $84 trillion expected to change hands in the US over the coming decades — continues funnelling assets toward independent advisors, and LPL is by far the dominant platform in that channel. Compounding AUM growth, a maturing advisory mix, and sustained share buybacks mechanically lift EPS even without heroic revenue assumptions. At 17x Adj. EPS of $33, the stock implies a price of ~$560+, nearly doubling from current levels.</p>
+      </div>
+    </div>
+
+    <h3>Why P/E May Re-Rate Upward</h3>
+    <div class="card">
+      <ul class="bull-list" style="margin:0;">
+        <li data-icon="🐻" style="font-size:14px;"><strong>Bear case (13–14x Adj. EPS):</strong> Equity market correction shrinks AUM; rate cuts compress cash sweep income; macro slowdown causes advisor fee attrition. EPS stalls near $21–22. Stock range $280–310.</li>
+        <li data-icon="📈" style="font-size:14px;"><strong>Base case (15–16x Adj. EPS):</strong> Integration delivers on plan. Steady 10–13% EPS growth. P/E stays near current levels. Most likely outcome per consensus.</li>
+        <li data-icon="🚀" style="font-size:14px;"><strong>Bull case (17–18x Adj. EPS):</strong> Achievable if Commonwealth beats synergy targets, advisory mix accelerates past 65%, and/or another institutional acquisition adds accretion. Analyst high target of $504 implies roughly 17–18x forward Adj. EPS.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BULL DRIVERS -->
+  <div class="section">
+    <p class="section-label">06 — Catalysts</p>
+    <h2>Key Bull Case Drivers</h2>
+    <ul class="bull-list">
+      <li data-icon="🟢"><strong>Commonwealth integration synergies:</strong> The $2.7B acquisition (closed August 2025) added ~3,000 advisors and ~$300B in assets. Management projected 90% asset retention. Synergies on technology consolidation and G&amp;A leverage are still largely ahead.</li>
+      <li data-icon="📈"><strong>Organic growth flywheel:</strong> LPL added $147B in net new assets in 2025 — 8% organic growth. Advisor recruiting remains the industry's strongest pipeline, supported by LPL's technology platform, custodial capabilities, and no proprietary product conflicts.</li>
+      <li data-icon="💰"><strong>Advisory mix shift:</strong> As brokerage assets convert to advisory, revenue becomes more predictable and margins expand. Advisory assets already 58.8% of total AUM, up from 55% a year ago — each percentage point of conversion adds recurring fee revenue without incremental cost.</li>
+      <li data-icon="🏦"><strong>Cash sweep tailwind:</strong> LPL holds $50.6B in client cash sweeps. With the Fed likely to cut rates gradually rather than aggressively, sweep income remains a significant earnings contributor through the forecast period.</li>
+      <li data-icon="💸"><strong>Capital return programme:</strong> Regular quarterly dividends ($0.30/share) plus opportunistic buybacks. Share count is broadly stable (~79–80M diluted), providing modest EPS lift as any shrinkage compounds over time.</li>
+      <li data-icon="📉"><strong>Valuation discount to ROE:</strong> LPL's ROE of 37.9% (5-yr average) — forecast to reach 53%+ in 3 years — would typically command a premium multiple. At 14–15x Adj. EPS, the market is ascribing a discount that may correct as integration costs recede and earnings quality improves.</li>
+    </ul>
+  </div>
+
+  <!-- RISKS -->
+  <div class="section">
+    <p class="section-label">07 — Risks</p>
+    <h2>Key Risk Factors</h2>
+
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-content">
+        <strong>Equity Market Correction</strong>
+        <span>LPL earns advisory fees as a percentage of AUM. A sustained 20–30% equity market decline would mechanically reduce advisory revenue by a similar amount, compressing EPS well below forecasts. Beta of 0.57 limits stock volatility but doesn't remove earnings exposure.</span>
+      </div>
+    </div>
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-content">
+        <strong>Interest Rate Risk (Cash Sweep Compression)</strong>
+        <span>Aggressive Fed rate cuts would directly reduce net interest income from $50.6B in sweep balances. A 100bps cut could reduce pre-tax income by ~$300–400M, a meaningful drag on EPS. This is the most rate-sensitive line item in the P&amp;L.</span>
+      </div>
+    </div>
+    <div class="risk-item medium">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-content">
+        <strong>Integration Execution Risk</strong>
+        <span>Commonwealth, Atria, and Investment Center collectively represent the largest integration challenge in LPL's history. Advisor attrition above the 10% modelled rate, technology migration failures, or G&amp;A overruns could erode the earnings thesis materially.</span>
+      </div>
+    </div>
+    <div class="risk-item medium">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-content">
+        <strong>Fee Compression &amp; Regulatory Risk</strong>
+        <span>Ongoing regulatory scrutiny of advisor compensation, Reg BI compliance costs, and potential fee compression across the industry could narrow advisory margins. DOL fiduciary rule evolution adds ongoing compliance overhead.</span>
+      </div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-content">
+        <strong>Debt Load from Acquisitions</strong>
+        <span>Total debt reached $7.3B at year-end 2025 (up from $5.5B prior year). While manageable given $2.9B in Adjusted EBITDA, a sharp earnings slowdown could strain leverage ratios and limit future M&amp;A optionality.</span>
+      </div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-content">
+        <strong>Advisor Competitive Attrition</strong>
+        <span>Raymond James, Ameriprise, and RIA aggregators are all competing for the same advisor pool. While LPL's platform and technology lead is substantial, premium recruiting packages from rivals could slow net new advisor growth.</span>
+      </div>
+    </div>
+
+    <p style="margin-top:16px; font-size:14px; color:#1c3a30; font-style:italic;">Overall assessment: LPL carries moderate market and rate risk but low idiosyncratic business risk. Its position as the dominant independent BD platform, diversified revenue across 32,000+ advisors, and exceptional ROE make it resilient. Primary downside risk is macro and rate-driven rather than competitive or operational.</p>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="section">
+    <p class="section-label">08 — Conclusion</p>
+    <div class="conclusion-box">
+      <h2>Investment Conclusion</h2>
+      <p>LPL Financial is the undisputed platform of record for independent wealth management in the United States. Its scale — 32,000 advisors, $2.4 trillion in assets — creates a structural competitive moat that is widening, not narrowing. The stock is currently priced at <strong>~14–15x forward Adjusted EPS</strong>, a meaningful discount to its earnings quality and ROE profile.</p>
+
+      <div class="target-row">
+        <div class="target-box">
+          <div class="tb-label">12-Month Target</div>
+          <div class="tb-val">$380–404</div>
+          <div class="tb-sub">Wall Street consensus avg</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">4-Year Bull Case</div>
+          <div class="tb-val">$510–570</div>
+          <div class="tb-sub">EPS growth + mild re-rating</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">Rating</div>
+          <div class="tb-val">⭐ Buy</div>
+          <div class="tb-sub">Long-term compounder</div>
+        </div>
+      </div>
+
+      <p>The combination of <strong>10–17% annual Adjusted EPS growth</strong>, a potential P/E re-rating as integration costs fade from the GAAP P&amp;L, a 53%+ ROE trajectory, and the secular tailwind of the great wealth transfer creates a compelling multi-year opportunity.</p>
+      <p style="margin-bottom:0; font-size:14px; color:rgba(255,255,255,0.8); font-style:italic;">LPLA suits investors seeking a durable compounder in financial services with low beta (0.57), consistent earnings growth, and a dominant market position. Key watch points: integration execution, advisory asset retention, and the Fed's rate path.</p>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This report is for informational and educational purposes only and does not constitute investment advice. Forecasts are based on publicly available analyst estimates, company filings, and management guidance as of April 2026. Actual results may differ materially. Past performance is not indicative of future results. Always consult a qualified financial advisor before making any investment decisions. I am not a financial advisor.
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>
