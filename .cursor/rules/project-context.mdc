@@ -28,12 +28,25 @@ reports/
 - Report files: `{TICKER}_Analysis_Report.html` (V1) and `{TICKER}_Analysis_Report_V2.html` (V2)
 - Each new stock gets its own subfolder: `reports/{TICKER}/`
 - Version badge rules in index.html:
-  - V2 (latest version of a ticker): use `<span class="version-badge latest">V2</span>`
-  - V1 (original version): use `<span class="version-badge">V1</span>`
-  - Only one version exists: use `<span class="version-badge latest">V1</span>`
+  - V2 (latest version of a ticker): `<span class="version-badge latest">V2</span>`
+  - V1 (original version): `<span class="version-badge">V1</span>`
+  - Only one version exists: `<span class="version-badge latest">V1</span>`
   - Do NOT use "Enhanced" or any other made-up label
-- The `index.html` must be updated whenever a new report is added
-- When adding reports, scan ALL subfolders under `reports/` to ensure nothing is missed
+
+## Adding a New Report (ALWAYS follow this process)
+When the user provides a new HTML report file:
+1. Copy the file into `reports/{TICKER}/` (create the folder if new ticker)
+2. Insert ONLY the new card into index.html using PowerShell -- do NOT regenerate the whole file
+3. Use this PowerShell pattern to insert the new card before the first existing <article tag:
+   ```
+   $p = "...index.html"
+   $html = [System.IO.File]::ReadAllText($p, (New-Object System.Text.UTF8Encoding $false))
+   $newCard = @' ...card HTML... '@
+   $html = $html.Replace('    <!-- FIRST_CARD_COMMENT -->', $newCard + '    <!-- FIRST_CARD_COMMENT -->')
+   [System.IO.File]::WriteAllText($p, $html, (New-Object System.Text.UTF8Encoding $false))
+   ```
+4. Verify 0 null bytes after writing
+5. Update the Project Structure section in this rules file to include the new file
 
 ## Key Notes
 - This is a Windows machine running PowerShell -- use `;` instead of `&&` to chain shell commands
@@ -45,19 +58,13 @@ Every HTML file must be fully self-contained -- all CSS and JS embedded inside u
 Never extract to external files. A single file must work standalone in any browser.
 
 ## CRITICAL -- File Encoding (MUST FOLLOW EVERY TIME)
-The Cursor Write tool AND StrReplace tool on this Windows machine save files as UTF-16 (null bytes between characters). Browsers cannot render UTF-16 HTML -- they show raw source text.
+The Cursor Write tool AND StrReplace tool save files as UTF-16 on this Windows machine (null bytes between chars). Browsers cannot render UTF-16 HTML.
 
-AFTER EVERY Write or StrReplace tool call on any file, ALWAYS run this PowerShell to fix encoding:
+NEVER use Write tool or StrReplace tool on HTML files. ALWAYS use PowerShell to read/write files:
 
   $p = "FULL_FILE_PATH"
-  $c = [System.IO.File]::ReadAllText($p, [System.Text.Encoding]::Unicode)
-  $e = New-Object System.Text.UTF8Encoding $false
-  [System.IO.File]::WriteAllText($p, $c, $e)
+  $html = [System.IO.File]::ReadAllText($p, (New-Object System.Text.UTF8Encoding $false))
+  # modify $html in PowerShell
+  [System.IO.File]::WriteAllText($p, $html, (New-Object System.Text.UTF8Encoding $false))
 
-Verify with: ($bytes = [System.IO.File]::ReadAllBytes($p); ($bytes | Where-Object {$_ -eq 0}).Count)
-Result must be 0.
-
-PREFERRED approach: Write file content entirely via PowerShell here-string to avoid encoding issues:
-
-  $content = @' ... HTML content ... '@
-  [System.IO.File]::WriteAllText($path, $content, (New-Object System.Text.UTF8Encoding $false))
+Verify: ($bytes = [System.IO.File]::ReadAllBytes($p); ($bytes | Where-Object {$_ -eq 0}).Count) must be 0.
