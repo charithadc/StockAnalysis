@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lam Research (LRCX) — Deep Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f7fb;
+    --surface: #ffffff;
+    --surface-2: #edf3fb;
+    --text: #111d29;
+    --text-muted: #3a526a;
+    --border: #d0dcea;
+    --navy: #0f2444;
+    --blue: #1a5fa8;
+    --sky: #3b8fd4;
+    --gold: #f5c842;
+    --accent: #e8a020;
+    --green: #1a7a4a;
+    --green-bg: #e8f5ee;
+    --red: #b93232;
+    --red-bg: #fbeaea;
+    --orange: #c45c10;
+    --card-shadow: 0 2px 16px rgba(15,36,68,0.10);
+    --fs-base: 16px;
+  }
+  body.dark {
+    --bg: #0e1520;
+    --surface: #172032;
+    --surface-2: #1e2d44;
+    --text: #dde4ef;
+    --text-muted: #8fa3be;
+    --border: #2a3d58;
+    --navy: #1e3a60;
+    --blue: #4b8ed4;
+    --sky: #6ab0e8;
+    --green: #2ecc78;
+    --green-bg: #0e2a1c;
+    --red: #e05555;
+    --red-bg: #2a1212;
+    --card-shadow: 0 2px 20px rgba(0,0,0,0.40);
+  }
+  * { box-sizing: border-box; }
+  html { font-size: var(--fs-base); }
+  body {
+    margin: 0;
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    transition: background 0.3s, color 0.3s;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 18px 100px;
+  }
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 60px 24px 56px;
+    background: linear-gradient(145deg, #0a1e38 0%, #0f2f5c 50%, #1a5fa8 100%);
+    color: #fff;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .hero::before, .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero::before {
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(245,200,66,0.28) 0%, transparent 70%);
+  }
+  .hero::after {
+    bottom: -80px; left: -80px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(59,143,212,0.30) 0%, transparent 70%);
+  }
+  .hero-inner { position: relative; max-width: 720px; margin: 0 auto; z-index: 1; }
+  .badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #f5c842, #e8a020);
+    color: #1a1206;
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 2.45rem;
+    line-height: 1.1;
+    margin: 0 0 14px;
+  }
+  .hero h1 span { color: var(--gold); display: block; }
+  .hero .subtitle {
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.05rem;
+    color: #d8e3f2;
+    margin: 0 0 22px;
+    max-width: 580px;
+  }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 0.78rem;
+    color: #e8eef7;
+  }
+  .chip strong { color: var(--gold); font-weight: 600; }
+  /* SECTIONS */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 24px;
+    margin-bottom: 22px;
+    box-shadow: var(--card-shadow);
+    animation: fadeUp 0.5s ease both;
+  }
+  .section:nth-of-type(1) { animation-delay: 0.05s; }
+  .section:nth-of-type(2) { animation-delay: 0.10s; }
+  .section:nth-of-type(3) { animation-delay: 0.15s; }
+  .section:nth-of-type(4) { animation-delay: 0.20s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section-label {
+    display: inline-block;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--blue);
+    font-size: 0.78rem;
+    letter-spacing: 2.5px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 1.55rem;
+    margin: 0 0 18px;
+    line-height: 1.2;
+  }
+  body.dark .section h2 { color: var(--sky); }
+  .section h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--navy);
+    font-size: 1.15rem;
+    margin: 22px 0 10px;
+  }
+  body.dark .section h3 { color: var(--sky); }
+  .section p { margin: 0 0 14px; }
+  .section ul { margin: 0 0 14px; padding-left: 22px; }
+  .section ul li { margin-bottom: 8px; }
+  .section a { color: var(--blue); text-decoration: none; }
+  .section a:hover { text-decoration: underline; }
+
+  /* TOC */
+  .toc-list { list-style: none; padding: 0; margin: 0; }
+  .toc-list li {
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 0.95rem;
+  }
+  .toc-list li:last-child { border-bottom: none; }
+  .toc-list .toc-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--accent);
+    margin-right: 10px;
+  }
+
+  /* HIGHLIGHT CARD */
+  .card-blue {
+    background: linear-gradient(135deg, var(--surface-2) 0%, rgba(59,143,212,0.10) 100%);
+    border-left: 4px solid var(--blue);
+    padding: 18px 20px;
+    border-radius: 8px;
+    margin: 14px 0;
+  }
+  .card-blue strong { color: var(--blue); }
+
+  .card-yellow {
+    background: #fff8e1;
+    border-left: 4px solid var(--accent);
+    padding: 16px 18px;
+    border-radius: 8px;
+    margin: 14px 0;
+    font-size: 0.92rem;
+  }
+  body.dark .card-yellow { background: #2a2008; color: #f0e0a8; }
+
+  /* SNAPSHOT GRID */
+  .snap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .snap .tile {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .snap .tile .label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .snap .tile .val {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--navy);
+  }
+  body.dark .snap .tile .val { color: var(--sky); }
+  .snap .tile.dark-hi {
+    background: linear-gradient(135deg, var(--navy), #1a3a6b);
+    border: none;
+  }
+  .snap .tile.dark-hi .label { color: rgba(255,255,255,0.65); }
+  .snap .tile.dark-hi .val { color: var(--gold); }
+  .snap .tile.green-hi {
+    background: var(--green-bg);
+    border-color: var(--green);
+  }
+  .snap .tile.green-hi .val { color: var(--green); }
+  @media (max-width: 400px) {
+    .snap { grid-template-columns: 1fr; }
+  }
+
+  /* BULL LIST */
+  .bull-list { list-style: none; padding: 0; }
+  .bull-list li {
+    padding: 8px 0 8px 30px;
+    position: relative;
+    border-bottom: 1px dotted var(--border);
+  }
+  .bull-list li:last-child { border-bottom: none; }
+  .bull-list li::before {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-size: 1rem;
+  }
+  .bull-list.tech li::before { content: "⚙️"; }
+  .bull-list.money li::before { content: "💰"; }
+  .bull-list.shield li::before { content: "🛡️"; }
+  .bull-list.warn li::before { content: "⚠️"; }
+  .bull-list.target li::before { content: "🎯"; }
+  .bull-list.world li::before { content: "🌐"; }
+  .bull-list.lab li::before { content: "🔬"; }
+
+  /* SEGMENT BARS */
+  .seg-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; font-size: 0.9rem; }
+  .seg-row .seg-name { flex: 0 0 110px; font-weight: 600; color: var(--text); }
+  .seg-row .seg-bar {
+    flex: 1;
+    height: 22px;
+    background: var(--surface-2);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .seg-row .seg-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--navy), var(--blue), var(--sky));
+    border-radius: 4px;
+  }
+  .seg-row .seg-val { flex: 0 0 70px; text-align: right; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--blue); }
+
+  /* FORECAST TABLE */
+  .forecast-wrap { overflow-x: auto; margin: 12px 0 4px; border-radius: 12px; border: 1px solid var(--border); }
+  .forecast-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    min-width: 520px;
+    background: var(--surface);
+  }
+  .forecast-table thead th {
+    background: var(--navy);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.8rem;
+    padding: 12px 10px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .forecast-table thead th:first-child {
+    text-align: left;
+    border-radius: 12px 0 0 0;
+  }
+  .forecast-table thead th:last-child {
+    border-radius: 0 12px 0 0;
+  }
+  .forecast-table tbody td {
+    padding: 10px 10px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    color: var(--text);
+  }
+  .forecast-table tbody td:first-child {
+    text-align: left;
+    font-weight: 600;
+    background: var(--surface-2);
+    color: var(--blue);
+  }
+  .forecast-table tbody tr:nth-child(even) td:not(:first-child) {
+    background: var(--surface-2);
+  }
+  .forecast-table .act-col {
+    background: #e8f0f8 !important;
+    color: var(--navy) !important;
+  }
+  .forecast-table thead th.act-col {
+    background: #c8ddf5 !important;
+    color: var(--navy) !important;
+  }
+  body.dark .forecast-table .act-col {
+    background: #1a2e4a !important;
+    color: #c8d8f0 !important;
+  }
+  body.dark .forecast-table thead th.act-col {
+    background: #223a5c !important;
+    color: #c8d8f0 !important;
+  }
+  .forecast-table .pos-val { color: var(--green); font-weight: 600; }
+  .forecast-table .neg-val { color: var(--red); font-weight: 600; }
+  .scroll-hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin: 4px 0 14px;
+    font-style: italic;
+  }
+
+  /* YEAR CARD */
+  .year-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 14px 0;
+    box-shadow: var(--card-shadow);
+  }
+  .year-card-header {
+    background: linear-gradient(90deg, #0f2444, #1a5fa8);
+    color: #fff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .year-card-header .year-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+  }
+  .year-card-header .year-title small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.72rem;
+    opacity: 0.75;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .eps-badge {
+    background: rgba(245,200,66,0.20);
+    color: var(--gold);
+    border: 1px solid rgba(245,200,66,0.40);
+    padding: 6px 12px;
+    border-radius: 18px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .year-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .year-metrics .ym {
+    padding: 14px 12px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .year-metrics .ym:last-child { border-right: none; }
+  .year-metrics .ym-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .year-metrics .ym-val {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--navy);
+    margin-top: 4px;
+  }
+  body.dark .year-metrics .ym-val { color: var(--sky); }
+  .year-rationale {
+    padding: 16px 20px;
+    font-size: 0.93rem;
+    color: var(--text);
+  }
+  @media (max-width: 400px) {
+    .year-metrics { grid-template-columns: 1fr 1fr; }
+    .year-metrics .ym:nth-child(2n) { border-right: none; }
+    .year-metrics .ym:nth-child(3) { border-top: 1px solid var(--border); grid-column: 1 / 3; }
+  }
+
+  /* SCENARIO BARS */
+  .scenarios { margin: 16px 0; }
+  .scen-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 90px;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+  }
+  .scen-row .scen-label {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+  .scen-row .scen-bar {
+    height: 26px;
+    background: var(--surface-2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .scen-row .scen-fill {
+    height: 100%;
+    border-radius: 4px;
+  }
+  .scen-row.bear .scen-fill { background: linear-gradient(90deg, #b93232, #d56565); }
+  .scen-row.base .scen-fill { background: linear-gradient(90deg, var(--navy), var(--blue)); }
+  .scen-row.bull .scen-fill { background: linear-gradient(90deg, #1a7a4a, #45b884); }
+  .scen-row .scen-val {
+    text-align: right;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* PROS/CONS */
+  .pc-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  @media (min-width: 560px) {
+    .pc-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .pc-card {
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .pc-card.pros {
+    background: var(--green-bg);
+    border-left: 4px solid var(--green);
+  }
+  .pc-card.cons {
+    background: var(--red-bg);
+    border-left: 4px solid var(--red);
+  }
+  .pc-card h4 {
+    margin: 0 0 8px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+  }
+  .pc-card.pros h4 { color: var(--green); }
+  .pc-card.cons h4 { color: var(--red); }
+  .pc-card ul { margin: 0; padding-left: 18px; font-size: 0.88rem; }
+  .pc-card ul li { margin-bottom: 6px; }
+
+  /* RISK ROWS */
+  .risk { padding: 10px 14px; border-radius: 8px; margin: 8px 0; font-size: 0.92rem; display: flex; gap: 12px; align-items: flex-start; }
+  .risk-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    flex: 0 0 auto;
+  }
+  .risk-high { background: #fce8e8; }
+  body.dark .risk-high { background: #2a1010; }
+  .risk-high .risk-badge { background: #b93232; color: #fff; }
+  .risk-med { background: #fdeede; }
+  body.dark .risk-med { background: #2a1e08; }
+  .risk-med .risk-badge { background: #c45c10; color: #fff; }
+  .risk-low { background: #daf2e8; }
+  body.dark .risk-low { background: #0a2016; }
+  .risk-low .risk-badge { background: #1a7a4a; color: #fff; }
+
+  /* CONCLUSION BOX */
+  .conclusion-box {
+    background: linear-gradient(135deg, #0f2444 0%, #0d3568 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin: 18px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .conclusion-box::after {
+    content: "";
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(245,200,66,0.30) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .conclusion-box h3 {
+    color: var(--gold) !important;
+    font-family: 'Playfair Display', serif;
+    margin-top: 0;
+    font-size: 1.3rem;
+  }
+  .conclusion-box p { color: #d8e3f2; }
+  .target-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 18px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .target-box {
+    flex: 1 1 30%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    min-width: 140px;
+  }
+  .target-box .tb-label {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .target-box .tb-val {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 1.4rem;
+    margin-top: 4px;
+  }
+  .target-box .tb-sub {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 2px;
+  }
+  @media (max-width: 400px) {
+    .target-row { flex-direction: column; }
+  }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.6;
+    padding: 18px 20px;
+    background: var(--surface-2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  /* TOOLBAR */
+  .toolbar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #0f2444;
+    padding: 8px 12px;
+    border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    z-index: 999;
+  }
+  body.dark .toolbar { background: #1a2e4a; }
+  .toolbar button {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: 'Source Serif 4', serif;
+    transition: background 0.2s;
+  }
+  .toolbar button:hover { background: rgba(255,255,255,0.18); }
+  .toolbar #fsDisplay {
+    color: #fff;
+    font-size: 0.75rem;
+    min-width: 38px;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+  }
+  .toolbar .sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(255,255,255,0.20);
+    margin: 0 4px;
+  }
+  .toolbar #modeBtn { font-size: 1rem; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge">NASDAQ: LRCX · Lam Research Corporation</div>
+    <h1>Lam Research<span>Deep Analysis</span></h1>
+    <p class="subtitle">A 4-year forward view on the etch and deposition leader at the heart of the AI-driven semiconductor capital expenditure supercycle.</p>
+    <div class="meta-chips">
+      <span class="chip">📅 <strong>Apr 25, 2026</strong></span>
+      <span class="chip">💵 <strong>$272</strong></span>
+      <span class="chip">📊 <strong>Strong Buy</strong></span>
+      <span class="chip">📈 YTD <strong>+37%</strong></span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 01 TOC -->
+  <div class="section">
+    <span class="section-label">01 — Contents</span>
+    <h2>Table of Contents</h2>
+    <ul class="toc-list">
+      <li><span class="toc-num">02</span><a href="#exec">Executive Summary</a></li>
+      <li><span class="toc-num">03</span><a href="#snap">Current Snapshot</a></li>
+      <li><span class="toc-num">04</span><a href="#moat">Business Model &amp; Moat</a></li>
+      <li><span class="toc-num">05</span><a href="#segments">Revenue Sources &amp; Segments</a></li>
+      <li><span class="toc-num">06</span><a href="#rps">Revenue Per Share Forecast</a></li>
+      <li><span class="toc-num">07</span><a href="#margins">Margin Forecast</a></li>
+      <li><span class="toc-num">08</span><a href="#eps">EPS Forecast</a></li>
+      <li><span class="toc-num">09</span><a href="#roic">ROIC Forecast</a></li>
+      <li><span class="toc-num">10</span><a href="#pe">P/E Multiple Forecast</a></li>
+      <li><span class="toc-num">11</span><a href="#targets">Price Targets &amp; Scenarios</a></li>
+      <li><span class="toc-num">12</span><a href="#yearly">Year-by-Year Rationale</a></li>
+      <li><span class="toc-num">13</span><a href="#roi">Yearly ROI from Today</a></li>
+      <li><span class="toc-num">14</span><a href="#risks">Structural Advantages &amp; Key Risks</a></li>
+      <li><span class="toc-num">15</span><a href="#macro">Macro, Regulation &amp; Competition</a></li>
+      <li><span class="toc-num">16</span><a href="#conclusion">Investment Conclusion</a></li>
+      <li><span class="toc-num">17</span><a href="#disclaimer">Disclaimer</a></li>
+    </ul>
+  </div>
+
+  <!-- 02 EXEC -->
+  <div class="section" id="exec">
+    <span class="section-label">02 — Thesis</span>
+    <h2>Executive Summary</h2>
+    <div class="card-blue">
+      <p><strong>Core thesis:</strong> Lam Research sits at the structural intersection of two compounding tailwinds — rising etch and deposition intensity per wafer driven by AI-era 3D architectures, and a multi-year wafer fabrication equipment (WFE) capex supercycle now visible into 2028. The fundamental business has rarely looked stronger: record revenue, record margins, ROIC near 45%, and 85%+ of free cash flow returned to shareholders. The catch is valuation. After a 200%+ rally in twelve months, LRCX trades at roughly 48× trailing earnings versus a 22× ten-year average — meaning the next four years require Lam to grow into the multiple, not for the multiple to do the lifting.</p>
+    </div>
+    <p>This report works through a deliberately conservative model: revenue compounding ~13% annually through fiscal 2029, EPS reaching roughly $9.95, and the multiple gradually mean-reverting toward the historical band. Under that base case, the stock returns roughly 0–5% annualised over four years from today's $272. The bull case (sustained 30× multiple, faster NAND conversion, China headwinds offset by elsewhere) gets you to ~$320. The bear case — a cyclical pause and re-rating to 18–20× — implies meaningful downside. This is a fundamentally great business priced for a fundamentally great future.</p>
+  </div>
+
+  <!-- 03 SNAPSHOT -->
+  <div class="section" id="snap">
+    <span class="section-label">03 — Snapshot</span>
+    <h2>Current Snapshot</h2>
+    <div class="snap">
+      <div class="tile dark-hi"><div class="label">Price</div><div class="val">$272.26</div></div>
+      <div class="tile dark-hi"><div class="label">Market Cap</div><div class="val">$336B</div></div>
+      <div class="tile"><div class="label">52-Wk Range</div><div class="val">$61 – $276</div></div>
+      <div class="tile green-hi"><div class="label">YTD Return</div><div class="val">+37%</div></div>
+      <div class="tile"><div class="label">Beta (5Y)</div><div class="val">1.79</div></div>
+      <div class="tile"><div class="label">P/E (TTM)</div><div class="val">54×</div></div>
+      <div class="tile"><div class="label">Fwd P/E</div><div class="val">~33×</div></div>
+      <div class="tile"><div class="label">Div Yield</div><div class="val">0.39%</div></div>
+      <div class="tile"><div class="label">Shares Out</div><div class="val">1.25B</div></div>
+      <div class="tile green-hi"><div class="label">FY26E Revenue</div><div class="val">$23.1B</div></div>
+      <div class="tile green-hi"><div class="label">FY26E Non-GAAP EPS</div><div class="val">$5.65</div></div>
+      <div class="tile"><div class="label">Next Earnings</div><div class="val">Aug 5, 2026</div></div>
+    </div>
+    <p>The setup is unambiguously strong on the operating side. The March 2026 quarter was Lam's tenth consecutive quarter of revenue growth, headlined by the first-ever $2 billion quarter from the Customer Support Business Group. Management raised the 2026 industry WFE outlook to roughly $140 billion (from $135B in January) and signalled bias to the upside, while explicitly calling 2027 a setup for further compelling growth.</p>
+  </div>
+
+  <!-- 04 MOAT -->
+  <div class="section" id="moat">
+    <span class="section-label">04 — Moat</span>
+    <h2>Business Model &amp; Moat</h2>
+    <p>Lam Research designs and sells the deposition and etch tools that build and pattern the layers of every advanced logic and memory chip. The business splits into two engines: <strong>Systems</strong> (~64% of revenue) — the high-ticket equipment shipped to fabs — and the <strong>Customer Support Business Group / CSBG</strong> (~36%) — services, spares, upgrades, and software running on an installed base that now exceeds 100,000 chambers. CSBG is the quiet compounder: it grows with the installed base, carries higher margin, and dampens the cyclicality that Wall Street historically priced into the systems business.</p>
+    <h3>Why customers can't easily switch</h3>
+    <ul class="bull-list lab">
+      <li><strong>Process qualification lock-in.</strong> Once a fab qualifies a Lam tool for a process step at a given node, swapping to a competitor requires months of re-qualification and yield risk that customers almost never accept mid-cycle.</li>
+      <li><strong>#1 share in etch, #2 in deposition.</strong> Etch is the single largest WFE category; in conductor etch and select dielectric etch applications Lam holds dominant share. Recent dielectric-etch wins at a leading foundry expand the footprint into territory long held by competitors.</li>
+      <li><strong>AI-driven intensity tailwind.</strong> 3D NAND layer counts, gate-all-around transistors, backside power delivery, and high-bandwidth memory all add etch and deposition steps per wafer — a structural per-wafer dollar uplift for Lam regardless of WFE direction.</li>
+      <li><strong>Capital-light, high ROIC model.</strong> Capex runs at 4–5% of revenue. Free cash flow conversion is exceptional, enabling 139% of free cash flow returned to shareholders in the March quarter alone.</li>
+      <li><strong>Advanced packaging optionality.</strong> Lam's copper plating and through-silicon-via etch tools are core to HBM and chiplet architectures, an area management sees growing 50%+ in calendar 2026.</li>
+    </ul>
+  </div>
+
+  <!-- 05 SEGMENTS -->
+  <div class="section" id="segments">
+    <span class="section-label">05 — Segments</span>
+    <h2>Revenue Sources &amp; Segments</h2>
+    <p>The segment mix at Q3 fiscal 2026 reflects a healthy rebalancing: foundry strength tied to leading-edge AI, record DRAM revenue driven by HBM and the 1C node transition, and a still-recovering NAND segment that management expects to accelerate sharply through end-2027.</p>
+    <div class="card-blue">
+      <p><strong>Q3 FY26 systems revenue mix:</strong> Foundry 54% · DRAM 27% · NAND 12% · Logic/Other 7%. CSBG (services) crossed $2.1 billion for the first time, growing 25% year over year.</p>
+    </div>
+    <h3>Systems revenue by end market</h3>
+    <div class="seg-row"><div class="seg-name">Foundry</div><div class="seg-bar"><div class="seg-fill" style="width:90%"></div></div><div class="seg-val">54%</div></div>
+    <div class="seg-row"><div class="seg-name">DRAM</div><div class="seg-bar"><div class="seg-fill" style="width:45%"></div></div><div class="seg-val">27%</div></div>
+    <div class="seg-row"><div class="seg-name">NAND</div><div class="seg-bar"><div class="seg-fill" style="width:20%"></div></div><div class="seg-val">12%</div></div>
+    <div class="seg-row"><div class="seg-name">Other</div><div class="seg-bar"><div class="seg-fill" style="width:12%"></div></div><div class="seg-val">7%</div></div>
+    <h3>Geographic mix (recent quarters)</h3>
+    <div class="seg-row"><div class="seg-name">China</div><div class="seg-bar"><div class="seg-fill" style="width:72%"></div></div><div class="seg-val">~43%</div></div>
+    <div class="seg-row"><div class="seg-name">Taiwan</div><div class="seg-bar"><div class="seg-fill" style="width:32%"></div></div><div class="seg-val">~19%</div></div>
+    <div class="seg-row"><div class="seg-name">Korea</div><div class="seg-bar"><div class="seg-fill" style="width:25%"></div></div><div class="seg-val">~15%</div></div>
+    <div class="seg-row"><div class="seg-name">Japan</div><div class="seg-bar"><div class="seg-fill" style="width:18%"></div></div><div class="seg-val">~10%</div></div>
+    <div class="seg-row"><div class="seg-name">USA + Other</div><div class="seg-bar"><div class="seg-fill" style="width:22%"></div></div><div class="seg-val">~13%</div></div>
+    <p style="margin-top:14px">China remains the dominant geographic exposure, driven historically by domestic Chinese chipmakers ramping mature and trailing-edge nodes. Management has guided China's revenue share to drop below 30% in fiscal 2026 as the 50% affiliate rule and additional export controls take hold — a near-term revenue headwind worth roughly $600 million but, in our view, a long-term <em>positive</em> for the risk profile.</p>
+  </div>
+
+  <!-- 06 REV/SHARE -->
+  <div class="section" id="rps">
+    <span class="section-label">06 — Revenue / Share</span>
+    <h2>Revenue Per Share Forecast</h2>
+    <p>Revenue compounds with help from a steady share count reduction (Lam has retired roughly 2.4% of its share base over the past year and has $4.3B remaining on its repurchase authorisation). The result: revenue per share grows materially faster than absolute revenue.</p>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="act-col">FY25A</th>
+            <th>FY26E</th>
+            <th>FY27E</th>
+            <th>FY28E</th>
+            <th>FY29E</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>My Revenue ($B)</td>
+            <td class="act-col">$18.44</td>
+            <td>$23.10</td>
+            <td>$27.50</td>
+            <td>$31.50</td>
+            <td>$34.00</td>
+          </tr>
+          <tr>
+            <td>YoY Growth</td>
+            <td class="act-col">+23.7%</td>
+            <td class="pos-val">+25.3%</td>
+            <td class="pos-val">+19.0%</td>
+            <td class="pos-val">+14.5%</td>
+            <td class="pos-val">+7.9%</td>
+          </tr>
+          <tr>
+            <td>Shares (B)</td>
+            <td class="act-col">1.32</td>
+            <td>1.25</td>
+            <td>1.21</td>
+            <td>1.17</td>
+            <td>1.13</td>
+          </tr>
+          <tr>
+            <td>My Rev/Share</td>
+            <td class="act-col">$13.97</td>
+            <td>$18.48</td>
+            <td>$22.73</td>
+            <td>$26.92</td>
+            <td>$30.09</td>
+          </tr>
+          <tr>
+            <td>YoY Growth</td>
+            <td class="act-col">+25.5%</td>
+            <td class="pos-val">+32.3%</td>
+            <td class="pos-val">+23.0%</td>
+            <td class="pos-val">+18.4%</td>
+            <td class="pos-val">+11.8%</td>
+          </tr>
+          <tr>
+            <td>Street Revenue ($B)</td>
+            <td class="act-col">$18.44</td>
+            <td>$22.99</td>
+            <td>$28.50</td>
+            <td>$33.00</td>
+            <td>$35.50</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+    <div class="card-yellow">
+      <strong>Why my revenue is below Street from FY27 onward:</strong> consensus has begun to bake in the $190B WFE outcome for 2028 implied by the most aggressive sell-side models (Lynx Equity, BofA). I model a more moderate WFE trajectory — ~$155B in 2027 and ~$175B in 2028 — and assume Lam holds, but does not aggressively expand, its mid-30s% share of WFE. China revenue compression also takes a sharper bite than Street appears to assume.
+    </div>
+  </div>
+
+  <!-- 07 MARGINS -->
+  <div class="section" id="margins">
+    <span class="section-label">07 — Margins</span>
+    <h2>Margin Forecast</h2>
+    <p>Lam exited the March quarter with a 50.5% non-GAAP gross margin and 35% operating margin — a meaningful step-up from the high-40s/low-30s seen as recently as fiscal 2024. June quarter guidance is for gross margin around 50.5% and operating margin near 36.5%. Management characterised the gross margin level as durable rather than transitory; my model accepts that view, with operating margin holding near record levels and net margin tracking revenue growth and a modest tax-rate uplift.</p>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Margin</th>
+            <th class="act-col">FY25A</th>
+            <th>FY26E</th>
+            <th>FY27E</th>
+            <th>FY28E</th>
+            <th>FY29E</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>My Operating Margin</td>
+            <td class="act-col">30.4%</td>
+            <td>35.0%</td>
+            <td>36.0%</td>
+            <td>36.0%</td>
+            <td>35.5%</td>
+          </tr>
+          <tr>
+            <td>Street Op Margin</td>
+            <td class="act-col">30.4%</td>
+            <td>35.5%</td>
+            <td>36.5%</td>
+            <td>37.0%</td>
+            <td>37.0%</td>
+          </tr>
+          <tr>
+            <td>My Net Margin</td>
+            <td class="act-col">29.1%</td>
+            <td>30.6%</td>
+            <td>31.4%</td>
+            <td>31.5%</td>
+            <td>31.0%</td>
+          </tr>
+          <tr>
+            <td>Street Net Margin</td>
+            <td class="act-col">29.1%</td>
+            <td>31.0%</td>
+            <td>32.0%</td>
+            <td>32.5%</td>
+            <td>32.5%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+    <div class="card-yellow">
+      <strong>Why I'm slightly more cautious on margins:</strong> the current mix benefits from elevated foundry intensity and rich CSBG growth; as 2027 NAND conversion spending lands, lower-margin foundational tool deliveries could mute incremental margin expansion. I assume modest reversion from FY28, while Street tends to extrapolate the 36–37% bar into terminal years.
+    </div>
+  </div>
+
+  <!-- 08 EPS -->
+  <div class="section" id="eps">
+    <span class="section-label">08 — EPS</span>
+    <h2>EPS Forecast</h2>
+    <p>FY26 non-GAAP EPS is essentially locked at $5.65 — three quarters reported (Q1 $1.26, Q2 $1.27, Q3 $1.47) plus the company's own midpoint guide of $1.65 for the June quarter. From there, my model reflects margin durability plus continued buybacks, but with a deceleration into terminal years that I think Street has been too quick to dismiss.</p>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="act-col">FY25A</th>
+            <th>FY26E</th>
+            <th>FY27E</th>
+            <th>FY28E</th>
+            <th>FY29E</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>My Non-GAAP EPS</td>
+            <td class="act-col">$4.20</td>
+            <td>$5.65</td>
+            <td>$7.50</td>
+            <td>$8.85</td>
+            <td>$9.95</td>
+          </tr>
+          <tr>
+            <td>YoY Growth</td>
+            <td class="act-col">+34%</td>
+            <td class="pos-val">+34.5%</td>
+            <td class="pos-val">+32.7%</td>
+            <td class="pos-val">+18.0%</td>
+            <td class="pos-val">+12.4%</td>
+          </tr>
+          <tr>
+            <td>Street Low EPS</td>
+            <td class="act-col">—</td>
+            <td>$5.40</td>
+            <td>$7.00</td>
+            <td>$8.50</td>
+            <td>$9.50</td>
+          </tr>
+          <tr>
+            <td>Street Avg EPS</td>
+            <td class="act-col">—</td>
+            <td>$5.65</td>
+            <td>$8.30</td>
+            <td>$9.85</td>
+            <td>$10.80</td>
+          </tr>
+          <tr>
+            <td>Street High EPS</td>
+            <td class="act-col">—</td>
+            <td>$5.85</td>
+            <td>$10.30</td>
+            <td>$11.50</td>
+            <td>$12.50</td>
+          </tr>
+          <tr>
+            <td>My vs. Street Avg</td>
+            <td class="act-col">—</td>
+            <td>0%</td>
+            <td class="neg-val">−9.6%</td>
+            <td class="neg-val">−10.2%</td>
+            <td class="neg-val">−7.9%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+    <div class="card-yellow">
+      <strong>EPS calibration note:</strong> BofA's calendar-2027 EPS of $10.31 and Lynx Equity's $9.80 calendar-2028 print sit at the bullish end of consensus. My fiscal-year framing is more conservative because (1) I assume a modest WFE pause in 2028 as memory finishes its upgrade cycle, and (2) I do not credit aggressive operating-leverage assumptions in years where mix tilts back toward foundry trailing-edge.
+    </div>
+  </div>
+
+  <!-- 09 ROIC -->
+  <div class="section" id="roic">
+    <span class="section-label">09 — ROIC</span>
+    <h2>ROIC Forecast</h2>
+    <p>ROIC is where Lam's quality really shows. The five-year average sits near 45%, well above the company's roughly 12–16% weighted-average cost of capital. Every dollar reinvested earns a multiple of its cost — this is the engine behind the buyback story and the multi-decade compounding profile.</p>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th class="act-col">FY25A</th>
+            <th>FY26E</th>
+            <th>FY27E</th>
+            <th>FY28E</th>
+            <th>FY29E</th>
+            <th>Commentary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>My ROIC</td>
+            <td class="act-col">~45%</td>
+            <td>~50%</td>
+            <td>~52%</td>
+            <td>~50%</td>
+            <td>~47%</td>
+            <td>Peak in FY27 as op margin and capital efficiency align</td>
+          </tr>
+          <tr>
+            <td>WACC</td>
+            <td class="act-col">~13%</td>
+            <td>~13%</td>
+            <td>~13%</td>
+            <td>~13%</td>
+            <td>~13%</td>
+            <td>Capital structure stable; 0.44× D/E</td>
+          </tr>
+          <tr>
+            <td>ROIC − WACC</td>
+            <td class="act-col">+32pp</td>
+            <td>+37pp</td>
+            <td>+39pp</td>
+            <td>+37pp</td>
+            <td>+34pp</td>
+            <td>Persistent excess returns drive intrinsic value compounding</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+    <p>The 5-year average ROIC of approximately 45% ranks Lam among the elite capital allocators in the broader semiconductor universe. The combination of a 4–5% capex-to-revenue ratio and a 50%+ gross margin means new investment dollars convert almost immediately into incremental earnings power — a structural advantage that distinguishes Lam from the more capital-intensive parts of the chip supply chain.</p>
+  </div>
+
+  <!-- 10 P/E -->
+  <div class="section" id="pe">
+    <span class="section-label">10 — Multiples</span>
+    <h2>P/E Multiple Forecast</h2>
+    <p>This is where the analytical tension lives. Lam's 10-year average trailing P/E sits near 22×, the 5-year average near 24×. The current trailing multiple at roughly 48–55× is the highest in a decade. A re-rating is the single largest swing factor in any 4-year price target — more important than EPS itself.</p>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th class="act-col">Today</th>
+            <th>FY26E</th>
+            <th>FY27E</th>
+            <th>FY28E</th>
+            <th>FY29E</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>My Forward P/E</td>
+            <td class="act-col">48×</td>
+            <td>32×</td>
+            <td>27×</td>
+            <td>24×</td>
+            <td>22×</td>
+          </tr>
+          <tr>
+            <td>Street Implied P/E</td>
+            <td class="act-col">48×</td>
+            <td>34×</td>
+            <td>29×</td>
+            <td>26×</td>
+            <td>24×</td>
+          </tr>
+          <tr>
+            <td>10-Yr Hist. Avg P/E</td>
+            <td class="act-col">22×</td>
+            <td>22×</td>
+            <td>22×</td>
+            <td>22×</td>
+            <td>22×</td>
+          </tr>
+          <tr>
+            <td>Premium vs. History</td>
+            <td class="act-col">+118%</td>
+            <td class="neg-val">+45%</td>
+            <td class="neg-val">+23%</td>
+            <td class="pos-val">+9%</td>
+            <td>Flat</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+    <div class="card-yellow">
+      <strong>Multiple thesis:</strong> the right P/E for Lam in the AI era is not its 10-year historical mean (which encompassed two brutal memory downturns) but it isn't 50× either. I anchor at 30–32× near term — reasonable for a 30%+ EPS grower with 50% ROIC — and gradually fade toward 22× as growth normalises and the cycle matures. This is the single most consequential assumption in the report and the variable I'd encourage readers to stress-test most.
+    </div>
+  </div>
+
+  <!-- 11 PRICE TARGETS -->
+  <div class="section" id="targets">
+    <span class="section-label">11 — Price Targets</span>
+    <h2>Price Targets &amp; Scenarios</h2>
+    <p>Targets below apply each year's exit P/E to the following year's forward EPS — the standard approach for forward-looking valuation. The wide spread between Bear and Bull reflects how leveraged this stock is to the multiple, not just earnings.</p>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Year-End</th>
+            <th>Bear (P/E low)</th>
+            <th>Base (P/E mid)</th>
+            <th>Bull (P/E high)</th>
+            <th>Street 12-mo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jun 2026 (FY26)</td>
+            <td>$165</td>
+            <td>$240</td>
+            <td>$315</td>
+            <td>$310 avg</td>
+          </tr>
+          <tr>
+            <td>Jun 2027 (FY27)</td>
+            <td>$177</td>
+            <td>$248</td>
+            <td>$310</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Jun 2028 (FY28)</td>
+            <td>$179</td>
+            <td>$248</td>
+            <td>$318</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Jun 2029 (FY29)</td>
+            <td>$197</td>
+            <td>$254</td>
+            <td>$320</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+    <h3>FY29 terminal scenario</h3>
+    <div class="scenarios">
+      <div class="scen-row bear">
+        <div class="scen-label">Bear</div>
+        <div class="scen-bar"><div class="scen-fill" style="width:60%"></div></div>
+        <div class="scen-val">$197</div>
+      </div>
+      <div class="scen-row base">
+        <div class="scen-label">Base</div>
+        <div class="scen-bar"><div class="scen-fill" style="width:78%"></div></div>
+        <div class="scen-val">$254</div>
+      </div>
+      <div class="scen-row bull">
+        <div class="scen-label">Bull</div>
+        <div class="scen-bar"><div class="scen-fill" style="width:99%"></div></div>
+        <div class="scen-val">$320</div>
+      </div>
+    </div>
+    <p>Note that even the Bull case at FY29 implies only a ~17% gain from today's $272, while the Bear case implies ~28% downside. This asymmetry is the fingerprint of a stock that has already priced in an unusually clean execution path. Street 12-month consensus at roughly $310 sits between my Base and Bull, with the most aggressive houses (Susquehanna $385, B. Riley $350) pricing in something closer to an extended bull case.</p>
+  </div>
+
+  <!-- 12 YEAR-BY-YEAR -->
+  <div class="section" id="yearly">
+    <span class="section-label">12 — Year-by-Year</span>
+    <h2>Year-by-Year Rationale</h2>
+
+    <div class="year-card">
+      <div class="year-card-header">
+        <div class="year-title">Fiscal 2026 <small>Ends Jun 2026 · already 75% reported</small></div>
+        <div class="eps-badge">EPS +35% YoY</div>
+      </div>
+      <div class="year-metrics">
+        <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$18.48</div></div>
+        <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$5.65</div></div>
+        <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">22–38×</div></div>
+      </div>
+      <div class="year-rationale">
+        FY26 is essentially in the bag: nine months reported delivered $16.5B revenue and $4.99B net income, with the June quarter guided to a record $6.6B revenue and $1.65 EPS. The driver is breadth — foundry leading-edge AI capacity, record DRAM tied to HBM and 1C transitions, accelerating NAND upgrades, and CSBG crossing $2B per quarter for the first time. The base-case price exit reflects multiple compression from ~48× toward ~32× as the market digests how much has already been earned versus what remains.
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-card-header">
+        <div class="year-title">Fiscal 2027 <small>Jul 2026 – Jun 2027</small></div>
+        <div class="eps-badge">EPS +33% YoY</div>
+      </div>
+      <div class="year-metrics">
+        <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$22.73</div></div>
+        <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$7.50</div></div>
+        <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">20–36×</div></div>
+      </div>
+      <div class="year-rationale">
+        FY27 should be the peak year of the WFE supercycle — industry spend rising into the $160–170B range, with NAND conversion spending accelerating as the bulk of the $40B upgrade cycle front-loads before end-2027. Lam's mid-30s SAM share works in its favour. The risk is a multiple de-rate as investors begin asking "what's after the cycle?" — a question that historically has compressed semiconductor equipment names hard, even when earnings are still rising.
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-card-header">
+        <div class="year-title">Fiscal 2028 <small>Jul 2027 – Jun 2028</small></div>
+        <div class="eps-badge">EPS +18% YoY</div>
+      </div>
+      <div class="year-metrics">
+        <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$26.92</div></div>
+        <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$8.85</div></div>
+        <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">18–32×</div></div>
+      </div>
+      <div class="year-rationale">
+        Growth decelerates as memory completes its upgrade cycle and foundry leading-edge capex normalises. The CSBG installed base — now likely north of 110,000 chambers — provides a durable ~$10B annual revenue floor independent of WFE direction. Advanced packaging continues outgrowing the broader business. This is the year when the multiple compression I model bites hardest: even with 18% EPS growth, the stock could be flat-to-down if the market begins pricing a cyclical pause.
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-card-header">
+        <div class="year-title">Fiscal 2029 <small>Jul 2028 – Jun 2029 · terminal year</small></div>
+        <div class="eps-badge">EPS +12% YoY</div>
+      </div>
+      <div class="year-metrics">
+        <div class="ym"><div class="ym-label">Rev/Share</div><div class="ym-val">$30.09</div></div>
+        <div class="ym"><div class="ym-label">EPS</div><div class="ym-val">$9.95</div></div>
+        <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-val">18–28×</div></div>
+      </div>
+      <div class="year-rationale">
+        Terminal year reflects mean reversion to a more normalised growth and valuation picture. EPS growth slows to roughly 12% as the WFE cycle plateaus. The bull-case P/E of 28× still sits well above the 22× ten-year mean, justified by structurally higher AI-era equipment intensity and expanded CSBG mix. The bear case (18× P/E) is essentially the multiple Lam traded at during the 2022–2023 memory downturn.
+      </div>
+    </div>
+  </div>
+
+  <!-- 13 ROI -->
+  <div class="section" id="roi">
+    <span class="section-label">13 — ROI from Today</span>
+    <h2>Yearly ROI from Today's $272</h2>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Year-End</th>
+            <th>Bear Cum.</th>
+            <th>Bear Annual</th>
+            <th>Base Cum.</th>
+            <th>Base Annual</th>
+            <th>Bull Cum.</th>
+            <th>Bull Annual</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jun 2026</td>
+            <td class="neg-val">−39%</td>
+            <td class="neg-val">−39%</td>
+            <td class="neg-val">−12%</td>
+            <td class="neg-val">−12%</td>
+            <td class="pos-val">+16%</td>
+            <td class="pos-val">+16%</td>
+          </tr>
+          <tr>
+            <td>Jun 2027</td>
+            <td class="neg-val">−35%</td>
+            <td class="neg-val">−19%</td>
+            <td class="neg-val">−9%</td>
+            <td class="neg-val">−4.5%</td>
+            <td class="pos-val">+14%</td>
+            <td class="pos-val">+6.8%</td>
+          </tr>
+          <tr>
+            <td>Jun 2028</td>
+            <td class="neg-val">−34%</td>
+            <td class="neg-val">−13%</td>
+            <td class="neg-val">−9%</td>
+            <td class="neg-val">−3.0%</td>
+            <td class="pos-val">+17%</td>
+            <td class="pos-val">+5.5%</td>
+          </tr>
+          <tr>
+            <td>Jun 2029</td>
+            <td class="neg-val">−28%</td>
+            <td class="neg-val">−7.9%</td>
+            <td class="neg-val">−7%</td>
+            <td class="neg-val">−1.7%</td>
+            <td class="pos-val">+18%</td>
+            <td class="pos-val">+4.3%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+    <p>The conclusion any honest analyst has to face: even in the bull case, four-year annualised returns from $272 are mid-single-digit. The base case is roughly flat-to-slightly-down. The bear case is meaningfully negative. Sizing must reflect this — entries closer to a $200 handle would dramatically improve the math.</p>
+  </div>
+
+  <!-- 14 RISKS -->
+  <div class="section" id="risks">
+    <span class="section-label">14 — Pros &amp; Cons</span>
+    <h2>Structural Advantages &amp; Key Risks</h2>
+    <div class="pc-grid">
+      <div class="pc-card pros">
+        <h4>Structural Advantages</h4>
+        <ul>
+          <li>#1 share in etch and #2 in deposition — both irreplaceable in any advanced fab</li>
+          <li>~45% ROIC with 4–5% capex intensity — exceptional capital efficiency</li>
+          <li>100,000+ chamber installed base anchors recurring CSBG revenue</li>
+          <li>AI-era step-change in etch/deposition intensity per wafer</li>
+          <li>50%+ gross margin, durable per management commentary</li>
+          <li>$5.4B+ free cash flow, 85%+ returned to shareholders</li>
+          <li>Recent dielectric-etch wins at a major foundry expand TAM</li>
+          <li>Advanced packaging revenue growing 50%+ in CY26</li>
+        </ul>
+      </div>
+      <div class="pc-card cons">
+        <h4>Key Risks</h4>
+        <ul>
+          <li>Trailing P/E at 48–55× vs. 22× 10-year average</li>
+          <li>~43% of revenue from China — declining to &lt;30% in FY26</li>
+          <li>Cyclical industry — memory pause or foundry digestion possible</li>
+          <li>U.S. export controls could tighten further</li>
+          <li>Beta of 1.79 — significant drawdown risk in tech selloffs</li>
+          <li>Customer concentration: TSMC, Samsung, SK Hynix, Micron, Intel</li>
+          <li>Insider selling activity from CFO during March</li>
+          <li>WFE could plateau in 2028 once NAND conversion completes</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Risk Severity Assessment</h3>
+    <div class="risk risk-high">
+      <span class="risk-badge">HIGH</span>
+      <div><strong>Valuation reset risk.</strong> Trailing P/E sits more than 100% above its 10-year average. A pause in industry capex narrative — or even a normal cycle digestion — could compress the multiple to 25–30× and send the stock into a 25–35% drawdown despite stable earnings.</div>
+    </div>
+    <div class="risk risk-high">
+      <span class="risk-badge">HIGH</span>
+      <div><strong>China revenue compression.</strong> Roughly 43% of fiscal 2026 revenue came from China; the 50% affiliate rule and incremental export controls have already created a $200M Q2 drag and are guided to a ~$600M calendar-2026 headwind. Further controls cannot be ruled out.</div>
+    </div>
+    <div class="risk risk-med">
+      <span class="risk-badge">MED</span>
+      <div><strong>Customer concentration.</strong> Five customers (TSMC, Samsung, SK Hynix, Micron, Intel) likely account for over 60% of revenue. A capex pause from any one of them is material; a coordinated pause would be severe.</div>
+    </div>
+    <div class="risk risk-med">
+      <span class="risk-badge">MED</span>
+      <div><strong>Memory cycle exposure.</strong> Memory remains 39% of systems. Historical memory downturns have compressed Lam's revenue by 25–35%. The next downturn — whenever it comes — will be brutal even if structurally shallower than past cycles.</div>
+    </div>
+    <div class="risk risk-low">
+      <span class="risk-badge">LOW</span>
+      <div><strong>Competitive displacement.</strong> Tokyo Electron, Applied Materials, and ASM International compete in adjacent areas, but qualification lock-in and Lam's installed-base support make share losses slow-moving and recoverable.</div>
+    </div>
+    <div class="risk risk-low">
+      <span class="risk-badge">LOW</span>
+      <div><strong>Execution / management quality.</strong> Tim Archer (CEO) and Doug Bettinger (CFO) have a multi-year track record of conservative guidance and consistent beat-and-raise. Management bench is deep.</div>
+    </div>
+  </div>
+
+  <!-- 15 MACRO -->
+  <div class="section" id="macro">
+    <span class="section-label">15 — Macro &amp; Competition</span>
+    <h2>Macro, Regulation &amp; Competition</h2>
+    <h3>Macro sensitivities</h3>
+    <ul class="bull-list world">
+      <li><strong>Interest rates.</strong> Lam is a long-duration earnings stock (50%+ ROIC, growing earnings stream). Higher-for-longer rates compress justifiable multiples; rate cuts would relieve valuation pressure.</li>
+      <li><strong>FX.</strong> ~80% of revenue is non-US, but most invoicing is in USD, so direct FX exposure is moderate. Indirect exposure runs through customer capex willingness in Korea, Japan, Taiwan.</li>
+      <li><strong>Recession sensitivity.</strong> Equipment orders are leading indicators of consumer electronics demand. A consumer recession typically hits memory pricing first, then 6–12 months later WFE orders. Lam's recovering NAND segment is the most cyclically vulnerable component.</li>
+      <li><strong>AI capex sustainability.</strong> The single most important macro variable. If hyperscaler capex normalises rather than continues compounding, advanced-node demand and HBM intensity both moderate, and Lam's bull case unwinds.</li>
+      <li><strong>Inflation in components.</strong> Lam has notified suppliers to source non-Chinese alternatives for certain components, which could raise input costs.</li>
+    </ul>
+    <h3>Regulatory &amp; geopolitical</h3>
+    <div class="card-yellow">
+      <strong>Regulatory assumption baked into base case:</strong> the December 2024 export-control package is fully reflected, and a meaningful incremental tightening occurs late in calendar 2026 or early 2027. China revenue normalises near 25% of total by FY28. A sharper regulatory regime — including outright bans on a wider class of mature-node equipment to China — would push my Bear case toward the downside scenarios.
+    </div>
+    <ul class="bull-list shield">
+      <li>December 2024 export controls already cost Lam an estimated $200M in revenue with ongoing impact</li>
+      <li>50% affiliate rule restricts shipments to specific Chinese customers, forcing China revenue below 30% in FY26</li>
+      <li>Supply-chain re-routing away from Chinese components is underway and may compress margins modestly</li>
+      <li>U.S. CHIPS Act incentives for domestic fab build-out (TSMC Arizona, Samsung Texas, Intel Ohio) are a structural offset</li>
+    </ul>
+    <h3>Competitive landscape</h3>
+    <ul class="bull-list target">
+      <li><strong>Applied Materials (AMAT).</strong> Largest WFE company by revenue, broader product portfolio across deposition, etch, and inspection. Lam has narrower scope but deeper share in its specific niches. AMAT trades at ~40× P/E — also rich, but less stretched than LRCX.</li>
+      <li><strong>Tokyo Electron (TEL).</strong> Direct competitor in etch, deposition, and coater/developer. Holds ~9–12% of WFE share. May benefit from being exempted from some U.S. export controls — a relative competitive risk for Lam.</li>
+      <li><strong>KLA Corporation (KLAC).</strong> Process control and metrology leader; complementary rather than directly competitive in most cases. Trades at ~50× P/E — a similar valuation profile and useful comp.</li>
+      <li><strong>ASML.</strong> Lithography monopoly, complementary not competitive. Useful comp for valuation purposes but a different business model.</li>
+      <li><strong>ASM International, Hitachi High-Tech, Screen Holdings.</strong> Smaller specialists in deposition, etch, and clean — niche competitors with limited share threat.</li>
+    </ul>
+  </div>
+
+  <!-- 16 CONCLUSION -->
+  <div class="section" id="conclusion">
+    <span class="section-label">16 — Conclusion</span>
+    <h2>Investment Conclusion</h2>
+    <div class="conclusion-box">
+      <h3>The Honest Verdict</h3>
+      <p>Lam Research is one of the highest-quality industrials in the world. The thesis isn't broken — it's already paid out. The 200%+ rally over the past twelve months has effectively pulled forward four years of base-case returns into a single year. Buying here is a bet that the multiple holds at peak levels and that the cycle extends without pause through 2028. Possible — but not the way I'd handicap it.</p>
+      <div class="target-row">
+        <div class="target-box">
+          <div class="tb-label">12-mo target (Base)</div>
+          <div class="tb-val">$240</div>
+          <div class="tb-sub">−12% from $272</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">4-yr Base</div>
+          <div class="tb-val">$254</div>
+          <div class="tb-sub">−1.7% annualised</div>
+        </div>
+        <div class="target-box">
+          <div class="tb-label">4-yr Bull / Rating</div>
+          <div class="tb-val">$320</div>
+          <div class="tb-sub">HOLD on valuation</div>
+        </div>
+      </div>
+      <p>The actionable conclusion: existing holders should consider trimming above $270 and not selling outright (the operating quality warrants a permanent core position). New money should wait for entry closer to $200 — a level that would re-introduce attractive 4-year compounding even on conservative assumptions. The contrarian angle worth flagging: if the AI capex narrative breaks for any reason in the next 12 months, this stock has 30–40% downside before fundamentals even touch it. Conversely, if the WFE supercycle extends meaningfully into 2029 (a Lynx Equity-style $190B+ outcome), the current price will look reasonable in hindsight — but that's a tail rather than the central case.</p>
+    </div>
+  </div>
+
+  <!-- 17 DISCLAIMER -->
+  <div class="section" id="disclaimer">
+    <span class="section-label">17 — Disclaimer</span>
+    <h2>Disclaimer</h2>
+    <div class="disclaimer">
+      This report is provided for informational and educational purposes only and does not constitute financial, investment, legal, or tax advice. The author is not a registered investment advisor. All forward-looking estimates, scenarios, price targets, and rationale represent independent analytical judgments based on publicly available information at the time of writing (April 25, 2026) and could prove materially incorrect. Stock prices, analyst estimates, and macroeconomic conditions change continuously; readers should verify all data against current primary sources before making any investment decision. Past performance is not indicative of future results. Investing in equities involves risk, including the potential loss of principal. The author may or may not hold positions in the securities discussed and may transact in such securities without notice. Readers are encouraged to consult a licensed financial advisor before making any investment decisions.
+    </div>
+  </div>
+
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button onclick="changeFont(-1)" aria-label="Decrease font">A−</button>
+  <span id="fsDisplay">16px</span>
+  <button onclick="changeFont(1)" aria-label="Increase font">A+</button>
+  <span class="sep"></span>
+  <button id="modeBtn" onclick="toggleMode()" aria-label="Toggle mode">🌙</button>
+</div>
+
+<script>
+  const MIN_FS = 12, MAX_FS = 26, STEP = 1;
+  let currentFs = parseInt(localStorage.getItem('LRCX_fs') || '16', 10);
+  let isDark = localStorage.getItem('LRCX_dark') === '1';
+  function applyFont(size) {
+    currentFs = Math.min(MAX_FS, Math.max(MIN_FS, size));
+    document.documentElement.style.setProperty('--fs-base', currentFs + 'px');
+    document.getElementById('fsDisplay').textContent = currentFs + 'px';
+    localStorage.setItem('LRCX_fs', currentFs);
+  }
+  function changeFont(delta) { applyFont(currentFs + delta * STEP); }
+  function applyMode() {
+    document.body.classList.toggle('dark', isDark);
+    document.getElementById('modeBtn').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('LRCX_dark', isDark ? '1' : '0');
+  }
+  function toggleMode() { isDark = !isDark; applyMode(); }
+  applyFont(currentFs);
+  applyMode();
+</script>
+
+</body>
+</html>

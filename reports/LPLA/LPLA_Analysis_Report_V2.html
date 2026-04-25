@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LPL Financial Holdings (LPLA) — Deep Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --fs-base: 16px;
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-2: #edf3fb;
+  --text: #111d29;
+  --text-muted: #3a526a;
+  --border: #d0dcea;
+  --navy: #0f2444;
+  --blue: #1a5fa8;
+  --sky: #3b8fd4;
+  --gold: #f5c842;
+  --accent: #e8a020;
+  --green: #1a7a4a;
+  --green-bg: #e8f5ee;
+  --red: #b93232;
+  --red-bg: #fbeaea;
+  --orange: #c45c10;
+  --card-shadow: 0 2px 16px rgba(15,36,68,0.10);
+}
+body.dark {
+  --bg: #0e1520;
+  --surface: #172032;
+  --surface-2: #1e2d44;
+  --text: #dde4ef;
+  --text-muted: #8fa3be;
+  --border: #2a3d58;
+  --navy: #1e3a60;
+  --blue: #4b8ed4;
+  --sky: #6ab0e8;
+  --green: #2ecc78;
+  --green-bg: #0e2a1c;
+  --red: #e05555;
+  --red-bg: #2a1212;
+  --card-shadow: 0 2px 20px rgba(0,0,0,0.40);
+}
+* { box-sizing: border-box; }
+html { font-size: var(--fs-base); }
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.65;
+  font-weight: 400;
+  transition: background .3s, color .3s;
+}
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 22px 100px;
+}
+h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; color: var(--text); }
+h2 { font-size: 1.85rem; font-weight: 900; margin: 2.3rem 0 .8rem; line-height: 1.2; }
+h3 { font-size: 1.25rem; font-weight: 700; margin: 1.5rem 0 .5rem; }
+p { margin: 0 0 1rem; }
+em, i { font-style: italic; color: var(--text-muted); }
+a { color: var(--blue); text-decoration: none; border-bottom: 1px dotted var(--blue); }
+a:hover { color: var(--accent); }
+
+.section { animation: fadeUp 0.5s ease both; }
+.section:nth-child(2)  { animation-delay: .04s; }
+.section:nth-child(3)  { animation-delay: .08s; }
+.section:nth-child(4)  { animation-delay: .12s; }
+.section:nth-child(5)  { animation-delay: .16s; }
+.section:nth-child(6)  { animation-delay: .20s; }
+.section:nth-child(7)  { animation-delay: .24s; }
+.section:nth-child(8)  { animation-delay: .28s; }
+.section:nth-child(9)  { animation-delay: .32s; }
+.section:nth-child(10) { animation-delay: .36s; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.section-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-top: 2.5rem;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(145deg, #0a1e38 0%, #0f2f5c 50%, #1a5fa8 100%);
+  color: #fff;
+  padding: 3.2rem 22px 3rem;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 360px; height: 360px;
+  background: radial-gradient(circle, rgba(245,200,66,0.22), transparent 65%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -160px; left: -120px;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(59,143,212,0.30), transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 2; }
+.hero-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f5c842, #e8a020);
+  color: #1a1a1a;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.13em;
+  padding: 6px 14px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  margin-bottom: 1.1rem;
+}
+.hero h1 {
+  font-size: 2.7rem;
+  font-weight: 900;
+  line-height: 1.05;
+  margin: 0 0 .8rem;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+.hero h1 span { color: var(--gold); display: block; font-style: italic; font-weight: 700; }
+.hero-sub {
+  font-style: italic;
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.86);
+  margin-bottom: 1.4rem;
+  font-weight: 300;
+  max-width: 600px;
+}
+.hero-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.hero-chip {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 999px;
+  padding: 5px 13px;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+}
+
+/* TOC */
+.toc {
+  background: var(--surface);
+  border-left: 3px solid var(--gold);
+  padding: 1rem 1.3rem;
+  margin: 1rem 0 0.5rem;
+  list-style: none;
+  border-radius: 4px;
+  box-shadow: var(--card-shadow);
+}
+.toc li {
+  font-size: 0.96rem;
+  padding: 4px 0;
+  border-bottom: 1px dotted var(--border);
+}
+.toc li:last-child { border-bottom: none; }
+.toc li a { border-bottom: none; color: var(--text); }
+.toc li a:hover { color: var(--accent); }
+.toc .num {
+  display: inline-block;
+  width: 32px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+  box-shadow: var(--card-shadow);
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+}
+.card-blue {
+  background: linear-gradient(135deg, var(--surface-2), var(--surface));
+  border-left: 4px solid var(--blue);
+}
+.card-yellow {
+  background: linear-gradient(135deg, #fff8e3, #fffaef);
+  border-left: 4px solid var(--accent);
+  color: #4a3a10;
+}
+body.dark .card-yellow { background: linear-gradient(135deg, #2a2010, #1f1808); color: #f5d590; border-left-color: var(--gold); }
+.card-yellow strong { color: #b87a10; }
+body.dark .card-yellow strong { color: var(--gold); }
+
+/* SNAPSHOT */
+.snap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 1rem 0 0.5rem;
+}
+@media (max-width: 400px) { .snap-grid { grid-template-columns: 1fr; } }
+.snap-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  box-shadow: var(--card-shadow);
+}
+.snap-tile .lbl {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.snap-tile .val {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+.snap-tile.dark-hi {
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  color: #fff;
+  border: none;
+}
+.snap-tile.dark-hi .lbl { color: rgba(255,255,255,0.78); }
+.snap-tile.dark-hi .val { color: #fff; }
+.snap-tile.green-hi { background: var(--green-bg); border-color: var(--green); }
+.snap-tile.green-hi .val { color: var(--green); }
+.snap-tile.red-hi { background: var(--red-bg); border-color: var(--red); }
+.snap-tile.red-hi .val { color: var(--red); }
+
+/* BULL LIST */
+.bull-list { list-style: none; padding: 0; margin: 1rem 0; }
+.bull-list li {
+  padding: 0.65rem 0 0.65rem 2.2rem;
+  border-bottom: 1px dotted var(--border);
+  position: relative;
+  font-size: 0.97rem;
+}
+.bull-list li:last-child { border-bottom: none; }
+.bull-list li .ico {
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  font-size: 1.2rem;
+}
+
+/* SEGMENT BARS */
+.bar-row { margin: 0.55rem 0; }
+.bar-label {
+  display: flex; justify-content: space-between;
+  font-size: 0.92rem; margin-bottom: 4px;
+}
+.bar-label .pct { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; color: var(--blue); }
+.bar-track {
+  height: 14px;
+  background: var(--surface-2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy), var(--blue), var(--sky));
+  border-radius: 6px;
+}
+
+/* FORECAST TABLES */
+.forecast-wrap {
+  overflow-x: auto;
+  margin: 0.8rem 0 0.3rem;
+  border-radius: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+.forecast-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 520px;
+  background: var(--surface);
+}
+.forecast-table thead th {
+  background: var(--navy);
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  padding: 12px 10px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.forecast-table thead th:first-child {
+  text-align: left;
+  border-radius: 12px 0 0 0;
+}
+.forecast-table thead th:last-child {
+  border-radius: 0 12px 0 0;
+}
+.forecast-table tbody td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  color: var(--text);
+}
+.forecast-table tbody td:first-child {
+  text-align: left;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--blue);
+}
+.forecast-table tbody tr:nth-child(even) td:not(:first-child) {
+  background: var(--surface-2);
+}
+/* act-col: current/actual year column — solid hex, never rgba */
+.forecast-table .act-col {
+  background: #e8f0f8 !important;
+  color: var(--navy) !important;
+}
+.forecast-table thead th.act-col {
+  background: #c8ddf5 !important;
+  color: var(--navy) !important;
+}
+body.dark .forecast-table .act-col {
+  background: #1a2e4a !important;
+  color: #c8d8f0 !important;
+}
+body.dark .forecast-table thead th.act-col {
+  background: #223a5c !important;
+  color: #c8d8f0 !important;
+}
+.pos-val { color: var(--green); font-weight: 600; }
+.neg-val { color: var(--red); font-weight: 600; }
+.scroll-hint {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 4px 0 0.7rem;
+}
+
+/* YEAR CARDS */
+.year-card {
+  background: var(--surface);
+  border-radius: 12px;
+  margin: 1.1rem 0;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.year-head {
+  background: linear-gradient(90deg, #0f2444, #1a5fa8);
+  color: #fff;
+  padding: 0.85rem 1.3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.year-head .yr {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+}
+.year-head .eps-badge {
+  background: rgba(245,200,66,0.22);
+  color: var(--gold);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid rgba(245,200,66,0.4);
+}
+.year-body { padding: 1rem 1.3rem 1.2rem; }
+.year-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 0.9rem;
+}
+@media (max-width: 400px) { .year-metrics { grid-template-columns: repeat(2, 1fr); } }
+.year-metrics div { background: var(--surface-2); padding: 8px 10px; border-radius: 6px; }
+.year-metrics .lbl {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+.year-metrics .val {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+.year-rationale { font-size: 0.93rem; line-height: 1.6; color: var(--text); }
+
+/* SCENARIO BARS */
+.scen-grid {
+  display: grid;
+  grid-template-columns: 70px 1fr 90px;
+  gap: 10px;
+  align-items: center;
+  margin: 0.5rem 0;
+  font-size: 0.92rem;
+}
+.scen-label { font-weight: 700; color: var(--text-muted); font-size: 0.85rem; letter-spacing: 0.05em; }
+.scen-track { height: 22px; background: var(--surface-2); border-radius: 6px; overflow: hidden; }
+.scen-fill { height: 100%; border-radius: 6px; }
+.scen-fill.bear { background: linear-gradient(90deg, #b93232, #d56565); }
+.scen-fill.base { background: linear-gradient(90deg, #0f2444, #1a5fa8); }
+.scen-fill.bull { background: linear-gradient(90deg, #1a7a4a, #2ecc78); }
+.scen-val {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  text-align: right;
+  color: var(--text);
+}
+
+/* RISK ITEMS */
+.risk-item {
+  padding: 0.7rem 1rem;
+  margin: 0.55rem 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.risk-item.high { background: #fce8e8; }
+.risk-item.med { background: #fdeede; }
+.risk-item.low { background: #daf2e8; }
+body.dark .risk-item.high { background: #2a1010; }
+body.dark .risk-item.med { background: #2a1e08; }
+body.dark .risk-item.low { background: #0a2016; }
+.risk-item .desc { flex: 1; font-size: 0.92rem; }
+.risk-item .badge {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.13em;
+  color: #fff;
+}
+.risk-item.high .badge { background: var(--red); }
+.risk-item.med .badge { background: var(--orange); }
+.risk-item.low .badge { background: var(--green); }
+
+/* PROS / CONS */
+.pc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 1rem 0;
+}
+@media (min-width: 560px) { .pc-grid { grid-template-columns: 1fr 1fr; } }
+.pc-card {
+  padding: 1rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.pc-card.pros { border-left: 4px solid var(--green); }
+.pc-card.cons { border-left: 4px solid var(--red); }
+.pc-card h4 {
+  font-size: 1.05rem;
+  margin: 0 0 0.6rem;
+  font-weight: 700;
+}
+.pc-card.pros h4 { color: var(--green); }
+.pc-card.cons h4 { color: var(--red); }
+.pc-card ul { margin: 0; padding-left: 1.1rem; font-size: 0.9rem; }
+.pc-card li { margin-bottom: 6px; }
+
+/* CONCLUSION */
+.conclusion-box {
+  background: linear-gradient(135deg, #0f2444 0%, #0d3568 100%);
+  color: #fff;
+  padding: 1.7rem 1.5rem;
+  border-radius: 14px;
+  margin: 1.2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.conclusion-box::before {
+  content: '';
+  position: absolute;
+  top: -90px; right: -90px;
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(245,200,66,0.25), transparent 65%);
+  pointer-events: none;
+}
+.conclusion-box h2 { color: #fff; margin-top: 0; position: relative; z-index: 2; }
+.conclusion-box p { color: rgba(255,255,255,0.92); position: relative; z-index: 2; }
+.target-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 1.2rem 0;
+  position: relative;
+  z-index: 2;
+}
+@media (min-width: 560px) { .target-row { flex-direction: row; } }
+.target-box {
+  flex: 1;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(245,200,66,0.32);
+  padding: 0.95rem 1rem;
+  border-radius: 10px;
+  text-align: center;
+  backdrop-filter: blur(6px);
+}
+.target-box .lbl {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  margin-bottom: 5px;
+}
+.target-box .val {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: 1.55rem;
+  color: var(--gold);
+  line-height: 1.1;
+}
+.target-box .sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.78);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* DISCLAIMER */
+.disclaimer {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  margin-top: 2.2rem;
+  line-height: 1.55;
+}
+
+/* TOOLBAR */
+.toolbar {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f2444;
+  border-radius: 999px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 100;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.30);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+body.dark .toolbar { background: #1e3a60; }
+.toolbar button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.toolbar button:hover { background: rgba(255,255,255,0.14); }
+.toolbar .sep {
+  width: 1px;
+  height: 22px;
+  background: rgba(255,255,255,0.22);
+  margin: 0 4px;
+}
+.toolbar .fs-display {
+  color: rgba(255,255,255,0.92);
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.82rem;
+  padding: 0 8px;
+  min-width: 42px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="hero-badge">NASDAQ: LPLA · LPL Financial Holdings</span>
+    <h1>LPL Financial<span>Deep Analysis</span></h1>
+    <p class="hero-sub">A 4-year forecast of the largest US independent broker-dealer through the lens of asset growth, the Commonwealth integration, the AI fee-pressure narrative, and a structurally lower interest-rate environment.</p>
+    <div class="hero-meta">
+      <span class="hero-chip">📅 April 25, 2026</span>
+      <span class="hero-chip">💵 $321.55</span>
+      <span class="hero-chip">⭐ Consensus: Strong Buy</span>
+      <span class="hero-chip">📉 YTD: −11.2%</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- 01 TOC -->
+<section class="section">
+  <div class="section-label">01 — Table of Contents</div>
+  <ol class="toc">
+    <li><span class="num">02</span><a href="#exec">Executive Summary</a></li>
+    <li><span class="num">03</span><a href="#snap">Current Snapshot</a></li>
+    <li><span class="num">04</span><a href="#moat">Business Model & Moat</a></li>
+    <li><span class="num">05</span><a href="#segments">Revenue Sources & Segments</a></li>
+    <li><span class="num">06</span><a href="#rps">Revenue Per Share Forecast</a></li>
+    <li><span class="num">07</span><a href="#margin">Margin Forecast</a></li>
+    <li><span class="num">08</span><a href="#eps">EPS Forecast</a></li>
+    <li><span class="num">09</span><a href="#roic">ROIC Forecast</a></li>
+    <li><span class="num">10</span><a href="#pe">P/E Multiple Forecast</a></li>
+    <li><span class="num">11</span><a href="#targets">Price Targets & Scenarios</a></li>
+    <li><span class="num">12</span><a href="#yearly">Year-by-Year Rationale</a></li>
+    <li><span class="num">13</span><a href="#roi">Yearly ROI from Today</a></li>
+    <li><span class="num">14</span><a href="#risks">Structural Advantages & Key Risks</a></li>
+    <li><span class="num">15</span><a href="#macro">Macro, Regulation & Competition</a></li>
+    <li><span class="num">16</span><a href="#concl">Investment Conclusion</a></li>
+    <li><span class="num">17</span><a href="#disc">Disclaimer</a></li>
+  </ol>
+</section>
+
+<!-- 02 EXEC -->
+<section id="exec" class="section">
+  <div class="section-label">02 — Executive Summary</div>
+  <h2>The Best Independent Wealth Platform, Mispriced on AI Headlines</h2>
+  <div class="card card-blue">
+    <p><strong>Thesis.</strong> LPLA is the dominant scale player in US independent wealth management, with $2.4T in assets, 32,000+ advisors, an 8% organic NNA growth rate, and a track record of compounding adjusted EPS at ~25% over five years. The February 2026 AI-disruption selloff has created the cheapest entry multiple LPLA has traded at in over a decade — ~16x forward earnings — at exactly the moment Commonwealth integration is set to inflect run-rate EBITDA by ~$415M+.</p>
+    <p style="margin-bottom:0;"><strong>Setup.</strong> Stock is down 20% from its 52-week high of $403, with the AI narrative providing the cover for valuation reset rather than the cause of business deterioration. FY2025 adjusted EPS hit $20.09 (+22%), Q4 was a beat, and 14 of 14 sell-side analysts rate the stock Buy or Strong Buy at an average target of $404 (+26%). The base case offers an attractive risk/reward; the bear case requires a structural break in advisor economics that has not yet shown up in retention (97%) or recruiting ($104B in 2025).</p>
+  </div>
+  <div class="card card-yellow">
+    <strong>Key insight on numbers:</strong> All EPS figures in this report use <em>adjusted (non-GAAP)</em> earnings, which is the metric the Street and management use for guidance. GAAP EPS in 2025 was $10.92 (down 22% YoY), distorted by ~$420M in Commonwealth purchase-accounting acquisition costs. Adjusted EPS of $20.09 is the more meaningful comparison for forward modeling.
+  </div>
+</section>
+
+<!-- 03 SNAPSHOT -->
+<section id="snap" class="section">
+  <div class="section-label">03 — Current Snapshot</div>
+  <h2>The Numbers as of April 25, 2026</h2>
+  <p>LPLA trades at $321.55 with a market cap of $25.8B, well below its $403 high but stable on a YoY basis (+2% over 12 months). The stock has been a strong long-term compounder — up 122% over five years vs. 71% for the S&P 500 — but has lagged in 2026 amid AI-driven multiple compression across the wealth-management sector.</p>
+  <div class="snap-grid">
+    <div class="snap-tile dark-hi"><div class="lbl">Stock Price</div><div class="val">$321.55</div></div>
+    <div class="snap-tile dark-hi"><div class="lbl">Market Cap</div><div class="val">$25.8B</div></div>
+    <div class="snap-tile"><div class="lbl">52-Week Range</div><div class="val">$263 – $404</div></div>
+    <div class="snap-tile red-hi"><div class="lbl">YTD Return</div><div class="val">−11.2%</div></div>
+    <div class="snap-tile"><div class="lbl">Trailing P/E (GAAP)</div><div class="val">29.4x</div></div>
+    <div class="snap-tile green-hi"><div class="lbl">Forward P/E (Adj)</div><div class="val">~14.5x</div></div>
+    <div class="snap-tile"><div class="lbl">Beta</div><div class="val">0.87</div></div>
+    <div class="snap-tile"><div class="lbl">Dividend Yield</div><div class="val">0.38%</div></div>
+    <div class="snap-tile green-hi"><div class="lbl">FY25 Adj EPS</div><div class="val">$20.09 ▲22%</div></div>
+    <div class="snap-tile green-hi"><div class="lbl">Total Assets</div><div class="val">$2.4T ▲36%</div></div>
+    <div class="snap-tile"><div class="lbl">Advisors</div><div class="val">32,178</div></div>
+    <div class="snap-tile"><div class="lbl">Next Earnings</div><div class="val">Apr 30, 2026</div></div>
+  </div>
+</section>
+
+<!-- 04 MOAT -->
+<section id="moat" class="section">
+  <div class="section-label">04 — Business Model & Moat</div>
+  <h2>The Open-Architecture Toll Road of US Wealth</h2>
+  <p>LPL is not a wirehouse and not a robo. It is the <em>infrastructure</em> for ~32,000 independent advisors who keep their own books and pay LPL for clearing, custody, technology, compliance, and platform services. The economics are a layered toll: a <strong>commission/advisory payout</strong> on flowing assets (advisors keep ~88% of gross revenue), <strong>asset-based fees</strong> on advisory accounts, <strong>service fees</strong> on the platform, and — most importantly today — a fat slice of <strong>net interest income</strong> on $61B of client cash held in FDIC sweeps. The cash-sorting cycle hurts when rates fall; the rest of the model is structurally compounding.</p>
+  <p>The moat is composed of switching costs (advisor practices are physically and operationally embedded in LPL infrastructure for years at a time), scale (LPL spreads tech and compliance investment across more advisors than anyone else), and a unique multi-channel affiliation suite — pure-RIA, hybrid, employee, institution-services — that lets LPL absorb advisors from <em>any</em> origin point. Retention sits at 97%, recruited assets hit a record $104B in 2025, and the platform onboarded Atria, Prudential, Wintrust, First Horizon, and Commonwealth in a single 18-month stretch.</p>
+  <ul class="bull-list">
+    <li><span class="ico">🔒</span><strong>Switching costs.</strong> Once an advisor's book is on LPL's clearing and tech stack, leaving means re-papering thousands of client accounts. 97% asset retention proves stickiness.</li>
+    <li><span class="ico">📈</span><strong>Scale flywheel.</strong> Largest US independent BD by a wide margin. Tech and compliance spend per advisor falls as the base grows; competitors can't match unit economics.</li>
+    <li><span class="ico">🏦</span><strong>Cash franchise.</strong> $61B of client cash sweeps generated $456M of revenue in Q4 alone, with a 341 bps yield. A natural hedge: when markets fall, cash balances rise.</li>
+    <li><span class="ico">🔁</span><strong>Capital allocation.</strong> Disciplined M&A integrator (Atria, Prudential, Commonwealth, Investment Center). Buybacks paused only to delever post-Commonwealth — a feature, not a bug.</li>
+    <li><span class="ico">🏢</span><strong>Institution Services.</strong> Increasingly running back-office for major banks and insurers (Prudential, First Horizon, Wintrust). High-margin, sticky B2B revenue stream most of the Street still under-models.</li>
+  </ul>
+</section>
+
+<!-- 05 SEGMENTS -->
+<section id="segments" class="section">
+  <div class="section-label">05 — Revenue Sources & Segments</div>
+  <h2>Where the $16.6B Comes From</h2>
+  <p>FY2025 net revenue mix is dominated by advisory fees and commission revenue, which together represent ~75% of the top line and scale directly with advisory and brokerage assets. Asset-based fees (the line that includes client-cash sweep revenue) is the most rate-sensitive and the single most-watched item on LPL's P&L. Service & fee, plus transaction revenue, are platform tolls that scale with advisor count.</p>
+  <div class="card">
+    <div class="bar-row">
+      <div class="bar-label"><span>Advisory Revenue</span><span class="pct">~50%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width: 50%"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span>Commission Revenue</span><span class="pct">~25%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width: 25%"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span>Asset-based Fees (Cash Sweep)</span><span class="pct">~16%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width: 16%"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span>Service & Fee Revenue</span><span class="pct">~4%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width: 4%"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span>Transaction & Other</span><span class="pct">~5%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width: 5%"></div></div>
+    </div>
+  </div>
+  <p>The investment debate is largely about the 16% line. Asset-based fees are net interest income — sensitive to short-rate trajectory and to how much client cash sits idle on the platform. With the Fed in a cutting cycle, the consensus has already baked in some yield compression on the ~$60B sweep balance. My model assumes a 30-bps yield decline through 2027 before stabilization, partially offset by ~$8–10B of growth in cash balances as Commonwealth assets convert.</p>
+</section>
+
+<!-- 06 RPS -->
+<section id="rps" class="section">
+  <div class="section-label">06 — Revenue Per Share Forecast</div>
+  <h2>Revenue & Revenue Per Share — My 4-Year Build</h2>
+  <p>FY26 is a step-up year as Commonwealth contributes a full twelve months of revenue (vs. 5 months in 2025). Beyond that, my forecast leans on continued ~7–9% organic NNA growth plus mid-single-digit market beta on the asset base. Buybacks resume modestly in late 2026 as leverage returns to the 2x target. I'm slightly below Street on the top line in 2026 (Street ~$20.0B, me $19.5B) reflecting some cash-yield drag.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr><th>Metric</th><th class="act-col">FY25 Actual</th><th>FY26E</th><th>FY27E</th><th>FY28E</th><th>FY29E</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>My Revenue ($B)</td><td class="act-col">$16.6</td><td>$19.5</td><td>$22.0</td><td>$24.0</td><td>$25.8</td></tr>
+        <tr><td>YoY Growth %</td><td class="act-col"><span class="pos-val">+34%</span></td><td><span class="pos-val">+17.5%</span></td><td><span class="pos-val">+12.8%</span></td><td><span class="pos-val">+9.1%</span></td><td><span class="pos-val">+7.5%</span></td></tr>
+        <tr><td>Diluted Shares (M)</td><td class="act-col">80.0</td><td>80.0</td><td>79.0</td><td>78.0</td><td>76.0</td></tr>
+        <tr><td>My Rev / Share ($)</td><td class="act-col">$207</td><td>$244</td><td>$278</td><td>$308</td><td>$339</td></tr>
+        <tr><td>YoY Rev/Share Growth</td><td class="act-col"><span class="pos-val">+34%</span></td><td><span class="pos-val">+17.9%</span></td><td><span class="pos-val">+13.7%</span></td><td><span class="pos-val">+10.7%</span></td><td><span class="pos-val">+10.1%</span></td></tr>
+        <tr><td>Street Revenue ($B)</td><td class="act-col">$16.6</td><td>$20.0</td><td>$22.5</td><td>$24.7</td><td>$26.5</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <div class="card card-yellow">
+    <strong>Why I'm below Street on revenue:</strong> Two adjustments. (1) I assume a slightly steeper drag on the cash-sweep yield in 2026 as the Fed cuts another 50–75 bps. (2) I haircut Commonwealth retention by ~3 percentage points vs. the company's 90% target, which trims ~$200M off the run-rate. These aren't bear assumptions — they're my conservative base.
+  </div>
+</section>
+
+<!-- 07 MARGIN -->
+<section id="margin" class="section">
+  <div class="section-label">07 — Margin Forecast</div>
+  <h2>Operating Leverage Plays Out as Integration Costs Roll Off</h2>
+  <p>LPL's adjusted pretax margin sat at ~38% in 2025; on a fully-loaded operating-margin basis (which is the figure most Street models present), I get to ~17% in 2025, climbing toward 20% by 2029 as the Commonwealth core G&A bulge ($380–390M of incremental cost in 2026) unwinds against accelerating gross-profit growth. Net margin moves from 9.7% to 11.5% on the same operating-leverage path plus modest NIM stabilization.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr><th>Metric</th><th class="act-col">FY25A</th><th>FY26E</th><th>FY27E</th><th>FY28E</th><th>FY29E</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>My Op Margin (Adj)</td><td class="act-col">17.0%</td><td>17.5%</td><td>19.0%</td><td>19.5%</td><td>20.0%</td></tr>
+        <tr><td>Street Op Margin</td><td class="act-col">17.0%</td><td>18.0%</td><td>19.5%</td><td>20.0%</td><td>20.5%</td></tr>
+        <tr><td>Op Margin vs. Street</td><td class="act-col">In line</td><td><span class="neg-val">−50 bps</span></td><td><span class="neg-val">−50 bps</span></td><td><span class="neg-val">−50 bps</span></td><td><span class="neg-val">−50 bps</span></td></tr>
+        <tr><td>My Net Margin</td><td class="act-col">9.7%</td><td>9.4%</td><td>10.5%</td><td>11.0%</td><td>11.5%</td></tr>
+        <tr><td>Street Net Margin</td><td class="act-col">9.7%</td><td>9.5%</td><td>10.7%</td><td>11.2%</td><td>11.7%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p>The single biggest swing factor here is the pace at which Commonwealth advisor onboarding generates run-rate EBITDA. Management raised the run-rate target from $415M to $425M in Q3 2025 — every $50M of beat or miss against that target moves operating margin by ~25 bps. I'm modeling at the company target, not above it.</p>
+</section>
+
+<!-- 08 EPS -->
+<section id="eps" class="section">
+  <div class="section-label">08 — EPS Forecast</div>
+  <h2>Adjusted EPS — My Model vs. Street Range</h2>
+  <p>Consensus has converged around $22.50 for FY26 and $27.50 for FY27 following the strong Q4 print. My base sits ~1–4% below Street across the forecast window because I underwrite slightly lower revenue growth and slightly higher integration drag. The 4-year EPS CAGR in my model is 13.6%, vs. Street at ~16.5%. Even at my lower number, the stock is trading at less than 10x my 2029 EPS.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr><th>Year</th><th>My EPS</th><th>YoY %</th><th>Street Low</th><th>Street Avg</th><th>Street High</th><th>vs. Street</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="act-col">FY25A</td><td class="act-col">$20.09</td><td class="act-col"><span class="pos-val">+22%</span></td><td class="act-col">$19.32</td><td class="act-col">$20.09</td><td class="act-col">$20.30</td><td class="act-col">In line</td></tr>
+        <tr><td>FY26E</td><td>$22.20</td><td><span class="pos-val">+10.5%</span></td><td>$21.00</td><td>$22.50</td><td>$24.00</td><td><span class="neg-val">−1.3%</span></td></tr>
+        <tr><td>FY27E</td><td>$26.50</td><td><span class="pos-val">+19.4%</span></td><td>$25.00</td><td>$27.50</td><td>$28.66</td><td><span class="neg-val">−3.6%</span></td></tr>
+        <tr><td>FY28E</td><td>$30.00</td><td><span class="pos-val">+13.2%</span></td><td>$28.50</td><td>$32.00</td><td>$35.00</td><td><span class="neg-val">−6.3%</span></td></tr>
+        <tr><td>FY29E</td><td>$33.50</td><td><span class="pos-val">+11.7%</span></td><td>$32.00</td><td>$36.50</td><td>$40.00</td><td><span class="neg-val">−8.2%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+</section>
+
+<!-- 09 ROIC -->
+<section id="roic" class="section">
+  <div class="section-label">09 — ROIC Forecast</div>
+  <h2>ROIC Compresses Then Recovers as M&A Capital Earns In</h2>
+  <p>LPLA has historically run ROIC in the high teens to low twenties, well above an estimated WACC of ~9–10%. The Commonwealth deal — $2.7B of capital deployed at close — temporarily depresses ROIC as the goodwill hits the invested-capital denominator before the EBITDA shows up in the numerator. This is mechanical and reverses by 2027 as run-rate synergies are realized.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr><th>Year</th><th>My ROIC</th><th>WACC</th><th>Spread</th><th>Commentary</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="act-col">FY23A</td><td class="act-col">18%</td><td class="act-col">9.5%</td><td class="act-col"><span class="pos-val">+850 bps</span></td><td class="act-col" style="text-align:left;">Pre-acquisition base</td></tr>
+        <tr><td class="act-col">FY24A</td><td class="act-col">19%</td><td class="act-col">9.5%</td><td class="act-col"><span class="pos-val">+950 bps</span></td><td class="act-col" style="text-align:left;">Peak NIM cycle</td></tr>
+        <tr><td class="act-col">FY25A</td><td class="act-col">17%</td><td class="act-col">9.5%</td><td class="act-col"><span class="pos-val">+750 bps</span></td><td class="act-col" style="text-align:left;">Atria + Prudential drag</td></tr>
+        <tr><td>FY26E</td><td>15%</td><td>9.5%</td><td><span class="pos-val">+550 bps</span></td><td style="text-align:left;">Commonwealth goodwill peak</td></tr>
+        <tr><td>FY27E</td><td>17%</td><td>9.5%</td><td><span class="pos-val">+750 bps</span></td><td style="text-align:left;">Synergies realized</td></tr>
+        <tr><td>FY28E</td><td>18%</td><td>9.5%</td><td><span class="pos-val">+850 bps</span></td><td style="text-align:left;">Operating leverage</td></tr>
+        <tr><td>FY29E</td><td>19%</td><td>9.5%</td><td><span class="pos-val">+950 bps</span></td><td style="text-align:left;">Back to long-term trend</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+</section>
+
+<!-- 10 P/E -->
+<section id="pe" class="section">
+  <div class="section-label">10 — P/E Multiple Forecast</div>
+  <h2>The Multiple is the Crux of the Trade</h2>
+  <p>LPLA's 5-year average P/E sits at ~24x (10-year average ~20x). Today the stock trades at ~16x my 2026 EPS and ~12x 2027 — a 4-to-8-turn discount to its own history. The market is pricing in either (a) a permanent fee-compression regime from AI tools, (b) a structural decline in cash-sweep yields, or (c) some combination. My base case assumes a partial multiple recovery — to 17–18x — once the AI narrative cools and Commonwealth synergies are visible in the numbers.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr><th>Year</th><th>My P/E</th><th>Street Implied</th><th>5-Yr Avg</th><th>vs. 5-Yr Avg</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>FY26E</td><td>16.0x</td><td>14.3x</td><td>24.2x</td><td><span class="neg-val">−34%</span></td></tr>
+        <tr><td>FY27E</td><td>17.0x</td><td>14.7x</td><td>24.2x</td><td><span class="neg-val">−30%</span></td></tr>
+        <tr><td>FY28E</td><td>18.0x</td><td>15.0x</td><td>24.2x</td><td><span class="neg-val">−26%</span></td></tr>
+        <tr><td>FY29E</td><td>18.0x</td><td>14.5x</td><td>24.2x</td><td><span class="neg-val">−26%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p>I deliberately do <em>not</em> assume mean reversion to 24x. That would require the market to fully dismiss the AI risk and reprice LPL like a high-quality compounder again. My 18x terminal multiple is a 25% discount to its own history — a permanent haircut for a permanently more competitive industry.</p>
+</section>
+
+<!-- 11 TARGETS -->
+<section id="targets" class="section">
+  <div class="section-label">11 — Price Targets & Scenarios</div>
+  <h2>Bear / Base / Bull — Year by Year</h2>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr><th>Year</th><th>Bear</th><th>Base</th><th>Bull</th><th>Street 12-Mo</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>FY26E</td><td>$260</td><td>$355</td><td>$456</td><td>$404</td></tr>
+        <tr><td>FY27E</td><td>$336</td><td>$450</td><td>$580</td><td>—</td></tr>
+        <tr><td>FY28E</td><td>$405</td><td>$540</td><td>$714</td><td>—</td></tr>
+        <tr><td>FY29E</td><td>$450</td><td>$603</td><td>$836</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <h3>Terminal Year (FY29E) Scenario Bars</h3>
+  <div class="card">
+    <div class="scen-grid">
+      <div class="scen-label">BEAR</div>
+      <div class="scen-track"><div class="scen-fill bear" style="width: 53.8%"></div></div>
+      <div class="scen-val">$450</div>
+    </div>
+    <div class="scen-grid">
+      <div class="scen-label">BASE</div>
+      <div class="scen-track"><div class="scen-fill base" style="width: 72.1%"></div></div>
+      <div class="scen-val">$603</div>
+    </div>
+    <div class="scen-grid">
+      <div class="scen-label">BULL</div>
+      <div class="scen-track"><div class="scen-fill bull" style="width: 100%"></div></div>
+      <div class="scen-val">$836</div>
+    </div>
+  </div>
+  <p><em>Bear:</em> AI fee compression takes 200 bps off advisory yields by 2028, cash-sweep yields fall faster than modeled, and the stock terminal multiple compresses to 15x. <em>Base:</em> Commonwealth integration delivers as guided, organic growth holds at ~7%, multiple stabilizes at 18x. <em>Bull:</em> AI is a tool not a threat, LPL's institution-services pipeline drives a second leg of growth, and the multiple re-rates to 22x as the compounder narrative reasserts itself.</p>
+</section>
+
+<!-- 12 YEARLY -->
+<section id="yearly" class="section">
+  <div class="section-label">12 — Year-by-Year Rationale</div>
+  <h2>What Drives Each Year</h2>
+
+  <div class="year-card">
+    <div class="year-head">
+      <span class="yr">FY2026E</span>
+      <span class="eps-badge">EPS +10.5%</span>
+    </div>
+    <div class="year-body">
+      <div class="year-metrics">
+        <div><div class="lbl">Rev/Share</div><div class="val">$244</div></div>
+        <div><div class="lbl">Adj EPS</div><div class="val">$22.20</div></div>
+        <div><div class="lbl">P/E Range</div><div class="val">13–19x</div></div>
+      </div>
+      <div class="year-rationale">The "kitchen sink" year. Full twelve months of Commonwealth on the P&L, a peak in core G&A ($2.16–2.21B) as integration costs run hot, and Fed cuts compress cash-sweep yields. Earnings still grow but margin expansion is muted. Buybacks remain paused through mid-year. The stock probably trades in a $300–400 range as investors look for proof of synergy delivery on Q3/Q4 calls.</div>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-head">
+      <span class="yr">FY2027E</span>
+      <span class="eps-badge">EPS +19.4%</span>
+    </div>
+    <div class="year-body">
+      <div class="year-metrics">
+        <div><div class="lbl">Rev/Share</div><div class="val">$278</div></div>
+        <div><div class="lbl">Adj EPS</div><div class="val">$26.50</div></div>
+        <div><div class="lbl">P/E Range</div><div class="val">14–20x</div></div>
+      </div>
+      <div class="year-rationale">The earnings inflection. Commonwealth conversion completes Q4 2026 → first full year of integrated run-rate EBITDA in 2027, plus the lapping of one-time integration costs. Operating leverage flips from negative to strongly positive. Leverage ratio back to ~2x → buyback restart. This is the year where my EPS growth (+19%) is the highest of the forecast window.</div>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-head">
+      <span class="yr">FY2028E</span>
+      <span class="eps-badge">EPS +13.2%</span>
+    </div>
+    <div class="year-body">
+      <div class="year-metrics">
+        <div><div class="lbl">Rev/Share</div><div class="val">$308</div></div>
+        <div><div class="lbl">Adj EPS</div><div class="val">$30.00</div></div>
+        <div><div class="lbl">P/E Range</div><div class="val">15–21x</div></div>
+      </div>
+      <div class="year-rationale">Maturity of the cycle. M&A integration is in the rearview, organic NNA returns to the historical 7–8% range, and the focus shifts to next-leg moves: institution-services pipeline, RIA-custody growth, and capital-return optimization. By this year the AI fee-compression debate should be empirically resolvable in either direction — and either resolution materially repositions the multiple.</div>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-head">
+      <span class="yr">FY2029E</span>
+      <span class="eps-badge">EPS +11.7%</span>
+    </div>
+    <div class="year-body">
+      <div class="year-metrics">
+        <div><div class="lbl">Rev/Share</div><div class="val">$339</div></div>
+        <div><div class="lbl">Adj EPS</div><div class="val">$33.50</div></div>
+        <div><div class="lbl">P/E Range</div><div class="val">15–22x</div></div>
+      </div>
+      <div class="year-rationale">Steady-state compounder mode. By 2029 LPL is doing ~$26B of revenue, generating ~$3B of adjusted net income, and returning meaningful capital. Growth slows but quality of earnings is high — most of the cyclical noise (rate cuts, M&A) is digested. The terminal multiple I underwrite (18x) is conservative; a re-rating toward 20–22x is the bull scenario.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 ROI -->
+<section id="roi" class="section">
+  <div class="section-label">13 — Yearly ROI from Today</div>
+  <h2>Cumulative & Annualized Returns from $321.55</h2>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr><th>Horizon</th><th>Bear Cum.</th><th>Bear Ann.</th><th>Base Cum.</th><th>Base Ann.</th><th>Bull Cum.</th><th>Bull Ann.</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1 yr (FY26)</td><td><span class="neg-val">−19.1%</span></td><td><span class="neg-val">−19.1%</span></td><td><span class="pos-val">+10.4%</span></td><td><span class="pos-val">+10.4%</span></td><td><span class="pos-val">+41.8%</span></td><td><span class="pos-val">+41.8%</span></td></tr>
+        <tr><td>2 yr (FY27)</td><td><span class="pos-val">+4.5%</span></td><td><span class="pos-val">+2.2%</span></td><td><span class="pos-val">+40.0%</span></td><td><span class="pos-val">+18.3%</span></td><td><span class="pos-val">+80.4%</span></td><td><span class="pos-val">+34.3%</span></td></tr>
+        <tr><td>3 yr (FY28)</td><td><span class="pos-val">+25.9%</span></td><td><span class="pos-val">+8.0%</span></td><td><span class="pos-val">+67.9%</span></td><td><span class="pos-val">+18.9%</span></td><td><span class="pos-val">+122.1%</span></td><td><span class="pos-val">+30.6%</span></td></tr>
+        <tr><td>4 yr (FY29)</td><td><span class="pos-val">+39.9%</span></td><td><span class="pos-val">+8.8%</span></td><td><span class="pos-val">+87.5%</span></td><td><span class="pos-val">+17.0%</span></td><td><span class="pos-val">+160.0%</span></td><td><span class="pos-val">+27.0%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p>The asymmetry favors the long. Even in the bear case — where AI fee pressure is real and persistent — the stock still compounds at ~9% annualized over four years, roughly matching long-run equity-market returns. The base case offers a 17% IRR. The dividend yield (~0.4%) is rounding error; this is a capital-appreciation story.</p>
+</section>
+
+<!-- 14 RISKS -->
+<section id="risks" class="section">
+  <div class="section-label">14 — Structural Advantages & Key Risks</div>
+  <h2>What Helps. What Hurts.</h2>
+  <div class="pc-grid">
+    <div class="pc-card pros">
+      <h4>✓ Structural Advantages</h4>
+      <ul>
+        <li><strong>Largest US independent BD by 3x.</strong> Scale flywheel in tech and compliance.</li>
+        <li><strong>97% advisor retention.</strong> Best-in-class stickiness.</li>
+        <li><strong>$104B in 2025 recruiting.</strong> Wirehouse and bank-channel breakaways still flowing.</li>
+        <li><strong>Multi-channel platform.</strong> Pure-RIA, hybrid, employee, institution. Captures all advisor flows.</li>
+        <li><strong>Disciplined integrator.</strong> Atria, Prudential, Commonwealth all on track.</li>
+        <li><strong>Capital-light.</strong> Recurring fees + sweep NIM, low capex, high FCF conversion.</li>
+      </ul>
+    </div>
+    <div class="pc-card cons">
+      <h4>✗ Key Risks</h4>
+      <ul>
+        <li><strong>AI fee compression.</strong> Tools like Altruist's Hazel could erode advisory pricing power.</li>
+        <li><strong>Cash-sweep yield decline.</strong> Fed cuts + sweep-rate regulation pressure NII.</li>
+        <li><strong>Commonwealth retention miss.</strong> Below-90% retention destroys deal IRR.</li>
+        <li><strong>Regulatory overhang.</strong> SEC AML penalty in 2024; Reg-BI standards still evolving.</li>
+        <li><strong>Leverage post-deal.</strong> 2.25x at close; deleveraging path requires no surprises.</li>
+        <li><strong>Equity-market beta.</strong> ~50% of revenue scales with asset levels.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Risk Severity Assessment</h3>
+  <div class="risk-item high">
+    <div class="desc"><strong>AI-driven fee compression on advisory revenue.</strong> A real, structural threat to ~50% of LPL's revenue mix. Adoption is uncertain but the direction is clear.</div>
+    <span class="badge">HIGH</span>
+  </div>
+  <div class="risk-item high">
+    <div class="desc"><strong>Cash-sweep yield decline.</strong> 16% of revenue, highest-margin line. Sensitive to Fed policy and any regulatory action on sweep rates.</div>
+    <span class="badge">HIGH</span>
+  </div>
+  <div class="risk-item med">
+    <div class="desc"><strong>Commonwealth integration execution.</strong> Run-rate EBITDA target of $425M; conversion in Q4 2026 must land cleanly.</div>
+    <span class="badge">MEDIUM</span>
+  </div>
+  <div class="risk-item med">
+    <div class="desc"><strong>Equity-market drawdown.</strong> A 15%+ S&P pullback would compress advisory and asset-based fees in tandem.</div>
+    <span class="badge">MEDIUM</span>
+  </div>
+  <div class="risk-item low">
+    <div class="desc"><strong>Direct competitor encroachment.</strong> Schwab, Fidelity, Raymond James all formidable but historically have not moved share in the indie-BD niche.</div>
+    <span class="badge">LOW</span>
+  </div>
+  <div class="risk-item low">
+    <div class="desc"><strong>Balance-sheet risk.</strong> Leverage at 1.95x post-Q4 2025; well within manageable range and trending down.</div>
+    <span class="badge">LOW</span>
+  </div>
+</section>
+
+<!-- 15 MACRO -->
+<section id="macro" class="section">
+  <div class="section-label">15 — Macro, Regulation & Competition</div>
+  <h2>The External Environment</h2>
+  <h3>Macro Factors</h3>
+  <ul class="bull-list">
+    <li><span class="ico">📉</span><strong>Interest rates (HIGH sensitivity).</strong> ~16% of revenue is net interest income on $61B of client cash. Each 25 bps Fed cut translates to roughly $40–60M of annualized revenue decline, partially offset by higher cash balances during equity drawdowns. Current trajectory: 50–75 bps of further cuts in 2026, then stabilization.</li>
+    <li><span class="ico">📈</span><strong>Equity-market levels (HIGH sensitivity).</strong> Advisory fees are a percentage of AUM; a 10% S&P drop directly hits ~50% of LPL's revenue mix. Beta of 0.87 understates the underlying business sensitivity.</li>
+    <li><span class="ico">💱</span><strong>FX (LOW).</strong> Effectively zero — LPL is 100% US-domestic.</li>
+    <li><span class="ico">💼</span><strong>Recession sensitivity (MEDIUM).</strong> A recession would slow recruiting and dampen NNA, but the recurring-revenue base (advisory fees + service fees) provides a meaningful floor. 2008-style trauma is a tail risk; mild recessions are absorbable.</li>
+    <li><span class="ico">📊</span><strong>Inflation (LOW).</strong> Asset levels generally rise with inflation; wage cost inflation is real but spread across 10K+ employees and offset by tech leverage.</li>
+  </ul>
+
+  <h3>Regulation</h3>
+  <div class="card card-yellow">
+    <strong>Regulatory assumptions in my model:</strong> No structural change to FDIC sweep rules in the forecast window. SEC Reg-BI compliance costs continue at 2024–25 run-rate. No major DOL fiduciary rule reset. If any of these break adversely, expect 100–200 bps of margin pressure — material but not thesis-breaking. The 2024 $18M SEC AML penalty is in the rearview.
+  </div>
+
+  <h3>Competition</h3>
+  <p>The competitive set is real but LPL's positioning is unique within it.</p>
+  <ul class="bull-list">
+    <li><span class="ico">🏛</span><strong>Charles Schwab (SCHW).</strong> 7x larger by assets but a custodian first, advisor platform second. Different revenue mix (more retail, more securities lending). Direct overlap mainly in RIA-custody segment.</li>
+    <li><span class="ico">🏦</span><strong>Raymond James (RJF).</strong> Most direct competitor in independent advisor channel. Similar size in advisor count; LPL leads on technology and onboarding speed.</li>
+    <li><span class="ico">🏢</span><strong>Stifel, Ameriprise, Wells Fargo Advisors.</strong> Scale BD competitors. LPL's moat is independent-channel positioning that wirehouses can't replicate without cannibalizing employee-advisor businesses.</li>
+    <li><span class="ico">⚙️</span><strong>Altruist (private).</strong> The new disruptor. Hazel AI tax tool sparked the February 2026 selloff. LPL's response is happening — its Liquidity & Succession program and Linsco channel address the same advisor-economics pain point that Altruist targets.</li>
+    <li><span class="ico">🔧</span><strong>Fidelity, Pershing/BNY.</strong> Custody competitors. Important for RIA-custody segment but not for the core BD business that drives 75% of LPL revenue.</li>
+  </ul>
+</section>
+
+<!-- 16 CONCLUSION -->
+<section id="concl" class="section">
+  <div class="section-label">16 — Investment Conclusion</div>
+  <div class="conclusion-box">
+    <h2>The Bottom Line</h2>
+    <p>LPLA is the highest-quality scaled platform in US independent wealth management, trading at a ~30% discount to its 5-year average multiple because the market is repricing for AI fee compression that has not yet shown up in retention, recruiting, or pricing data. The Commonwealth integration is the single largest near-term catalyst — done well, it adds ~$425M to run-rate EBITDA. Done poorly, it adds leverage and integration drag at exactly the wrong time. Eight consecutive quarterly EPS beats, a 14-of-14 Buy/Strong-Buy consensus, and a forward P/E in the low teens point to an asymmetric setup.</p>
+    <div class="target-row">
+      <div class="target-box">
+        <div class="lbl">12-Mo Base</div>
+        <div class="val">$355</div>
+        <div class="sub">+10.4% upside</div>
+      </div>
+      <div class="target-box">
+        <div class="lbl">4-Yr Base (FY29)</div>
+        <div class="val">$603</div>
+        <div class="sub">+87.5% / 17% IRR</div>
+      </div>
+      <div class="target-box">
+        <div class="lbl">4-Yr Bull</div>
+        <div class="val">$836</div>
+        <div class="sub">+160% / 27% IRR</div>
+      </div>
+    </div>
+    <p><strong>Rating:</strong> Constructive accumulator at $300–325. Aggressive accumulator below $290. The bear case ($260 in 2026) requires AI fee compression to materialize faster and deeper than current data supports — possible, but not yet priced in by the fundamentals. The base case requires nothing more than for management to deliver on what they've already guided to.</p>
+    <p style="margin-bottom:0;"><strong>The contrarian angle:</strong> The market is treating LPL like a melting ice cube. The data — 97% retention, 8% organic NNA, $104B in recruiting, eight straight beats — looks like a high-quality compounder. One of those views is wrong.</p>
+  </div>
+</section>
+
+<!-- 17 DISCLAIMER -->
+<section id="disc" class="section">
+  <div class="section-label">17 — Disclaimer</div>
+  <p class="disclaimer">This report is for informational and educational purposes only and does not constitute investment, legal, tax, or financial advice. All figures are based on publicly available data as of April 25, 2026 and are subject to change. Forecasts and estimates are the author's own and may differ materially from actual outcomes. Wall Street estimates are sourced from published consensus aggregators and may not reflect the most recent revisions. Past performance does not guarantee future results. The author and Anthropic do not have a position in LPLA and have no business relationship with the company. Investors should conduct their own due diligence and consult a licensed financial advisor before making any investment decision.</p>
+</section>
+
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button onclick="changeFont(-1)" title="Decrease font size">A−</button>
+  <span class="fs-display" id="fsDisplay">16px</span>
+  <button onclick="changeFont(1)" title="Increase font size">A+</button>
+  <span class="sep"></span>
+  <button onclick="toggleMode()" id="modeBtn" title="Toggle dark mode">🌙</button>
+</div>
+
+<script>
+const MIN_FS = 12, MAX_FS = 26, STEP = 1;
+let currentFs = parseInt(localStorage.getItem('LPLA_fs') || '16', 10);
+let isDark = localStorage.getItem('LPLA_dark') === '1';
+function applyFont(size) {
+  currentFs = Math.min(MAX_FS, Math.max(MIN_FS, size));
+  document.documentElement.style.setProperty('--fs-base', currentFs + 'px');
+  document.getElementById('fsDisplay').textContent = currentFs + 'px';
+  localStorage.setItem('LPLA_fs', currentFs);
+}
+function changeFont(delta) { applyFont(currentFs + delta * STEP); }
+function applyMode() {
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('modeBtn').textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('LPLA_dark', isDark ? '1' : '0');
+}
+function toggleMode() { isDark = !isDark; applyMode(); }
+applyFont(currentFs);
+applyMode();
+</script>
+
+</body>
+</html>

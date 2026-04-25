@@ -10,27 +10,54 @@ This is a stock analysis website that hosts AI-generated HTML analysis reports f
 
 ## GitHub Repository
 - URL: https://github.com/charithadc/StockAnalysis
-- Remote: `origin` → `https://github.com/charithadc/StockAnalysis`
+- Remote: `origin` -> `https://github.com/charithadc/StockAnalysis`
 
 ## Project Structure
 ```
-index.html              ← main landing page listing all stock reports
+index.html              <- main landing page listing all stock reports
 reports/
-  FERG/
-  FIX/
-  LPLA/
-  LRCX/
-  MSFT/
-  VISA/
+  FERG/  -> FERG_Analysis_Report.html, FERG_Analysis_Report_V2.html
+  FIX/   -> FIX_Analysis_Report.html
+  LPLA/  -> LPLA_Analysis_Report.html, LPLA_Analysis_Report_V2.html
+  LRCX/  -> LRCX_Analysis_Report.html, LRCX_Analysis_Report_V2.html
+  MSFT/  -> MSFT_Analysis_Report_2026.html, MSFT_Analysis_Report.html
+  VISA/  -> VISA_Analysis_Report.html, Visa_V_Stock_Analysis_Report.html
 ```
-Each stock ticker has its own subfolder under `reports/` containing one or more HTML analysis report files.
 
 ## Conventions
-- Report files are named `{TICKER}_Analysis_Report.html` or `{TICKER}_Analysis_Report_V2.html`
+- Report files: `{TICKER}_Analysis_Report.html` (V1) and `{TICKER}_Analysis_Report_V2.html` (V2)
 - Each new stock gets its own subfolder: `reports/{TICKER}/`
-- The `index.html` must be updated whenever a new report is added so it shows up on the landing page
+- Version badge rules in index.html:
+  - V2 (latest version of a ticker): use `<span class="version-badge latest">V2</span>`
+  - V1 (original version): use `<span class="version-badge">V1</span>`
+  - Only one version exists: use `<span class="version-badge latest">V1</span>`
+  - Do NOT use "Enhanced" or any other made-up label
+- The `index.html` must be updated whenever a new report is added
+- When adding reports, scan ALL subfolders under `reports/` to ensure nothing is missed
 
 ## Key Notes
-- This is a Windows machine running PowerShell — use `;` instead of `&&` to chain shell commands
+- This is a Windows machine running PowerShell -- use `;` instead of `&&` to chain shell commands
 - The project uses plain HTML/CSS (no build tools or frameworks)
 - Reports are standalone HTML files with embedded styles and scripts
+
+## Critical Rule -- Self-Contained Files
+Every HTML file must be fully self-contained -- all CSS and JS embedded inside using `<style>` and `<script>` tags.
+Never extract to external files. A single file must work standalone in any browser.
+
+## CRITICAL -- File Encoding (MUST FOLLOW EVERY TIME)
+The Cursor Write tool AND StrReplace tool on this Windows machine save files as UTF-16 (null bytes between characters). Browsers cannot render UTF-16 HTML -- they show raw source text.
+
+AFTER EVERY Write or StrReplace tool call on any file, ALWAYS run this PowerShell to fix encoding:
+
+  $p = "FULL_FILE_PATH"
+  $c = [System.IO.File]::ReadAllText($p, [System.Text.Encoding]::Unicode)
+  $e = New-Object System.Text.UTF8Encoding $false
+  [System.IO.File]::WriteAllText($p, $c, $e)
+
+Verify with: ($bytes = [System.IO.File]::ReadAllBytes($p); ($bytes | Where-Object {$_ -eq 0}).Count)
+Result must be 0.
+
+PREFERRED approach: Write file content entirely via PowerShell here-string to avoid encoding issues:
+
+  $content = @' ... HTML content ... '@
+  [System.IO.File]::WriteAllText($path, $content, (New-Object System.Text.UTF8Encoding $false))
