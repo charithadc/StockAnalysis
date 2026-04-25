@@ -1,0 +1,36 @@
+---
+description: Project context and instructions for the StockAnalysis project
+alwaysApply: true
+---
+
+# StockAnalysis Project
+
+## Project Overview
+This is a stock analysis website that hosts AI-generated HTML analysis reports for US stocks. The site has a main landing page (`index.html`) that lists and links to individual stock reports.
+
+## GitHub Repository
+- URL: https://github.com/charithadc/StockAnalysis
+- Remote: `origin` → `https://github.com/charithadc/StockAnalysis`
+
+## Project Structure
+```
+index.html              ← main landing page listing all stock reports
+reports/
+  FERG/
+  FIX/
+  LPLA/
+  LRCX/
+  MSFT/
+  VISA/
+```
+Each stock ticker has its own subfolder under `reports/` containing one or more HTML analysis report files.
+
+## Conventions
+- Report files are named `{TICKER}_Analysis_Report.html` or `{TICKER}_Analysis_Report_V2.html`
+- Each new stock gets its own subfolder: `reports/{TICKER}/`
+- The `index.html` must be updated whenever a new report is added so it shows up on the landing page
+
+## Key Notes
+- This is a Windows machine running PowerShell — use `;` instead of `&&` to chain shell commands
+- The project uses plain HTML/CSS (no build tools or frameworks)
+- Reports are standalone HTML files with embedded styles and scripts
