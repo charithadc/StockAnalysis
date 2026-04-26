@@ -1,0 +1,2455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft (MSFT) — Deep Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --fs-base: 16px;
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-2: #edf3fb;
+  --text: #111d29;
+  --text-muted: #3a526a;
+  --border: #d0dcea;
+  --navy: #0f2444;
+  --blue: #1a5fa8;
+  --sky: #3b8fd4;
+  --gold: #f5c842;
+  --accent: #e8a020;
+  --green: #1a7a4a;
+  --green-bg: #e8f5ee;
+  --red: #b93232;
+  --red-bg: #fbeaea;
+  --orange: #c45c10;
+  --card-shadow: 0 2px 16px rgba(15,36,68,0.10);
+}
+
+body.dark {
+  --bg: #0e1520;
+  --surface: #172032;
+  --surface-2: #1e2d44;
+  --text: #dde4ef;
+  --text-muted: #8fa3be;
+  --border: #2a3d58;
+  --navy: #1e3a60;
+  --blue: #4b8ed4;
+  --sky: #6ab0e8;
+  --green: #2ecc78;
+  --green-bg: #0e2a1c;
+  --red: #e05555;
+  --red-bg: #2a1212;
+  --card-shadow: 0 2px 20px rgba(0,0,0,0.40);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: var(--fs-base); }
+
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 400;
+  line-height: 1.65;
+  background: var(--bg);
+  color: var(--text);
+  transition: background .3s, color .3s;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 22px 100px;
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  margin: 0 -22px 40px;
+  padding: 60px 36px 54px;
+  background: linear-gradient(145deg, #0a1e38 0%, #0f2f5c 50%, #1a5fa8 100%);
+  color: #fff;
+  overflow: hidden;
+  border-radius: 0;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -60px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(245,200,66,0.30), transparent 65%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -50px; left: -50px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(59,143,212,0.30), transparent 65%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: var(--gold);
+  color: var(--navy);
+  border-radius: 999px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 2;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 2;
+}
+.hero h1 span { color: var(--gold); display: block; font-style: italic; font-weight: 700; }
+.hero .subtitle {
+  font-family: 'Source Serif 4', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.82);
+  margin-bottom: 22px;
+  max-width: 540px;
+  position: relative;
+  z-index: 2;
+}
+.meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+}
+.chip {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.20);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(4px);
+}
+
+/* TOOLBAR */
+.toolbar {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f2444;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.32);
+  z-index: 999;
+}
+.toolbar button {
+  background: transparent;
+  color: #fff;
+  border: none;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+.toolbar button:hover { background: rgba(255,255,255,0.14); }
+.toolbar .fs-display {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0 8px;
+  min-width: 46px;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+.toolbar .sep {
+  width: 1px;
+  height: 22px;
+  background: rgba(255,255,255,0.24);
+  margin: 0 4px;
+}
+
+@media print { .toolbar { display: none; } }
+
+/* SECTIONS */
+.section {
+  margin-bottom: 44px;
+  animation: fadeUp 0.5s ease both;
+}
+.section-label {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.75rem;
+  line-height: 1.18;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+}
+body.dark h2 { color: var(--text); }
+
+h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.18rem;
+  color: var(--navy);
+  margin: 22px 0 10px;
+}
+body.dark h3 { color: var(--text); }
+
+p { margin-bottom: 14px; color: var(--text); }
+
+a { color: var(--blue); text-decoration: none; border-bottom: 1px dotted var(--blue); }
+a:hover { color: var(--accent); }
+
+ol, ul { margin: 8px 0 16px 22px; }
+ol li, ul li { margin-bottom: 6px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section:nth-child(1) { animation-delay: 0s; }
+.section:nth-child(2) { animation-delay: .05s; }
+.section:nth-child(3) { animation-delay: .10s; }
+.section:nth-child(4) { animation-delay: .15s; }
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin: 14px 0;
+  box-shadow: var(--card-shadow);
+}
+.card-blue {
+  background: var(--surface-2);
+  border-left: 4px solid var(--blue);
+}
+.card-yellow {
+  background: #fff8df;
+  border-left: 4px solid var(--gold);
+}
+body.dark .card-yellow {
+  background: #2a2410;
+  border-left-color: var(--gold);
+}
+.card h3 { margin-top: 0; }
+
+/* TOC */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 24px;
+  box-shadow: var(--card-shadow);
+}
+.toc ol { margin: 0; padding-left: 22px; }
+.toc li {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.94rem;
+  margin-bottom: 5px;
+  color: var(--text-muted);
+}
+.toc li a { color: var(--text); border-bottom: none; }
+.toc li a:hover { color: var(--blue); }
+
+/* SNAPSHOT GRID */
+.snap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 14px 0;
+}
+.snap-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: var(--card-shadow);
+}
+.snap-tile.dark-hi {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+.snap-tile.green-hi {
+  background: var(--green-bg);
+  border-color: var(--green);
+}
+body.dark .snap-tile.green-hi { background: #0e2a1c; }
+.snap-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+.snap-tile.dark-hi .snap-label { color: rgba(255,255,255,0.66); }
+.snap-tile.green-hi .snap-label { color: var(--green); }
+.snap-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.45rem;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+.snap-tile.dark-hi .snap-value { color: var(--gold); }
+.snap-tile.green-hi .snap-value { color: var(--green); }
+body.dark .snap-value { color: var(--text); }
+body.dark .snap-tile.dark-hi .snap-value { color: var(--gold); }
+.snap-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.snap-tile.dark-hi .snap-sub { color: rgba(255,255,255,0.7); }
+
+/* 52-WEEK RANGE TILE */
+.range-tile {
+  grid-column: span 2;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: var(--card-shadow);
+}
+.range-tile-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.range-bar {
+  position: relative;
+  height: 8px;
+  background: linear-gradient(90deg, #fce8e8 0%, #fdeede 50%, #daf2e8 100%);
+  border-radius: 999px;
+  margin: 18px 4px 14px;
+}
+.range-bar-marker {
+  position: absolute;
+  top: -6px;
+  width: 14px;
+  height: 20px;
+  background: var(--navy);
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(15,36,68,0.30);
+}
+.range-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.range-bar-current {
+  text-align: center;
+  margin-top: 6px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 0.92rem;
+}
+body.dark .range-bar {
+  background: linear-gradient(90deg, #2a1212 0%, #2a1e08 50%, #0e2a1c 100%);
+}
+body.dark .range-bar-current { color: var(--gold); }
+
+/* FORECAST TABLES */
+.forecast-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin: 10px 0 6px;
+  background: var(--surface);
+}
+.forecast-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 520px;
+  background: var(--surface);
+}
+.forecast-table thead th {
+  background: var(--navy);
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  padding: 12px 10px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.forecast-table thead th:first-child {
+  text-align: left;
+  border-radius: 12px 0 0 0;
+}
+.forecast-table thead th:last-child {
+  border-radius: 0 12px 0 0;
+}
+.forecast-table tbody td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  color: var(--text);
+}
+.forecast-table tbody td:first-child {
+  text-align: left;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--blue);
+}
+.forecast-table tbody tr:nth-child(even) td:not(:first-child) {
+  background: var(--surface-2);
+}
+
+.forecast-table .act-col {
+  background: #e8f0f8 !important;
+  color: var(--navy) !important;
+}
+.forecast-table thead th.act-col {
+  background: #c8ddf5 !important;
+  color: var(--navy) !important;
+}
+body.dark .forecast-table .act-col {
+  background: #1a2e4a !important;
+  color: #c8d8f0 !important;
+}
+body.dark .forecast-table thead th.act-col {
+  background: #223a5c !important;
+  color: #c8d8f0 !important;
+}
+
+.pos-val { color: var(--green) !important; font-weight: 600; }
+.neg-val { color: var(--red) !important; font-weight: 600; }
+
+.scroll-hint {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: right;
+  margin: 0 4px 14px;
+}
+
+/* FINANCIAL STRENGTH BADGES */
+.verdict-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  padding: 9px 22px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+.verdict-safe     { background: #daf2e8; color: #1a7a4a; }
+.verdict-watch    { background: #fdeede; color: #c45c10; }
+.verdict-distress { background: #fce8e8; color: #b93232; }
+
+body.dark .verdict-safe     { background: #0a2016; color: #2ecc78; }
+body.dark .verdict-watch    { background: #2a1e08; color: #f5b042; }
+body.dark .verdict-distress { background: #2a1010; color: #e05555; }
+
+.grade-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2rem;
+  border: 3px solid;
+  flex-shrink: 0;
+}
+.grade-A, .grade-B { background: var(--navy); color: var(--gold); border-color: var(--gold); }
+.grade-C           { background: #edf3fb; color: var(--navy); border-color: var(--navy); }
+.grade-D, .grade-F { background: #fce8e8; color: var(--red); border-color: var(--red); }
+
+body.dark .grade-C { background: #1e2d44; color: var(--text); border-color: var(--text-muted); }
+body.dark .grade-D, body.dark .grade-F { background: #2a1010; }
+
+.status-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status-safe     { background: #daf2e8; color: #1a7a4a; }
+.status-watch    { background: #fdeede; color: #c45c10; }
+.status-distress { background: #fce8e8; color: #b93232; }
+
+body.dark .status-safe     { background: #0a2016; color: #2ecc78; }
+body.dark .status-watch    { background: #2a1e08; color: #f5b042; }
+body.dark .status-distress { background: #2a1010; color: #e05555; }
+
+.grade-mini {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 0.95rem;
+  line-height: 28px;
+  text-align: center;
+  border: 2px solid;
+}
+.grade-mini-A, .grade-mini-B { background: var(--navy); color: var(--gold); border-color: var(--gold); }
+.grade-mini-C                { background: #edf3fb; color: var(--navy); border-color: var(--navy); }
+.grade-mini-D, .grade-mini-F { background: #fce8e8; color: var(--red); border-color: var(--red); }
+
+body.dark .grade-mini-C { background: #1e2d44; color: var(--text); border-color: var(--text-muted); }
+body.dark .grade-mini-D, body.dark .grade-mini-F { background: #2a1010; }
+
+.verdict-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 10px 0 14px;
+  flex-wrap: wrap;
+}
+.verdict-row .verdict-text { flex: 1; min-width: 200px; }
+@media (max-width: 480px) {
+  .verdict-row { flex-direction: column; align-items: flex-start; }
+}
+
+/* SCORECARD */
+.scorecard-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 14px;
+}
+.scorecard-row:last-child { border-bottom: none; }
+.scorecard-label {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 600;
+  color: var(--text);
+}
+.scorecard-detail {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* BAR CHART (SEGMENTS) */
+.seg-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.seg-label {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+.seg-label-sub { font-size: 0.78rem; color: var(--text-muted); display: block; font-weight: 400; }
+.seg-bar-wrap {
+  background: var(--surface-2);
+  border-radius: 6px;
+  height: 26px;
+  position: relative;
+  overflow: hidden;
+}
+.seg-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--sky));
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.84rem;
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  .seg-row { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* BULL LIST */
+.bull-list {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+.bull-list li {
+  position: relative;
+  padding: 8px 0 8px 32px;
+  border-bottom: 1px dashed var(--border);
+}
+.bull-list li:last-child { border-bottom: none; }
+.bull-list li::before {
+  content: attr(data-icon);
+  position: absolute;
+  left: 0;
+  top: 8px;
+  font-size: 1.2rem;
+}
+
+/* YEAR CARDS */
+.year-card {
+  background: var(--surface);
+  border-radius: 12px;
+  margin: 14px 0;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+}
+.year-card-header {
+  background: linear-gradient(90deg, #0f2444, #1a5fa8);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.year-card-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.18rem;
+  color: #fff;
+}
+.year-card-title .year-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.7);
+  display: block;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+.eps-badge {
+  background: rgba(245,200,66,0.20);
+  border: 1px solid rgba(245,200,66,0.5);
+  color: var(--gold);
+  padding: 5px 13px;
+  border-radius: 999px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+.year-card-body { padding: 18px 20px; }
+.year-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.year-metric {
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+.year-metric-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+  font-family: 'Playfair Display', serif;
+}
+.year-metric-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--navy);
+}
+body.dark .year-metric-value { color: var(--gold); }
+.year-rationale {
+  font-size: 0.93rem;
+  color: var(--text);
+  font-family: 'Source Serif 4', serif;
+}
+@media (max-width: 400px) {
+  .year-metrics { grid-template-columns: 1fr 1fr; }
+}
+
+/* SCENARIO BARS */
+.scen-grid {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 8px;
+  margin: 14px 0;
+}
+.scen-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 100px;
+  align-items: center;
+  gap: 12px;
+}
+.scen-label {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.scen-bar-wrap {
+  background: var(--surface-2);
+  border-radius: 6px;
+  height: 22px;
+  overflow: hidden;
+}
+.scen-bar {
+  height: 100%;
+  border-radius: 6px;
+}
+.scen-bear .scen-bar { background: linear-gradient(90deg, #b93232, #d96666); }
+.scen-base .scen-bar { background: linear-gradient(90deg, var(--navy), var(--blue)); }
+.scen-bull .scen-bar { background: linear-gradient(90deg, var(--green), #4ec891); }
+.scen-bear .scen-label { color: var(--red); }
+.scen-base .scen-label { color: var(--navy); }
+.scen-bull .scen-label { color: var(--green); }
+body.dark .scen-base .scen-label { color: var(--gold); }
+.scen-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+  text-align: right;
+  color: var(--text);
+}
+
+/* RISK ITEMS */
+.risk-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 14px 0;
+}
+@media (min-width: 560px) {
+  .risk-grid.two-col { grid-template-columns: 1fr 1fr; }
+}
+.risk-item {
+  border-radius: 10px;
+  padding: 14px 16px;
+  border-left: 4px solid;
+}
+.risk-item.high  { background: #fce8e8; border-left-color: var(--red); }
+.risk-item.med   { background: #fdeede; border-left-color: var(--orange); }
+.risk-item.low   { background: #daf2e8; border-left-color: var(--green); }
+body.dark .risk-item.high { background: #2a1010; }
+body.dark .risk-item.med  { background: #2a1e08; }
+body.dark .risk-item.low  { background: #0a2016; }
+.risk-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 6px;
+  color: #fff;
+}
+.risk-item.high .risk-badge { background: var(--red); }
+.risk-item.med .risk-badge  { background: var(--orange); }
+.risk-item.low .risk-badge  { background: var(--green); }
+.risk-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+body.dark .risk-title { color: var(--text); }
+.risk-text { font-size: 0.9rem; color: var(--text); }
+
+/* PROS/CONS */
+.proscons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin: 14px 0;
+}
+@media (min-width: 560px) {
+  .proscons { grid-template-columns: 1fr 1fr; }
+}
+.pros-card, .cons-card {
+  border-radius: 10px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+}
+.pros-card { background: var(--green-bg); border-color: var(--green); }
+.cons-card { background: var(--red-bg); border-color: var(--red); }
+.pros-card h4, .cons-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+.pros-card h4 { color: var(--green); }
+.cons-card h4 { color: var(--red); }
+.proscons ul { margin-left: 18px; font-size: 0.92rem; }
+
+/* CONCLUSION BOX */
+.conclusion-box {
+  position: relative;
+  margin: 22px 0;
+  padding: 32px 28px;
+  background: linear-gradient(135deg, #0f2444 0%, #0d3568 100%);
+  color: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.conclusion-box::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(245,200,66,0.30), transparent 65%);
+  pointer-events: none;
+}
+.conclusion-box h3 { color: var(--gold); margin-top: 0; font-size: 1.3rem; }
+.conclusion-box p { color: rgba(255,255,255,0.9); position: relative; z-index: 2; }
+
+.target-row {
+  display: flex;
+  gap: 12px;
+  margin: 22px 0 8px;
+  flex-wrap: nowrap;
+  position: relative;
+  z-index: 2;
+}
+.target-box {
+  flex: 1;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  padding: 14px 16px;
+  border-radius: 10px;
+  min-width: 0;
+}
+.target-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.target-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+}
+.target-sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.7);
+  margin-top: 2px;
+}
+@media (max-width: 400px) {
+  .target-row { flex-direction: column; }
+}
+
+/* DISCLAIMER */
+.disclaimer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-top: 30px;
+}
+
+/* ROI TABS */
+.roi-tabs {
+  display: flex;
+  gap: 0;
+  margin: 12px 0 0;
+  border-bottom: 2px solid var(--border);
+}
+.roi-tab-button {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 10px 18px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color .2s, border-color .2s;
+}
+.roi-tab-button:hover { color: var(--blue); }
+.roi-tab-button.active {
+  color: var(--blue);
+  border-bottom-color: var(--gold);
+}
+.roi-tab-content { display: none; padding-top: 14px; }
+.roi-tab-content.active { display: block; }
+.roi-tab-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+body.dark .roi-tab-title { color: var(--text); }
+
+.price-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 8px 0 14px;
+  box-shadow: var(--card-shadow);
+  flex-wrap: wrap;
+}
+.price-control-button {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.price-control-button:hover { background: var(--blue); }
+.price-control-reset {
+  background: transparent;
+  color: var(--blue);
+  border: 1px solid var(--blue);
+}
+.price-control-reset:hover { background: var(--blue); color: #fff; }
+.price-control-display { text-align: center; min-width: 120px; }
+.price-control-price {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: var(--navy);
+  display: block;
+}
+body.dark .price-control-price { color: var(--gold); }
+.price-control-delta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Custom range bar with You marker */
+.roi-range {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 0 0 14px;
+  box-shadow: var(--card-shadow);
+}
+.roi-range-bar {
+  position: relative;
+  height: 8px;
+  background: linear-gradient(90deg, #fce8e8 0%, #fdeede 50%, #daf2e8 100%);
+  border-radius: 999px;
+  margin: 22px 4px 16px;
+}
+body.dark .roi-range-bar {
+  background: linear-gradient(90deg, #2a1212 0%, #2a1e08 50%, #0e2a1c 100%);
+}
+.roi-range-marker {
+  position: absolute;
+  top: -6px;
+  width: 14px;
+  height: 20px;
+  border-radius: 4px;
+  transform: translateX(-50%);
+}
+.roi-range-marker.current {
+  background: var(--text-muted);
+  border: 2px solid var(--surface);
+}
+.roi-range-marker.you {
+  background: var(--gold);
+  border: 2px solid var(--navy);
+  z-index: 2;
+  transition: left .25s;
+}
+.roi-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+@media print {
+  .roi-tabs { display: none; }
+  .roi-tab-content { display: none !important; }
+  .roi-tab-content[data-tab="current"] { display: block !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="container">
+  <div class="hero">
+    <div class="hero-badge">NASDAQ: MSFT · Microsoft Corporation</div>
+    <h1>Microsoft <span>Deep Analysis</span></h1>
+    <p class="subtitle">A 4-year forward look at the AI infrastructure leader: cloud trajectory, Copilot monetization, capex sustainability, and the path back to multiple expansion.</p>
+    <div class="meta-chips">
+      <div class="chip">📅 April 26, 2026</div>
+      <div class="chip">💵 $424.62</div>
+      <div class="chip">📈 Strong Buy (Street)</div>
+      <div class="chip">📉 −12.0% YTD</div>
+    </div>
+  </div>
+
+<!-- 01 TOC -->
+<div class="section" id="toc-section">
+  <div class="section-label">01 — Table of Contents</div>
+  <h2>What's Inside</h2>
+  <div class="toc">
+    <ol>
+      <li><a href="#sec-exec">Executive Summary</a></li>
+      <li><a href="#sec-snap">Current Snapshot</a></li>
+      <li><a href="#sec-strength">Financial Strength &amp; Bankruptcy Risk</a></li>
+      <li><a href="#sec-quality">Quality Track Record</a></li>
+      <li><a href="#sec-moat">Business Model &amp; Moat</a></li>
+      <li><a href="#sec-segs">Revenue Sources &amp; Segments</a></li>
+      <li><a href="#sec-rps">Revenue Per Share Forecast</a></li>
+      <li><a href="#sec-margin">Margin Forecast</a></li>
+      <li><a href="#sec-eps">EPS Forecast</a></li>
+      <li><a href="#sec-roic">ROIC Forecast</a></li>
+      <li><a href="#sec-pe">P/E Multiple Forecast</a></li>
+      <li><a href="#sec-targets">Price Targets &amp; Scenarios</a></li>
+      <li><a href="#sec-rationale">Year-by-Year Rationale</a></li>
+      <li><a href="#sec-roi">Yearly ROI from Today</a></li>
+      <li><a href="#sec-risks">Structural Advantages &amp; Key Risks</a></li>
+      <li><a href="#sec-macro">Macro, Regulation &amp; Competition</a></li>
+      <li><a href="#sec-conclusion">Investment Conclusion</a></li>
+      <li><a href="#sec-disclaimer">Disclaimer</a></li>
+    </ol>
+  </div>
+</div>
+
+<!-- 02 EXEC SUMMARY -->
+<div class="section" id="sec-exec">
+  <div class="section-label">02 — Executive Summary</div>
+  <h2>The Setup in One Page</h2>
+  <div class="card card-blue">
+    <h3>Core Thesis</h3>
+    <p>Microsoft is trading at a five-year-low forward P/E of 22x despite running the most enviable franchise in enterprise software — Azure growing 39% on a $75B+ base, 15M paid Microsoft 365 Copilot seats up 160% YoY, AAA balance sheet, and operating margin at an all-time high of 45.6%. The compression is entirely about capex anxiety: a $150B+ AI infrastructure run-rate that has investors questioning ROI before the monetization curve has fully played out. With FY26 EPS expected to grow 24% and the multiple already discounting trouble, the risk/reward at $425 looks asymmetric to the upside — provided AI demand stays directional.</p>
+    <p style="margin-bottom: 0;"><em>Key numbers to anchor on: $424.62 spot · $578 Street 12-month target · $16.92 FY26E non-GAAP EPS · $625B commercial RPO · 22x forward P/E vs 33x 10-year average.</em></p>
+  </div>
+</div>
+
+<!-- 03 CURRENT SNAPSHOT -->
+<div class="section" id="sec-snap">
+  <div class="section-label">03 — Current Snapshot</div>
+  <h2>Where Microsoft Stands Today</h2>
+  <p>The stock is mid-correction. After peaking at $555 in the summer of 2025, MSFT has given back roughly 24% as the market reprices its capex commitments. The fundamentals have not deteriorated — they have arguably accelerated — but the valuation is now near a multi-year floor.</p>
+
+  <div class="snap-grid">
+    <div class="snap-tile dark-hi">
+      <div class="snap-label">Stock Price</div>
+      <div class="snap-value">$424.62</div>
+      <div class="snap-sub">As of Apr 25, 2026</div>
+    </div>
+    <div class="snap-tile dark-hi">
+      <div class="snap-label">Market Cap</div>
+      <div class="snap-value">$3.15T</div>
+      <div class="snap-sub">7.43B shares out</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">Trailing P/E</div>
+      <div class="snap-value">26.6x</div>
+      <div class="snap-sub">vs 33x 10Y avg</div>
+    </div>
+    <div class="snap-tile green-hi">
+      <div class="snap-label">Forward P/E</div>
+      <div class="snap-value">22.1x</div>
+      <div class="snap-sub">5-year low</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">EPS (TTM)</div>
+      <div class="snap-value">$15.98</div>
+      <div class="snap-sub">FY25: $13.64 GAAP</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">Revenue (TTM)</div>
+      <div class="snap-value">$305B</div>
+      <div class="snap-sub">+15% FY25</div>
+    </div>
+    <div class="snap-tile green-hi">
+      <div class="snap-label">Op Margin</div>
+      <div class="snap-value">45.6%</div>
+      <div class="snap-sub">All-time high</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">Dividend Yield</div>
+      <div class="snap-value">0.86%</div>
+      <div class="snap-sub">$3.64 annualised</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">Beta</div>
+      <div class="snap-value">1.12</div>
+      <div class="snap-sub">vs S&amp;P 500</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">Street PT (avg)</div>
+      <div class="snap-value">$578</div>
+      <div class="snap-sub">+36% upside</div>
+    </div>
+
+    <div class="range-tile">
+      <div class="range-tile-label">52-Week Range</div>
+      <div class="range-bar">
+        <div class="range-bar-marker" style="left: 34.3%;"></div>
+      </div>
+      <div class="range-bar-labels">
+        <span>$356.28</span>
+        <span>$555.45</span>
+      </div>
+      <div class="range-bar-current">Current: $424.62 · 34% of 52W range</div>
+    </div>
+  </div>
+
+  <div class="card card-yellow">
+    <h3>Why This Matters</h3>
+    <p style="margin-bottom: 0;">Two metrics are doing the heavy lifting here. Forward P/E at 22x is a third below the 10-year average — Microsoft has not been this cheap on forward earnings since the 2022 bear market. And current price sitting at just 34% of the 52-week range tells you the seller has been in control. The fundamentals say one thing; the tape says another. That gap is the opportunity.</p>
+  </div>
+</div>
+
+<!-- 04 FINANCIAL STRENGTH -->
+<div class="section" id="sec-strength">
+  <div class="section-label">04 — Financial Strength &amp; Bankruptcy Risk</div>
+  <h2>Can the Balance Sheet Take a Punch?</h2>
+  <p>This section answers the question of solvency before everything else: if AI demand cooled by 30% tomorrow, would Microsoft be in trouble? The short answer is no — and the long answer is that the gap between Microsoft's financial strength and the rest of corporate America is not even close. Read the verdict, then the two layers, then the framework note.</p>
+
+  <div class="card card-blue">
+    <h3>Verdict Summary</h3>
+    <div class="verdict-row">
+      <span class="verdict-badge verdict-safe">✓ Safe</span>
+      <div class="grade-badge grade-A">A+</div>
+      <div class="verdict-text">
+        <p style="margin-bottom: 4px;">Microsoft is one of only two non-financial US issuers carrying AAA from S&amp;P and Aaa from Moody's (the other is Johnson &amp; Johnson). Cash of $94.6B exceeds total debt of $43.2B by 2.2x; interest is covered ~43x by operating income; Altman Z-Score sits at 9.4 — three full points above the safe threshold.</p>
+      </div>
+    </div>
+    <p style="font-style: italic; color: var(--text-muted); margin-bottom: 0; font-size: 0.88rem;">Framework: Standard Industrial</p>
+  </div>
+
+  <h3>Layer 1 — Bankruptcy Risk</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+          <th>Safe Threshold</th>
+          <th>What It Catches</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Altman Z-Score</td>
+          <td>9.4</td>
+          <td>&gt; 2.99</td>
+          <td>Bankruptcy probability</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Beneish M-Score</td>
+          <td>−2.6</td>
+          <td>&lt; −2.22</td>
+          <td>Earnings manipulation</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Debt / EBITDA</td>
+          <td>0.23x</td>
+          <td>&lt; 3x</td>
+          <td>Leverage stress</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Interest Coverage</td>
+          <td>~43x</td>
+          <td>&gt; 5x</td>
+          <td>Debt-service strain</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p style="font-size: 0.88rem; font-style: italic; color: var(--text-muted);">Standard Industrial framework selected based on Microsoft's GICS classification (Information Technology · Software · Software—Infrastructure). All four metrics in the safe zone with significant cushion.</p>
+
+  <h3>Layer 2 — Balance Sheet Quality</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Value</th>
+          <th>What It Tells You</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cash-to-Debt</td>
+          <td>2.19x</td>
+          <td>Liquidity cushion vs. obligations</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+        <tr>
+          <td>Equity-to-Asset</td>
+          <td>0.59</td>
+          <td>How much of the company shareholders own</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+        <tr>
+          <td>Debt-to-Equity</td>
+          <td>10.3%</td>
+          <td>Leverage vs. shareholder equity</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+        <tr>
+          <td>Piotroski F-Score</td>
+          <td>6 / 9</td>
+          <td>Fundamental momentum (Capex weighing on it)</td>
+          <td><span class="grade-mini grade-mini-B">B</span></td>
+        </tr>
+        <tr>
+          <td>ROIC vs WACC Spread</td>
+          <td>+12pp</td>
+          <td>Genuine value creation</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <div class="card">
+    <h3>Industry Context</h3>
+    <p>Microsoft's balance sheet is set up for war. The company sits on $89.5B of cash and short-term investments against just $40B of long-term debt — a gross cash position three times its bond load. Even with the $80B+ FY26 capex run-rate, free cash flow at $77B TTM still funds the entire dividend and share repurchase program internally.</p>
+    <p>The Piotroski F-Score of 6 (a notch below Microsoft's 10-year median of 7) is the only metric not flashing green. The drop is driven by mechanical factors — rising leverage as the company funds data center expansion, and falling FCF as capex absorbs cash flow growth. Neither signal indicates underlying business deterioration; both reflect a deliberate capital allocation choice.</p>
+    <p style="margin-bottom: 0;">There is no scenario short of a multi-decade enterprise software collapse where Microsoft's solvency comes into question. The capital structure is built for a downturn deeper than 2008.</p>
+  </div>
+
+  <p style="font-size: 0.84rem; color: var(--text-muted); font-style: italic;">A note on the metrics: the <strong>Altman Z-Score</strong> blends five working-capital and profitability ratios into a single bankruptcy probability — anything above 2.99 is in the safe zone. The <strong>Beneish M-Score</strong> uses eight ratios to flag accounting manipulation; readings below −2.22 indicate clean books. The <strong>Piotroski F-Score</strong> is a 9-point fundamental quality screen — 7+ is strong, 4 or below is a red flag.</p>
+</div>
+
+<!-- 05 QUALITY TRACK RECORD -->
+<div class="section" id="sec-quality">
+  <div class="section-label">05 — Quality Track Record</div>
+  <h2>What the Last 10 Years Actually Show</h2>
+  <p>Whether the business has actually delivered over the long run. This section tracks profitability, capital returns, and growth consistency over 5- and 10-year periods to separate genuine compounders from optical performers.</p>
+
+  <div class="snap-grid" style="margin: 18px 0;">
+    <div class="snap-tile">
+      <div class="snap-label">10Y Revenue CAGR</div>
+      <div class="snap-value">13.1%</div>
+      <div class="snap-sub">Steady compounder</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">10Y EPS CAGR</div>
+      <div class="snap-value">23.5%</div>
+      <div class="snap-sub">Margin expansion + buybacks</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">5Y Avg ROIC</div>
+      <div class="snap-value">28.0%</div>
+      <div class="snap-sub">Top-decile capital efficiency</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">5Y Avg Op Margin</div>
+      <div class="snap-value">~42%</div>
+      <div class="snap-sub">Now 45.6% — expanding</div>
+    </div>
+    <div class="snap-tile" style="grid-column: span 2;">
+      <div class="snap-label">5Y Avg FCF Margin</div>
+      <div class="snap-value">~30%</div>
+      <div class="snap-sub">Currently compressed to 25% as capex peaks</div>
+    </div>
+  </div>
+
+  <h3>Profitability Quality</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Current</th>
+          <th>5Y Avg</th>
+          <th>10Y Avg</th>
+          <th>Trend</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gross Margin</td>
+          <td>68.6%</td>
+          <td>69.1%</td>
+          <td>67.8%</td>
+          <td><span class="neg-val">↓</span></td>
+          <td>Pricing power</td>
+        </tr>
+        <tr>
+          <td>Operating Margin</td>
+          <td class="pos-val">45.6%</td>
+          <td>42.0%</td>
+          <td>37.8%</td>
+          <td><span class="pos-val">↑</span></td>
+          <td>Operating leverage</td>
+        </tr>
+        <tr>
+          <td>Net Margin</td>
+          <td class="pos-val">39.0%</td>
+          <td>34.5%</td>
+          <td>30.5%</td>
+          <td><span class="pos-val">↑</span></td>
+          <td>Moat strength</td>
+        </tr>
+        <tr>
+          <td>FCF Margin</td>
+          <td class="neg-val">25.4%</td>
+          <td>30.2%</td>
+          <td>30.8%</td>
+          <td><span class="neg-val">↓</span></td>
+          <td>Earnings quality</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Returns on Capital</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Current</th>
+          <th>5Y Avg</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ROIC</td>
+          <td class="neg-val">22.2%</td>
+          <td>28.0%</td>
+          <td>Capital efficiency</td>
+        </tr>
+        <tr>
+          <td>ROE</td>
+          <td>34.4%</td>
+          <td>35.8%</td>
+          <td>Equity returns</td>
+        </tr>
+        <tr>
+          <td>ROA</td>
+          <td>17.9%</td>
+          <td>18.5%</td>
+          <td>Asset productivity</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Growth Track Record</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>10Y CAGR</th>
+          <th>5Y CAGR</th>
+          <th>1Y</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Revenue Growth</td>
+          <td class="pos-val">+13.1%</td>
+          <td class="pos-val">+13.5%</td>
+          <td class="pos-val">+14.9%</td>
+          <td>Top-line story</td>
+        </tr>
+        <tr>
+          <td>EPS Growth</td>
+          <td class="pos-val">+23.5%</td>
+          <td class="pos-val">+20.5%</td>
+          <td class="pos-val">+15.6%</td>
+          <td>Headline number</td>
+        </tr>
+        <tr>
+          <td>FCF Growth</td>
+          <td class="pos-val">+13.5%</td>
+          <td class="pos-val">+11.8%</td>
+          <td class="neg-val">−3.3%</td>
+          <td>Cash quality (should track EPS)</td>
+        </tr>
+        <tr>
+          <td>Book Value Growth</td>
+          <td class="pos-val">+17.2%</td>
+          <td class="pos-val">+19.5%</td>
+          <td class="pos-val">+27.9%</td>
+          <td>Compounding check</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p style="font-size: 0.86rem; font-style: italic; color: var(--text-muted);">Note the divergence: EPS grew 16% in FY25 while FCF declined 3% — entirely a function of capex absorption. This gap is the cleanest visible signal of the bear case (capex destroys cash quality) and also the cleanest visible signal of the bull case (it's spending, not deterioration). It will close when capex flattens.</p>
+
+  <h3>Consistency Scorecard</h3>
+  <div class="card">
+    <div class="scorecard-row">
+      <div>
+        <div class="scorecard-label">Profitable Years</div>
+        <div class="scorecard-detail">Net income positive every year</div>
+      </div>
+      <span class="status-badge status-safe">10 / 10</span>
+    </div>
+    <div class="scorecard-row">
+      <div>
+        <div class="scorecard-label">Positive FCF Years</div>
+        <div class="scorecard-detail">Cash-generative without exception</div>
+      </div>
+      <span class="status-badge status-safe">10 / 10</span>
+    </div>
+    <div class="scorecard-row">
+      <div>
+        <div class="scorecard-label">Revenue Growth Years</div>
+        <div class="scorecard-detail">Has not had a down year since 2016</div>
+      </div>
+      <span class="status-badge status-safe">10 / 10</span>
+    </div>
+    <div class="scorecard-row">
+      <div>
+        <div class="scorecard-label">Buyback Discipline</div>
+        <div class="scorecard-detail">Modest float reduction; offsets SBC dilution</div>
+      </div>
+      <span class="status-badge status-watch">Mixed</span>
+    </div>
+    <div class="scorecard-row">
+      <div>
+        <div class="scorecard-label">Margin Stability</div>
+        <div class="scorecard-detail">Op margin SD ~1.7pp over 5Y; only direction is up</div>
+      </div>
+      <span class="status-badge status-safe">High</span>
+    </div>
+  </div>
+</div>
+
+<!-- 06 BUSINESS MODEL & MOAT -->
+<div class="section" id="sec-moat">
+  <div class="section-label">06 — Business Model &amp; Moat</div>
+  <h2>The Three-Engine Architecture</h2>
+  <p>Microsoft is not a "software company" the way the market once thought of it. It is three distinct franchises stapled together, each with category-defining position, each cross-selling the others. The architecture is what makes the AI thesis work: every dollar of Azure consumption pulls Office, every Copilot seat sold pulls Azure, every Windows endpoint pulls security and Defender.</p>
+
+  <ul class="bull-list">
+    <li data-icon="🏢"><strong>Productivity &amp; Business Processes ($121B / 43%)</strong> — Microsoft 365, LinkedIn, Dynamics. The cash engine. 450M paid commercial M365 seats — the installed base into which Copilot ($30/user/month) is being upsold. 15M paid Copilot seats today, growing 160% YoY. Every percentage point of penetration here is incremental high-margin revenue.</li>
+    <li data-icon="☁️"><strong>Intelligent Cloud ($106B / 38%)</strong> — Azure plus Server &amp; Tools. Azure grew 39% in FY26 Q2 on a $75B+ run-rate, the highest growth rate of any hyperscaler at this scale. AI workloads now drive more than half of incremental Azure growth. The OpenAI partnership remains the most consequential commercial AI relationship in software.</li>
+    <li data-icon="💻"><strong>More Personal Computing ($55B / 19%)</strong> — Windows, Xbox, Surface, Bing, advertising. The slower-growing legacy ballast. Activision contribution masked some weakness in core gaming during FY25; Copilot+ PC is starting to pull a Windows replacement cycle as Windows 10 support ends.</li>
+    <li data-icon="🔁"><strong>The flywheel</strong> — Azure trains and serves the AI models that power Copilot, which sits inside the Office apps that run on Windows endpoints, the data from which trains better Azure-served models. This compounding loop is what AWS and Google can't fully replicate without a horizontal productivity suite.</li>
+    <li data-icon="🛡️"><strong>Switching costs</strong> — Once an enterprise has Active Directory, Entra ID, Intune, Defender, Teams, SharePoint, Exchange, Dynamics, and Azure all interlocked, the cost of unwinding is institutional. This is the moat people forget about.</li>
+  </ul>
+</div>
+
+<!-- 07 SEGMENTS -->
+<div class="section" id="sec-segs">
+  <div class="section-label">07 — Revenue Sources &amp; Segments</div>
+  <h2>Where the $282B Comes From</h2>
+  <p>FY2025 revenue mix. Productivity &amp; Business Processes is the single largest segment but Intelligent Cloud is the fastest growing — and is on track to become the largest by FY27.</p>
+
+  <div class="card">
+    <div class="seg-row">
+      <div class="seg-label">Productivity &amp; Business <span class="seg-label-sub">M365, LinkedIn, Dynamics</span></div>
+      <div class="seg-bar-wrap"><div class="seg-bar" style="width: 100%;">$120.8B · 43%</div></div>
+    </div>
+    <div class="seg-row">
+      <div class="seg-label">Intelligent Cloud <span class="seg-label-sub">Azure, Server, GitHub</span></div>
+      <div class="seg-bar-wrap"><div class="seg-bar" style="width: 88%;">$106.3B · 38%</div></div>
+    </div>
+    <div class="seg-row">
+      <div class="seg-label">More Personal Computing <span class="seg-label-sub">Windows, Xbox, Bing</span></div>
+      <div class="seg-bar-wrap"><div class="seg-bar" style="width: 45%;">$54.6B · 19%</div></div>
+    </div>
+    <p style="font-size: 0.88rem; color: var(--text-muted); margin: 14px 0 0; font-style: italic;">Intelligent Cloud grew 21% in FY25 vs Productivity's 13% and More Personal Computing's 7.5%. Cloud will overtake Productivity as the largest segment within two fiscal years on current trajectories.</p>
+  </div>
+</div>
+
+<!-- 08 REVENUE PER SHARE FORECAST -->
+<div class="section" id="sec-rps">
+  <div class="section-label">08 — Revenue Per Share Forecast</div>
+  <h2>Top-Line Compounding Per Share</h2>
+  <p>Modest float buybacks (~0.3% per year, after offsetting stock comp) layer onto the underlying revenue growth. My estimates assume Azure decelerates from 39% toward 30% by FY28 as the law of large numbers kicks in, while M365 Copilot drives a steady mid-teens lift to Productivity.</p>
+
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY25 Actual</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Revenue ($B)</td>
+          <td class="act-col">$281.7</td>
+          <td>$324</td>
+          <td>$370</td>
+          <td>$420</td>
+          <td>$468</td>
+        </tr>
+        <tr>
+          <td>My Rev/Share</td>
+          <td class="act-col">$37.76</td>
+          <td>$43.49</td>
+          <td>$49.80</td>
+          <td>$56.68</td>
+          <td>$63.32</td>
+        </tr>
+        <tr>
+          <td>YoY Growth</td>
+          <td class="act-col pos-val">+15.0%</td>
+          <td class="pos-val">+15.2%</td>
+          <td class="pos-val">+14.5%</td>
+          <td class="pos-val">+13.8%</td>
+          <td class="pos-val">+11.7%</td>
+        </tr>
+        <tr>
+          <td>Street Revenue ($B)</td>
+          <td class="act-col">$281.7</td>
+          <td>$327</td>
+          <td>$378</td>
+          <td>$430</td>
+          <td>$478</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <div class="card card-yellow">
+    <p style="margin-bottom: 0;"><strong>My vs. Street.</strong> I'm running 1–2% below consensus on revenue at every horizon. The reason is Azure deceleration — Street has built in 30%+ growth through FY28; I think capacity constraints and the OpenAI multi-cloud diversification (now also on AWS) bring that closer to 27%. The gap is material at the margin but not at the trend.</p>
+  </div>
+</div>
+
+<!-- 09 MARGIN FORECAST -->
+<div class="section" id="sec-margin">
+  <div class="section-label">09 — Margin Forecast</div>
+  <h2>The Critical Variable</h2>
+  <p>This is where the bear case lives or dies. Operating margin hit an all-time high of 45.6% in FY25, but Q3 FY26 guidance implied a step-down to 45.1% — the first explicit margin warning in years. Depreciation from the $150B+ data center buildout will be the headwind through FY28, partially offset by Copilot's high contribution margin.</p>
+
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Margin</th>
+          <th class="act-col">FY25 Actual</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Operating Margin</td>
+          <td class="act-col">45.6%</td>
+          <td class="neg-val">45.5%</td>
+          <td class="neg-val">45.0%</td>
+          <td class="neg-val">44.5%</td>
+          <td class="neg-val">44.0%</td>
+        </tr>
+        <tr>
+          <td>Street Op Margin</td>
+          <td class="act-col">45.6%</td>
+          <td>45.8%</td>
+          <td>45.5%</td>
+          <td>45.2%</td>
+          <td>45.0%</td>
+        </tr>
+        <tr>
+          <td>My Net Margin</td>
+          <td class="act-col">36.1%</td>
+          <td class="neg-val">35.5%</td>
+          <td class="neg-val">35.0%</td>
+          <td class="neg-val">34.5%</td>
+          <td class="neg-val">34.0%</td>
+        </tr>
+        <tr>
+          <td>Street Net Margin</td>
+          <td class="act-col">36.1%</td>
+          <td>36.0%</td>
+          <td>35.8%</td>
+          <td>35.5%</td>
+          <td>35.5%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <div class="card card-yellow">
+    <p style="margin-bottom: 0;"><strong>Where I differ from Street.</strong> I'm modeling 50–100 bps more margin compression than consensus through FY28. The capex run-rate is genuinely unprecedented — $80B+ in FY26 alone — and the resulting depreciation will hit cost of revenue in proportion as facilities come online. Copilot's incremental margin is real but won't fully offset it until FY28+. Note that I am still modeling Microsoft to operate at 44% operating margin in FY29 — by any honest historical comparison, that is still extraordinary.</p>
+  </div>
+</div>
+
+<!-- 10 EPS FORECAST -->
+<div class="section" id="sec-eps">
+  <div class="section-label">10 — EPS Forecast</div>
+  <h2>The Number That Drives the Stock</h2>
+  <p>Non-GAAP EPS, which strips out OpenAI investment gains/losses for cleaner comparability. FY26 GAAP EPS will be substantially higher because of the $7.6B OpenAI mark-up booked in Q2.</p>
+
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY25</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My EPS (non-GAAP)</td>
+          <td class="act-col">$13.64</td>
+          <td>$16.85</td>
+          <td>$19.00</td>
+          <td>$21.50</td>
+          <td>$23.80</td>
+        </tr>
+        <tr>
+          <td>YoY Growth</td>
+          <td class="act-col pos-val">+15.6%</td>
+          <td class="pos-val">+23.5%</td>
+          <td class="pos-val">+12.8%</td>
+          <td class="pos-val">+13.2%</td>
+          <td class="pos-val">+10.7%</td>
+        </tr>
+        <tr>
+          <td>Street EPS — Low</td>
+          <td class="act-col">$13.64</td>
+          <td>$15.94</td>
+          <td>$16.32</td>
+          <td>$19.43</td>
+          <td>$21.50</td>
+        </tr>
+        <tr>
+          <td>Street EPS — Avg</td>
+          <td class="act-col">$13.64</td>
+          <td>$16.92</td>
+          <td>$19.38</td>
+          <td>$22.77</td>
+          <td>$25.20</td>
+        </tr>
+        <tr>
+          <td>Street EPS — High</td>
+          <td class="act-col">$13.64</td>
+          <td>$17.70</td>
+          <td>$21.03</td>
+          <td>$25.28</td>
+          <td>$28.40</td>
+        </tr>
+        <tr>
+          <td>My vs. Street Avg</td>
+          <td class="act-col">—</td>
+          <td class="neg-val">−0.4%</td>
+          <td class="neg-val">−2.0%</td>
+          <td class="neg-val">−5.6%</td>
+          <td class="neg-val">−5.6%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <div class="card card-yellow">
+    <p style="margin-bottom: 0;"><strong>Why I'm below Street out-years.</strong> Consensus assumes margins hold near 45.5% through FY29. I'm assuming 100 bps of compression by then. The math compounds — by FY29 my EPS is roughly 6% below Street, which means there is room to surprise to the upside if Microsoft's Copilot pricing power proves stickier than I'm modeling. This is intentionally conservative.</p>
+  </div>
+</div>
+
+<!-- 11 ROIC FORECAST -->
+<div class="section" id="sec-roic">
+  <div class="section-label">11 — ROIC Forecast</div>
+  <h2>Capital Efficiency Through the Capex Cycle</h2>
+  <p>ROIC peaked at ~30% in 2022 and has been gliding down as the invested capital base swells with data center additions. The question is not whether ROIC declines — it must — but whether the absolute spread over WACC remains comfortably positive.</p>
+
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY23</th>
+          <th class="act-col">FY24</th>
+          <th class="act-col">FY25</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My ROIC</td>
+          <td class="act-col">28.4%</td>
+          <td class="act-col">25.1%</td>
+          <td class="act-col">22.5%</td>
+          <td>23.0%</td>
+          <td>23.0%</td>
+          <td>22.5%</td>
+          <td>22.0%</td>
+          <td>Stabilises</td>
+        </tr>
+        <tr>
+          <td>WACC</td>
+          <td class="act-col">9.0%</td>
+          <td class="act-col">9.5%</td>
+          <td class="act-col">10.0%</td>
+          <td>10.0%</td>
+          <td>10.0%</td>
+          <td>10.0%</td>
+          <td>10.0%</td>
+          <td>Stable rates</td>
+        </tr>
+        <tr>
+          <td>ROIC − WACC Spread</td>
+          <td class="act-col pos-val">+19.4pp</td>
+          <td class="act-col pos-val">+15.6pp</td>
+          <td class="act-col pos-val">+12.5pp</td>
+          <td class="pos-val">+13.0pp</td>
+          <td class="pos-val">+13.0pp</td>
+          <td class="pos-val">+12.5pp</td>
+          <td class="pos-val">+12.0pp</td>
+          <td>Value creation</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <div class="card">
+    <p style="margin-bottom: 0;">Even at the trough, Microsoft generates a 12pp ROIC-WACC spread — meaning every dollar of capital deployed creates 12 cents of economic profit per year. That is rarefied territory. For context, the median large-cap S&amp;P 500 firm runs a 2–4 pp spread. The capex cycle compresses ROIC but does not break the model.</p>
+  </div>
+</div>
+
+<!-- 12 P/E MULTIPLE FORECAST -->
+<div class="section" id="sec-pe">
+  <div class="section-label">12 — P/E Multiple Forecast</div>
+  <h2>What Multiple Should The Market Pay?</h2>
+  <p>Microsoft is currently trading at 22x forward earnings — a third below the 10-year average of 33x. The de-rating reflects three concerns: capex sustainability, Azure deceleration, and Copilot ROI uncertainty. As each resolves, the multiple should re-rate, but probably not all the way back to 33x given the more capital-intensive business mix.</p>
+
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>P/E Multiple</th>
+          <th class="act-col">FY25 Trailing</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Bear P/E</td>
+          <td class="act-col">26.6x</td>
+          <td>22x</td>
+          <td>22x</td>
+          <td>21x</td>
+          <td>20x</td>
+        </tr>
+        <tr>
+          <td>My Base P/E</td>
+          <td class="act-col">26.6x</td>
+          <td>28x</td>
+          <td>28x</td>
+          <td>27x</td>
+          <td>26x</td>
+        </tr>
+        <tr>
+          <td>My Bull P/E</td>
+          <td class="act-col">26.6x</td>
+          <td>33x</td>
+          <td>32x</td>
+          <td>31x</td>
+          <td>30x</td>
+        </tr>
+        <tr>
+          <td>Historical 5Y Avg</td>
+          <td class="act-col">33.0x</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Historical 10Y Avg</td>
+          <td class="act-col">33.1x</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <div class="card">
+    <p style="margin-bottom: 0;">My base case assumes Microsoft re-rates from 22x to ~28x — recovering most but not all of the de-rating. Why not the full 33x? Because the post-AI Microsoft is a genuinely more capital-intensive business than the pre-AI version, and the market is right to demand a slightly lower multiple to reflect that. The question is just whether 22x or 28x is the right price for it. I think 28x.</p>
+  </div>
+</div>
+
+<!-- 13 PRICE TARGETS -->
+<div class="section" id="sec-targets">
+  <div class="section-label">13 — Price Targets &amp; Scenarios</div>
+  <h2>Where the Stock Could Land</h2>
+  <p>Each year's price target = my EPS × my P/E for that year and scenario. Bear scenario assumes capex doesn't pay off and multiple stays at 22x. Bull scenario assumes Copilot inflects and the market re-rates back toward 32x.</p>
+
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th class="act-col">Today</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bear</td>
+          <td class="act-col">$424.62</td>
+          <td class="neg-val">$371</td>
+          <td class="neg-val">$418</td>
+          <td class="pos-val">$452</td>
+          <td class="pos-val">$476</td>
+        </tr>
+        <tr>
+          <td>Base</td>
+          <td class="act-col">$424.62</td>
+          <td class="pos-val">$472</td>
+          <td class="pos-val">$532</td>
+          <td class="pos-val">$580</td>
+          <td class="pos-val">$619</td>
+        </tr>
+        <tr>
+          <td>Bull</td>
+          <td class="act-col">$424.62</td>
+          <td class="pos-val">$556</td>
+          <td class="pos-val">$608</td>
+          <td class="pos-val">$667</td>
+          <td class="pos-val">$714</td>
+        </tr>
+        <tr>
+          <td>Street 12-Mo PT</td>
+          <td class="act-col">$424.62</td>
+          <td class="pos-val">$578</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Terminal Year (FY29) Scenarios</h3>
+  <div class="scen-grid">
+    <div class="scen-row scen-bear">
+      <div class="scen-label">Bear</div>
+      <div class="scen-bar-wrap"><div class="scen-bar" style="width: 67%;"></div></div>
+      <div class="scen-value">$476</div>
+    </div>
+    <div class="scen-row scen-base">
+      <div class="scen-label">Base</div>
+      <div class="scen-bar-wrap"><div class="scen-bar" style="width: 87%;"></div></div>
+      <div class="scen-value">$619</div>
+    </div>
+    <div class="scen-row scen-bull">
+      <div class="scen-label">Bull</div>
+      <div class="scen-bar-wrap"><div class="scen-bar" style="width: 100%;"></div></div>
+      <div class="scen-value">$714</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 YEAR-BY-YEAR RATIONALE -->
+<div class="section" id="sec-rationale">
+  <div class="section-label">14 — Year-by-Year Rationale</div>
+  <h2>Why Each Year Looks the Way It Does</h2>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <div class="year-card-title">
+        <span class="year-tag">FY26E · Year 1</span>
+        Capex Shock Year
+      </div>
+      <div class="eps-badge">EPS +23.5%</div>
+    </div>
+    <div class="year-card-body">
+      <div class="year-metrics">
+        <div class="year-metric">
+          <div class="year-metric-label">Rev/Share</div>
+          <div class="year-metric-value">$43.49</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">EPS</div>
+          <div class="year-metric-value">$16.85</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">P/E Range</div>
+          <div class="year-metric-value">22–33x</div>
+        </div>
+      </div>
+      <p class="year-rationale">FY26 is the year of maximum capex absorption. $80B+ goes into AI infrastructure, depreciation pressure begins, and the market continues to digest whether the spend will pay off. Despite this, EPS still grows 24% on the back of Azure +37–39% and 15M+ Copilot seats compounding. The OpenAI investment gain inflates GAAP earnings; non-GAAP is the cleaner number to focus on.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <div class="year-card-title">
+        <span class="year-tag">FY27E · Year 2</span>
+        The Capex Plateau
+      </div>
+      <div class="eps-badge">EPS +12.8%</div>
+    </div>
+    <div class="year-card-body">
+      <div class="year-metrics">
+        <div class="year-metric">
+          <div class="year-metric-label">Rev/Share</div>
+          <div class="year-metric-value">$49.80</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">EPS</div>
+          <div class="year-metric-value">$19.00</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">P/E Range</div>
+          <div class="year-metric-value">22–32x</div>
+        </div>
+      </div>
+      <p class="year-rationale">Capex begins to plateau as 2024–25 vintage data centers come fully online and revenue begins to catch up to invested capital. Azure crosses $100B in annual revenue mid-year. The first full year of Copilot at scale meaningfully shifts the M365 ARPU mix. EPS growth normalises into the low-teens — the law of large numbers asserts itself.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <div class="year-card-title">
+        <span class="year-tag">FY28E · Year 3</span>
+        Margin Compression Bottoms
+      </div>
+      <div class="eps-badge">EPS +13.2%</div>
+    </div>
+    <div class="year-card-body">
+      <div class="year-metrics">
+        <div class="year-metric">
+          <div class="year-metric-label">Rev/Share</div>
+          <div class="year-metric-value">$56.68</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">EPS</div>
+          <div class="year-metric-value">$21.50</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">P/E Range</div>
+          <div class="year-metric-value">21–31x</div>
+        </div>
+      </div>
+      <p class="year-rationale">Operating margin troughs at ~44.5% as capex flattens and the depreciation tail extends. FCF margin recovers from the FY26 low. The market begins to price in margin stabilisation — re-rating bias to the upside if Copilot pricing has held. Azure decelerates from 30% to ~27% growth — still extraordinary.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <div class="year-card-title">
+        <span class="year-tag">FY29E · Year 4</span>
+        Steady-State Compounder
+      </div>
+      <div class="eps-badge">EPS +10.7%</div>
+    </div>
+    <div class="year-card-body">
+      <div class="year-metrics">
+        <div class="year-metric">
+          <div class="year-metric-label">Rev/Share</div>
+          <div class="year-metric-value">$63.32</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">EPS</div>
+          <div class="year-metric-value">$23.80</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">P/E Range</div>
+          <div class="year-metric-value">20–30x</div>
+        </div>
+      </div>
+      <p class="year-rationale">Microsoft enters a steady state: low-teens revenue growth, low-double-digit EPS growth, free cash flow re-expanding as capex normalises to ~20% of revenue (down from 28% peak). Copilot is fully baked into the M365 base. The franchise looks more like the 2018-era Microsoft — durable compounder, no longer a hyperscaler beat-and-raise machine.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 15 YEARLY ROI FROM TODAY -->
+<div class="section" id="sec-roi">
+  <div class="section-label">15 — Yearly ROI from Today</div>
+  <h2>Returns from Your Entry Point</h2>
+  <p>Cumulative and annualised total returns for each scenario, year by year. Default tab assumes you buy at today's $424.62. Use the second tab to model what your returns would look like at a different entry price — useful for setting limit orders or dollar-cost-averaging plans.</p>
+
+  <div class="roi-tabs">
+    <button class="roi-tab-button active" data-tab="current" onclick="switchRoiTab('current')">At Current Price</button>
+    <button class="roi-tab-button" data-tab="custom" onclick="switchRoiTab('custom')">Try Different Price</button>
+  </div>
+
+  <!-- TAB 1: CURRENT PRICE -->
+  <div class="roi-tab-content active" data-tab="current">
+    <div class="roi-tab-title">Cumulative &amp; Annualized Returns from $424.62</div>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Horizon</th>
+            <th>Bear Cum</th>
+            <th>Bear Ann</th>
+            <th>Base Cum</th>
+            <th>Base Ann</th>
+            <th>Bull Cum</th>
+            <th>Bull Ann</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 year</td>
+            <td class="neg-val">−12.6%</td>
+            <td class="neg-val">−12.6%</td>
+            <td class="pos-val">+11.2%</td>
+            <td class="pos-val">+11.2%</td>
+            <td class="pos-val">+30.9%</td>
+            <td class="pos-val">+30.9%</td>
+          </tr>
+          <tr>
+            <td>2 years</td>
+            <td class="neg-val">−1.6%</td>
+            <td class="neg-val">−0.8%</td>
+            <td class="pos-val">+25.3%</td>
+            <td class="pos-val">+12.0%</td>
+            <td class="pos-val">+43.2%</td>
+            <td class="pos-val">+19.7%</td>
+          </tr>
+          <tr>
+            <td>3 years</td>
+            <td class="pos-val">+6.4%</td>
+            <td class="pos-val">+2.1%</td>
+            <td class="pos-val">+36.6%</td>
+            <td class="pos-val">+10.9%</td>
+            <td class="pos-val">+57.1%</td>
+            <td class="pos-val">+16.3%</td>
+          </tr>
+          <tr>
+            <td>4 years</td>
+            <td class="pos-val">+12.1%</td>
+            <td class="pos-val">+2.9%</td>
+            <td class="pos-val">+45.8%</td>
+            <td class="pos-val">+9.9%</td>
+            <td class="pos-val">+68.2%</td>
+            <td class="pos-val">+13.8%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+  </div>
+
+  <!-- TAB 2: CUSTOM PRICE -->
+  <div class="roi-tab-content" data-tab="custom">
+    <div class="price-control">
+      <button class="price-control-button" onclick="adjustRoiPrice(-5)">−5%</button>
+      <div class="price-control-display">
+        <span class="price-control-price" id="roiCustomPrice">$424.62</span>
+        <span class="price-control-delta" id="roiPriceDelta">+0.0% vs current</span>
+      </div>
+      <button class="price-control-button" onclick="adjustRoiPrice(5)">+5%</button>
+      <button class="price-control-button price-control-reset" onclick="resetRoiPrice()">Reset</button>
+    </div>
+
+    <div class="roi-range">
+      <div class="range-tile-label">52-Week Range Position</div>
+      <div class="roi-range-bar">
+        <div class="roi-range-marker current" style="left: 34.3%;" title="Current $424.62"></div>
+        <div class="roi-range-marker you" id="roiYouMarker" style="left: 34.3%;" title="Your entry"></div>
+      </div>
+      <div class="range-bar-labels">
+        <span>$356.28 · 52W Low</span>
+        <span>$555.45 · 52W High</span>
+      </div>
+    </div>
+
+    <div class="roi-tab-title" id="roiCustomTitle">Cumulative &amp; Annualized Returns from $424.62</div>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Horizon</th>
+            <th>Bear Cum</th>
+            <th>Bear Ann</th>
+            <th>Base Cum</th>
+            <th>Base Ann</th>
+            <th>Bull Cum</th>
+            <th>Bull Ann</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 year</td>
+            <td class="neg-val" data-roi="bear-1-cum">−12.6%</td>
+            <td class="neg-val" data-roi="bear-1-ann">−12.6%</td>
+            <td class="pos-val" data-roi="base-1-cum">+11.2%</td>
+            <td class="pos-val" data-roi="base-1-ann">+11.2%</td>
+            <td class="pos-val" data-roi="bull-1-cum">+30.9%</td>
+            <td class="pos-val" data-roi="bull-1-ann">+30.9%</td>
+          </tr>
+          <tr>
+            <td>2 years</td>
+            <td class="neg-val" data-roi="bear-2-cum">−1.6%</td>
+            <td class="neg-val" data-roi="bear-2-ann">−0.8%</td>
+            <td class="pos-val" data-roi="base-2-cum">+25.3%</td>
+            <td class="pos-val" data-roi="base-2-ann">+12.0%</td>
+            <td class="pos-val" data-roi="bull-2-cum">+43.2%</td>
+            <td class="pos-val" data-roi="bull-2-ann">+19.7%</td>
+          </tr>
+          <tr>
+            <td>3 years</td>
+            <td class="pos-val" data-roi="bear-3-cum">+6.4%</td>
+            <td class="pos-val" data-roi="bear-3-ann">+2.1%</td>
+            <td class="pos-val" data-roi="base-3-cum">+36.6%</td>
+            <td class="pos-val" data-roi="base-3-ann">+10.9%</td>
+            <td class="pos-val" data-roi="bull-3-cum">+57.1%</td>
+            <td class="pos-val" data-roi="bull-3-ann">+16.3%</td>
+          </tr>
+          <tr>
+            <td>4 years</td>
+            <td class="pos-val" data-roi="bear-4-cum">+12.1%</td>
+            <td class="pos-val" data-roi="bear-4-ann">+2.9%</td>
+            <td class="pos-val" data-roi="base-4-cum">+45.8%</td>
+            <td class="pos-val" data-roi="base-4-ann">+9.9%</td>
+            <td class="pos-val" data-roi="bull-4-cum">+68.2%</td>
+            <td class="pos-val" data-roi="bull-4-ann">+13.8%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+  </div>
+</div>
+
+<!-- 16 STRUCTURAL ADVANTAGES & KEY RISKS -->
+<div class="section" id="sec-risks">
+  <div class="section-label">16 — Structural Advantages &amp; Key Risks</div>
+  <h2>Bull vs Bear, Side by Side</h2>
+
+  <div class="proscons">
+    <div class="pros-card">
+      <h4>✓ Structural Advantages</h4>
+      <ul>
+        <li>AAA balance sheet — cash exceeds debt by 2x</li>
+        <li>Three category-defining franchises (M365, Azure, Windows)</li>
+        <li>Exclusive Azure access for OpenAI's frontier API</li>
+        <li>15M paid Copilot seats, +160% YoY — monetisation is real</li>
+        <li>Operating margin at all-time high (45.6%)</li>
+        <li>$625B commercial RPO — six quarters of guaranteed revenue</li>
+        <li>Switching costs across the enterprise stack are extreme</li>
+        <li>Forward P/E at 5-year low (22x vs 33x average)</li>
+      </ul>
+    </div>
+    <div class="cons-card">
+      <h4>✗ Key Risks</h4>
+      <ul>
+        <li>Capex of $150B+ run-rate — destruction risk if AI fades</li>
+        <li>OpenAI = 45% of RPO ($281B) — extreme concentration</li>
+        <li>OpenAI now also on AWS — exclusivity is eroding</li>
+        <li>Azure deceleration: 40% → 39% (early signs)</li>
+        <li>Gross margin compression to 68.6% from depreciation</li>
+        <li>Copilot at 3.3% penetration — adoption questions</li>
+        <li>Antitrust pressure (UK cloud licensing case)</li>
+        <li>Mature businesses (Windows, Xbox) declining</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Risk Severity Assessment</h3>
+  <div class="risk-grid">
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-title">Capex over-build with insufficient AI demand</div>
+      <div class="risk-text">$80B+ FY26 capex must be absorbed by future revenue. If enterprise AI adoption falls short of expectations, depreciation overhang persists for 5+ years on assets that may not be fully utilised. This is the single largest variable in the bear case — and the reason MSFT trades at 22x rather than 28x.</div>
+    </div>
+    <div class="risk-item high">
+      <span class="risk-badge">HIGH</span>
+      <div class="risk-title">OpenAI concentration / multi-cloud diversification</div>
+      <div class="risk-text">OpenAI's launch on AWS Bedrock in early 2026 was a structural inflection. Microsoft retains the 27% equity stake and a deep partnership, but exclusive access — the original premise of the deal — is gone. If OpenAI's compute migrates faster than expected, the $281B RPO contribution becomes lower-quality.</div>
+    </div>
+    <div class="risk-item med">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-title">Gross margin compression</div>
+      <div class="risk-text">Gross margin already fell to 68.6% in Q2 FY26 from 70%+ historical. Further compression of 100–200 bps is plausible as AI inference becomes a larger share of revenue mix. Manageable, but real.</div>
+    </div>
+    <div class="risk-item med">
+      <span class="risk-badge">MEDIUM</span>
+      <div class="risk-title">Antitrust &amp; regulatory</div>
+      <div class="risk-text">UK cloud licensing case is active; FTC scrutiny of Activision integration ongoing; EU's DMA designation creates compliance overhead. None are existential, but could constrain bundling tactics that drive M365 attach rates.</div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-title">Solvency / financial</div>
+      <div class="risk-text">Genuinely zero risk — AAA balance sheet, $94B cash, $77B annual FCF. This is the single safest large-cap balance sheet in technology.</div>
+    </div>
+    <div class="risk-item low">
+      <span class="risk-badge">LOW</span>
+      <div class="risk-title">Core software demand</div>
+      <div class="risk-text">M365 commercial seats grew to 450M with single-digit churn. The base business is mission-critical to enterprises and recession-resistant.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 17 MACRO -->
+<div class="section" id="sec-macro">
+  <div class="section-label">17 — Macro, Regulation &amp; Competition</div>
+  <h2>The External Environment</h2>
+
+  <h3>Macro Sensitivity</h3>
+  <ul class="bull-list">
+    <li data-icon="📉"><strong>Interest rates:</strong> Lower rates compress WACC and benefit Microsoft's multiple, but the stock's beta of 1.12 means rate-sensitivity is moderate. The bigger rate effect is on enterprise IT budgets — high rates slow new deal activity.</li>
+    <li data-icon="💵"><strong>FX:</strong> Roughly 50% of revenue is non-USD. A strong dollar typically lops 200–400 bps off reported growth. Constant-currency growth runs 1–2 pp above reported. The Q1 FY26 print showed +18% reported / +17% constant currency.</li>
+    <li data-icon="📊"><strong>Recession sensitivity:</strong> Enterprise software is among the most resilient categories. M365 is mission-critical; Azure consumption is "use what you provisioned" sticky. The capex story is more cyclical than the revenue story.</li>
+    <li data-icon="🏗️"><strong>Sector-specific macro:</strong> Power availability, GPU supply, data center construction timelines — these are the new cyclical inputs. SoftBank-class data center deals are the marginal capacity creators; Microsoft is bidding on every meaningful one.</li>
+  </ul>
+
+  <h3>Competition</h3>
+  <ul class="bull-list">
+    <li data-icon="📦"><strong>Amazon AWS</strong> — Still the cloud leader by revenue (~30% market share vs Azure's 20%), and now hosting OpenAI through Bedrock. Investing heavily in custom Trainium and Inferentia silicon. The threat is gradual share-shift in AI inference, not a frontal assault.</li>
+    <li data-icon="🔵"><strong>Google Cloud</strong> — Smallest hyperscaler at 13% share but fastest-growing (+48% in Q4 2025). Vertex AI and Gemini are credible competitors to Azure OpenAI. Google's moat is its own internal silicon (TPUs) and frontier model. The threat is most pronounced in net-new AI workloads.</li>
+    <li data-icon="🤖"><strong>OpenAI / Anthropic</strong> — Anthropic now on Azure with $30B compute commitment, but Anthropic also has AWS as primary partner. The model layer is becoming commoditised; the value is shifting to distribution, which favours Microsoft.</li>
+    <li data-icon="📋"><strong>Salesforce / ServiceNow / Workday</strong> — Direct competitors in vertical SaaS. Microsoft's Copilot Studio agent platform is now competitive with Agentforce. Each enterprise software vendor is being forced to build its own AI agent stack.</li>
+    <li data-icon="🪟"><strong>Apple / Linux</strong> — Marginal to enterprise. Windows market share is stable in commercial; consumer share is the long-term concern but not material to the model.</li>
+  </ul>
+
+  <h3>Regulatory</h3>
+  <div class="card card-yellow">
+    <p style="margin-bottom: 0;">Active workstreams: UK CMA cloud licensing investigation (could force M365/Azure unbundling); FTC ongoing review of Activision integration; EU DMA gatekeeper designation (applies to Windows, LinkedIn, advertising). My base case assumes no material adverse outcome through FY29 — Microsoft has navigated worse before. The tail risk is forced unbundling of M365 from Windows, which would meaningfully damage cross-sell. Probability: low single-digit.</p>
+  </div>
+</div>
+
+<!-- 18 INVESTMENT CONCLUSION -->
+<div class="section" id="sec-conclusion">
+  <div class="section-label">18 — Investment Conclusion</div>
+  <h2>The Bottom Line</h2>
+
+  <div class="conclusion-box">
+    <h3>Buy the Capex Compression</h3>
+    <p>Microsoft is a high-conviction long at $425. The forward P/E at 22x is a five-year low for a business whose FY26 EPS is set to grow 24%, whose Azure runs 39% on a $75B base, and whose Copilot has reached 15M paid seats up 160% YoY. Every concern the market has — capex sustainability, Azure deceleration, OpenAI concentration — is real, but each is already priced in at the current 11pp multiple discount to the 10-year average.</p>
+    <p>The setup gives you three exits: a 12-month re-rating play if Copilot ramps continue (Street's $578 target = +36%), a 4-year base-case compounder thesis (+46%, +10% annualised, all from earnings growth), and an asymmetric upside if margins prove stickier than feared. The downside, even in a meaningful capex over-build, is bounded by the $94B cash pile and AAA balance sheet — Microsoft can write off mistakes that would cripple anyone else.</p>
+    <p style="margin-bottom: 0;">The contrarian read: the market is treating MSFT as if AI capex is a permanent margin tax. It is not. It is a 2–3 year transitional drag on a business whose underlying earning power has never been stronger. The price you pay matters, and 22x forward is the price.</p>
+
+    <div class="target-row">
+      <div class="target-box">
+        <div class="target-label">12-Mo Base PT</div>
+        <div class="target-value">$472</div>
+        <div class="target-sub">+11% from spot</div>
+      </div>
+      <div class="target-box">
+        <div class="target-label">4-Yr Base PT</div>
+        <div class="target-value">$619</div>
+        <div class="target-sub">+46% / +10%/yr</div>
+      </div>
+      <div class="target-box">
+        <div class="target-label">Rating</div>
+        <div class="target-value">BUY</div>
+        <div class="target-sub">High conviction</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 19 DISCLAIMER -->
+<div class="section" id="sec-disclaimer">
+  <div class="section-label">19 — Disclaimer</div>
+  <h2>Important Notes</h2>
+  <div class="disclaimer">
+    <p>This report is for informational and educational purposes only and does not constitute investment advice, financial advice, trading advice, or any other sort of advice. The author is not a registered investment adviser. All financial figures are sourced from public company filings (10-K, 10-Q, 8-K), financial data aggregators, and analyst consensus reports as of April 26, 2026, and are subject to revision. Forward estimates are model-derived projections and represent the author's analytical interpretation, not predictions of future results. Past performance is not indicative of future results. Investors should conduct their own due diligence and consult with a qualified financial professional before making any investment decisions. The author may or may not hold positions in the securities discussed. Microsoft's Q3 FY2026 earnings are scheduled for April 29, 2026 — material new information may emerge that could change the analytical conclusions in this report.</p>
+  </div>
+</div>
+
+</div> <!-- /container -->
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button onclick="changeFont(-1)" title="Smaller text">A−</button>
+  <span class="fs-display" id="fsDisplay">16px</span>
+  <button onclick="changeFont(1)" title="Larger text">A+</button>
+  <span class="sep"></span>
+  <button id="modeBtn" onclick="toggleMode()" title="Toggle dark mode">🌙</button>
+</div>
+
+<script>
+/* === FONT SIZE & DARK MODE === */
+const MIN_FS = 12, MAX_FS = 26, STEP = 1;
+let currentFs = parseInt(localStorage.getItem('MSFT_fs') || '16', 10);
+let isDark = localStorage.getItem('MSFT_dark') === '1';
+
+function applyFont(size) {
+  currentFs = Math.min(MAX_FS, Math.max(MIN_FS, size));
+  document.documentElement.style.setProperty('--fs-base', currentFs + 'px');
+  document.getElementById('fsDisplay').textContent = currentFs + 'px';
+  localStorage.setItem('MSFT_fs', currentFs);
+}
+function changeFont(delta) { applyFont(currentFs + delta * STEP); }
+function applyMode() {
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('modeBtn').textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('MSFT_dark', isDark ? '1' : '0');
+}
+function toggleMode() { isDark = !isDark; applyMode(); }
+applyFont(currentFs);
+applyMode();
+
+/* === ROI TABS === */
+const ROI_CURRENT_PRICE = 424.62;
+const ROI_52W_LOW = 356.28;
+const ROI_52W_HIGH = 555.45;
+const ROI_TARGETS = {
+  bear: { 1: 371, 2: 418, 3: 452, 4: 476 },
+  base: { 1: 472, 2: 532, 3: 580, 4: 619 },
+  bull: { 1: 556, 2: 608, 3: 667, 4: 714 }
+};
+
+let roiCustomPrice = ROI_CURRENT_PRICE;
+
+function switchRoiTab(tabName) {
+  document.querySelectorAll('.roi-tab-button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.roi-tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector('.roi-tab-button[data-tab="' + tabName + '"]').classList.add('active');
+  document.querySelector('.roi-tab-content[data-tab="' + tabName + '"]').classList.add('active');
+}
+
+function adjustRoiPrice(deltaPct) {
+  roiCustomPrice = roiCustomPrice * (1 + deltaPct / 100);
+  recalcRoiTable();
+}
+function resetRoiPrice() {
+  roiCustomPrice = ROI_CURRENT_PRICE;
+  recalcRoiTable();
+}
+
+function recalcRoiTable() {
+  document.getElementById('roiCustomPrice').textContent = '$' + roiCustomPrice.toFixed(2);
+  const deltaPct = (roiCustomPrice - ROI_CURRENT_PRICE) / ROI_CURRENT_PRICE * 100;
+  const sign = deltaPct >= 0 ? '+' : '';
+  document.getElementById('roiPriceDelta').textContent = sign + deltaPct.toFixed(1) + '% vs current';
+  document.getElementById('roiCustomTitle').innerHTML = 'Cumulative &amp; Annualized Returns from $' + roiCustomPrice.toFixed(2);
+
+  const range = ROI_52W_HIGH - ROI_52W_LOW;
+  const pct = Math.max(-15, Math.min(115, ((roiCustomPrice - ROI_52W_LOW) / range) * 100));
+  document.getElementById('roiYouMarker').style.left = pct + '%';
+
+  ['bear','base','bull'].forEach(scenario => {
+    [1,2,3,4].forEach(year => {
+      const target = ROI_TARGETS[scenario][year];
+      const cum = (target / roiCustomPrice - 1) * 100;
+      const ann = (Math.pow(target / roiCustomPrice, 1/year) - 1) * 100;
+      const cumStr = (cum >= 0 ? '+' : '') + cum.toFixed(1) + '%';
+      const annStr = (ann >= 0 ? '+' : '') + ann.toFixed(1) + '%';
+      const cumCell = document.querySelector('[data-roi="' + scenario + '-' + year + '-cum"]');
+      const annCell = document.querySelector('[data-roi="' + scenario + '-' + year + '-ann"]');
+      if (cumCell) {
+        cumCell.textContent = cumStr;
+        cumCell.className = cum >= 0 ? 'pos-val' : 'neg-val';
+      }
+      if (annCell) {
+        annCell.textContent = annStr;
+        annCell.className = ann >= 0 ? 'pos-val' : 'neg-val';
+      }
+    });
+  });
+}
+</script>
+
+</body>
+</html>
