@@ -18,7 +18,7 @@ index.html              <- main landing page listing all stock reports
 reports/
   FERG/  -> FERG_Analysis_Report.html, FERG_Analysis_Report_V2.html
   FIX/   -> FIX_Analysis_Report.html
-  LPLA/  -> LPLA_Analysis_Report.html, LPLA_Analysis_Report_V2.html
+  LPLA/  -> LPLA_Analysis_Report.html, LPLA_Analysis_Report_V2.html, LPLA_Analysis_Report_V3.html
   LRCX/  -> LRCX_Analysis_Report.html, LRCX_Analysis_Report_V2.html
   MSFT/  -> MSFT_Analysis_Report_2026.html, MSFT_Analysis_Report.html, MSFT_Analysis_Report_V3.html
   VISA/  -> VISA_Analysis_Report.html, Visa_V_Stock_Analysis_Report.html
