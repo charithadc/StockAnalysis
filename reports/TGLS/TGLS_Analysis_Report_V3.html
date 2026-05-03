@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tecnoglass (TGLS) — Deep Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fs-base:16px;
+  --bg:#f4f7fb;
+  --surface:#ffffff;
+  --surface-2:#edf3fb;
+  --text:#111d29;
+  --text-muted:#3a526a;
+  --border:#d0dcea;
+  --navy:#0f2444;
+  --blue:#1a5fa8;
+  --sky:#3b8fd4;
+  --gold:#f5c842;
+  --accent:#e8a020;
+  --green:#1a7a4a;
+  --green-bg:#e8f5ee;
+  --red:#b93232;
+  --red-bg:#fbeaea;
+  --orange:#c45c10;
+  --card-shadow:0 2px 16px rgba(15,36,68,0.10);
+}
+body.dark{
+  --bg:#0e1520;
+  --surface:#172032;
+  --surface-2:#1e2d44;
+  --text:#dde4ef;
+  --text-muted:#8fa3be;
+  --border:#2a3d58;
+  --navy:#1e3a60;
+  --blue:#4b8ed4;
+  --sky:#6ab0e8;
+  --green:#2ecc78;
+  --green-bg:#0e2a1c;
+  --red:#e05555;
+  --red-bg:#2a1212;
+  --card-shadow:0 2px 20px rgba(0,0,0,0.40);
+}
+*{box-sizing:border-box}
+html{font-size:var(--fs-base)}
+body{
+  margin:0;
+  font-family:'Source Serif 4', Georgia, serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s, color .3s;
+}
+.container{max-width:720px;margin:0 auto;padding:0 22px 100px;}
+h1,h2,h3,h4{font-family:'Playfair Display', serif;color:var(--navy);margin:0 0 0.4em;line-height:1.18;font-weight:700;letter-spacing:-0.01em}
+body.dark h1, body.dark h2, body.dark h3, body.dark h4{color:var(--text)}
+h2{font-size:1.6rem;margin-top:0}
+h3{font-size:1.2rem;margin-top:1em}
+h4{font-size:1rem;color:var(--blue);font-weight:700}
+p{margin:0.6em 0;font-weight:300;font-size:1rem}
+em{color:var(--text-muted)}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* HERO */
+.hero{
+  position:relative;
+  background:linear-gradient(145deg, #0a1e38 0%, #0f2f5c 50%, #1a5fa8 100%);
+  color:#fff;
+  padding:50px 24px 56px;
+  margin-bottom:42px;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;top:-100px;right:-80px;
+  width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(circle, rgba(245,200,66,0.30) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero::after{
+  content:"";position:absolute;bottom:-120px;left:-60px;
+  width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle, rgba(59,143,212,0.30) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:2}
+.badge{
+  display:inline-block;background:var(--gold);color:#1a1a1a;
+  padding:5px 14px;border-radius:999px;font-family:'Playfair Display',serif;
+  font-weight:700;font-size:0.78rem;letter-spacing:0.13em;text-transform:uppercase;
+  margin-bottom:18px;
+}
+.hero h1{
+  color:#fff;font-family:'Playfair Display',serif;font-weight:900;
+  font-size:2.55rem;line-height:1.1;letter-spacing:-0.02em;margin-bottom:12px;
+}
+.hero h1 span{color:var(--gold)}
+.hero-subtitle{
+  font-style:italic;color:rgba(255,255,255,0.85);
+  font-size:1.02rem;margin-bottom:22px;font-weight:300;max-width:580px;
+}
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.22);
+  color:#fff;padding:5px 12px;border-radius:999px;font-size:0.78rem;
+  letter-spacing:0.04em;backdrop-filter:blur(6px);
+}
+
+/* TOOLBAR */
+.toolbar{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:#0f2444;color:#fff;border-radius:999px;
+  padding:6px;display:flex;align-items:center;gap:2px;
+  box-shadow:0 6px 30px rgba(0,0,0,0.35);z-index:1000;
+}
+body.dark .toolbar{background:#1e3a60;border:1px solid #2a3d58}
+.toolbar button{
+  background:transparent;color:#fff;border:none;
+  font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem;
+  width:36px;height:36px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.toolbar button:hover{background:rgba(255,255,255,0.15)}
+.toolbar .fs-display{
+  font-family:'Playfair Display',serif;font-size:0.78rem;
+  padding:0 10px;letter-spacing:0.05em;color:rgba(255,255,255,0.85);
+  min-width:50px;text-align:center;
+}
+.toolbar .sep{width:1px;height:22px;background:rgba(255,255,255,0.22);margin:0 4px}
+
+/* SECTIONS */
+.section{margin:34px 0;animation:fadeUp 0.5s ease both}
+.section:nth-child(1){animation-delay:0.05s}
+.section:nth-child(2){animation-delay:0.10s}
+.section:nth-child(3){animation-delay:0.15s}
+.section:nth-child(4){animation-delay:0.20s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.section-label{
+  font-family:'Playfair Display',serif;color:var(--blue);
+  font-weight:700;font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;
+  margin-bottom:6px;display:block;
+}
+
+/* TOC */
+.toc-list{list-style:none;padding:0;margin:14px 0;font-size:0.95rem;font-weight:400}
+.toc-list li{padding:7px 0;border-bottom:1px dotted var(--border);counter-increment:toc}
+.toc-list li::before{
+  content:counter(toc, decimal-leading-zero) "  ";
+  font-family:'Playfair Display',serif;color:var(--gold);
+  font-weight:700;margin-right:6px;
+}
+.toc-list{counter-reset:toc}
+
+/* CARDS */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:18px 20px;margin:14px 0;box-shadow:var(--card-shadow);
+}
+.card-blue{
+  background:linear-gradient(135deg, #edf3fb 0%, #d6e4f5 100%);
+  border-left:5px solid var(--blue);
+}
+body.dark .card-blue{
+  background:linear-gradient(135deg, #1a2942 0%, #1e3458 100%);
+  border-left-color:var(--sky);
+}
+.card-yellow{background:#fff8df;border-left:4px solid var(--gold);}
+body.dark .card-yellow{background:#2a2410;border-left-color:var(--gold);}
+
+/* SNAPSHOT */
+.snap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin:12px 0}
+.tile{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:13px 15px;box-shadow:var(--card-shadow);
+}
+.tile-hi{background:#0f2444;color:#fff;border-color:#0f2444}
+.tile-hi .tile-label{color:rgba(255,255,255,0.78)}
+.tile-hi .tile-value{color:#fff}
+.tile-hi .tile-value-gold{color:var(--gold)}
+.tile-green-hi{background:var(--green-bg);border-color:var(--green)}
+.tile-green-hi .tile-value{color:var(--green)}
+.tile-label{
+  font-family:'Playfair Display',serif;font-size:0.72rem;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;
+}
+.tile-value{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:1.32rem;color:var(--navy);line-height:1.15;
+}
+body.dark .tile-value{color:var(--text)}
+.tile-sub{font-size:0.78rem;color:var(--text-muted);margin-top:3px;font-style:italic}
+
+/* 52-week range tile */
+.range-tile{
+  grid-column:span 2;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;box-shadow:var(--card-shadow);
+}
+.range-tile-label{
+  font-family:'Playfair Display',serif;font-size:0.78rem;
+  letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;
+}
+.range-bar{
+  position:relative;height:8px;
+  background:linear-gradient(90deg, #fce8e8 0%, #fdeede 50%, #daf2e8 100%);
+  border-radius:999px;margin:18px 4px 14px;
+}
+.range-bar-marker{
+  position:absolute;top:-6px;width:14px;height:20px;
+  background:var(--navy);border:2px solid var(--gold);border-radius:4px;
+  transform:translateX(-50%);box-shadow:0 2px 6px rgba(15,36,68,0.30);
+}
+.range-bar-labels{
+  display:flex;justify-content:space-between;
+  font-size:0.82rem;color:var(--text-muted);font-weight:600;
+}
+.range-bar-current{
+  text-align:center;margin-top:6px;
+  font-family:'Playfair Display',serif;font-weight:700;
+  color:var(--navy);font-size:0.92rem;
+}
+body.dark .range-bar{
+  background:linear-gradient(90deg, #2a1212 0%, #2a1e08 50%, #0e2a1c 100%);
+}
+body.dark .range-bar-current{color:var(--gold)}
+
+/* FORECAST TABLES */
+.forecast-wrap{
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  border-radius:10px;border:1px solid var(--border);
+  margin:10px 0 6px;background:var(--surface);
+}
+.forecast-table{
+  width:100%;border-collapse:collapse;font-size:0.85rem;
+  min-width:520px;background:var(--surface);
+}
+.forecast-table thead th{
+  background:var(--navy);color:#fff;
+  font-family:'Playfair Display',serif;font-size:0.8rem;
+  padding:12px 10px;text-align:center;font-weight:700;letter-spacing:0.5px;
+}
+.forecast-table thead th:first-child{text-align:left;border-radius:12px 0 0 0}
+.forecast-table thead th:last-child{border-radius:0 12px 0 0}
+.forecast-table tbody td{
+  padding:10px 10px;border-bottom:1px solid var(--border);
+  text-align:center;color:var(--text);
+}
+.forecast-table tbody td:first-child{
+  text-align:left;font-weight:600;background:var(--surface-2);color:var(--blue);
+}
+.forecast-table tbody tr:nth-child(even) td:not(:first-child){background:var(--surface-2)}
+
+/* act-col: solid hex only */
+.forecast-table .act-col{background:#e8f0f8 !important;color:var(--navy) !important}
+.forecast-table thead th.act-col{background:#c8ddf5 !important;color:var(--navy) !important}
+body.dark .forecast-table .act-col{background:#1a2e4a !important;color:#c8d8f0 !important}
+body.dark .forecast-table thead th.act-col{background:#223a5c !important;color:#c8d8f0 !important}
+
+.pos-val{color:var(--green) !important;font-weight:600}
+.neg-val{color:var(--red) !important;font-weight:600}
+
+.scroll-hint{font-size:0.74rem;color:var(--text-muted);font-style:italic;margin:0 0 18px;text-align:center}
+
+/* BULL LIST */
+.bull-list{list-style:none;padding:0;margin:12px 0}
+.bull-list li{padding:9px 0 9px 32px;position:relative;font-size:0.95rem;border-bottom:1px solid var(--border)}
+.bull-list li:last-child{border-bottom:none}
+.bull-list li::before{
+  content:"▶";position:absolute;left:6px;top:9px;
+  color:var(--gold);font-size:0.85rem;
+}
+
+/* SEGMENT CHART */
+.seg-row{display:flex;align-items:center;margin:9px 0;gap:10px}
+.seg-label{flex:0 0 145px;font-size:0.86rem;font-weight:600}
+.seg-bar-bg{flex:1;background:var(--surface-2);border-radius:6px;height:24px;overflow:hidden}
+.seg-bar{height:100%;background:linear-gradient(90deg, var(--blue), var(--sky));display:flex;align-items:center;padding-left:10px;color:#fff;font-weight:700;font-size:0.78rem;font-family:'Playfair Display',serif}
+.seg-pct{flex:0 0 60px;text-align:right;font-weight:700;color:var(--navy);font-family:'Playfair Display',serif}
+body.dark .seg-pct{color:var(--text)}
+
+/* FINANCIAL STRENGTH */
+.verdict-badge{
+  display:inline-block;font-family:'Playfair Display',serif;font-weight:900;
+  font-size:1rem;letter-spacing:0.18em;padding:9px 22px;border-radius:999px;text-transform:uppercase;
+}
+.verdict-safe{background:#daf2e8;color:#1a7a4a}
+.verdict-watch{background:#fdeede;color:#c45c10}
+.verdict-distress{background:#fce8e8;color:#b93232}
+body.dark .verdict-safe{background:#0a2016;color:#2ecc78}
+body.dark .verdict-watch{background:#2a1e08;color:#f5b042}
+body.dark .verdict-distress{background:#2a1010;color:#e05555}
+
+.grade-badge{
+  width:64px;height:64px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;
+  border:3px solid;flex-shrink:0;
+}
+.grade-A,.grade-B{background:var(--navy);color:var(--gold);border-color:var(--gold)}
+.grade-C{background:#edf3fb;color:var(--navy);border-color:var(--navy)}
+.grade-D,.grade-F{background:#fce8e8;color:var(--red);border-color:var(--red)}
+body.dark .grade-C{background:#1e2d44;color:var(--text);border-color:var(--text-muted)}
+body.dark .grade-D,body.dark .grade-F{background:#2a1010}
+
+.status-badge{
+  display:inline-block;font-family:'Playfair Display',serif;font-weight:700;
+  font-size:0.72rem;letter-spacing:0.1em;padding:3px 10px;border-radius:999px;
+  text-transform:uppercase;white-space:nowrap;
+}
+.status-safe{background:#daf2e8;color:#1a7a4a}
+.status-watch{background:#fdeede;color:#c45c10}
+.status-distress{background:#fce8e8;color:#b93232}
+body.dark .status-safe{background:#0a2016;color:#2ecc78}
+body.dark .status-watch{background:#2a1e08;color:#f5b042}
+body.dark .status-distress{background:#2a1010;color:#e05555}
+
+.grade-mini{
+  display:inline-block;width:28px;height:28px;border-radius:50%;
+  font-family:'Playfair Display',serif;font-weight:900;font-size:0.95rem;
+  line-height:28px;text-align:center;border:2px solid;
+}
+.grade-mini-A,.grade-mini-B{background:var(--navy);color:var(--gold);border-color:var(--gold)}
+.grade-mini-C{background:#edf3fb;color:var(--navy);border-color:var(--navy)}
+.grade-mini-D,.grade-mini-F{background:#fce8e8;color:var(--red);border-color:var(--red)}
+body.dark .grade-mini-C{background:#1e2d44;color:var(--text);border-color:var(--text-muted)}
+body.dark .grade-mini-D,body.dark .grade-mini-F{background:#2a1010}
+
+.verdict-row{
+  display:flex;align-items:center;gap:18px;
+  margin:10px 0 14px;flex-wrap:wrap;
+}
+.verdict-row .verdict-text{flex:1;min-width:200px}
+@media (max-width:480px){.verdict-row{flex-direction:column;align-items:flex-start}}
+
+/* QUALITY SCORECARD */
+.scorecard-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 0;border-bottom:1px solid var(--border);gap:12px;
+}
+.scorecard-row:last-child{border-bottom:none}
+.scorecard-label{flex:1;font-size:0.93rem;font-weight:600}
+.scorecard-value{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:0.95rem;flex:0 0 auto}
+body.dark .scorecard-value{color:var(--text)}
+
+/* YEAR CARDS */
+.year-card{
+  background:var(--surface);border-radius:12px;
+  box-shadow:var(--card-shadow);overflow:hidden;margin:15px 0;
+  border:1px solid var(--border);
+}
+.year-head{
+  background:linear-gradient(90deg, #0f2444, #1a5fa8);
+  color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;
+}
+.year-title{font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;letter-spacing:-0.01em}
+.year-eps-badge{
+  background:rgba(245,200,66,0.20);color:var(--gold);
+  padding:5px 13px;border-radius:999px;font-family:'Playfair Display',serif;
+  font-weight:700;font-size:0.85rem;letter-spacing:0.04em;border:1px solid rgba(245,200,66,0.35);
+}
+.year-body{padding:14px 18px}
+.year-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:11px}
+.ym{background:var(--surface-2);border-radius:8px;padding:9px 10px;text-align:center}
+.ym-label{font-family:'Playfair Display',serif;font-size:0.66rem;color:var(--text-muted);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:3px}
+.ym-value{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:1.05rem}
+body.dark .ym-value{color:var(--text)}
+.year-rationale{font-size:0.93rem;color:var(--text);font-weight:300;line-height:1.65}
+
+/* RISK ITEMS */
+.risk-item{
+  border-radius:10px;padding:12px 14px;margin:9px 0;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.risk-high{background:#fce8e8;border-left:4px solid var(--red)}
+.risk-med{background:#fdeede;border-left:4px solid var(--orange)}
+.risk-low{background:#daf2e8;border-left:4px solid var(--green)}
+body.dark .risk-high{background:#2a1010}
+body.dark .risk-med{background:#2a1e08}
+body.dark .risk-low{background:#0a2016}
+.risk-badge{
+  font-family:'Playfair Display',serif;font-weight:900;
+  padding:3px 10px;border-radius:999px;font-size:0.7rem;letter-spacing:0.1em;flex-shrink:0;
+}
+.risk-badge-high{background:var(--red);color:#fff}
+.risk-badge-med{background:var(--orange);color:#fff}
+.risk-badge-low{background:var(--green);color:#fff}
+.risk-text{font-size:0.92rem;flex:1}
+.risk-text strong{font-family:'Playfair Display',serif;color:var(--navy);display:block;margin-bottom:2px}
+body.dark .risk-text strong{color:var(--text)}
+
+/* PROS/CONS */
+.proscons{display:grid;grid-template-columns:1fr;gap:14px;margin-top:12px}
+@media (min-width:560px){.proscons{grid-template-columns:1fr 1fr}}
+.pc-card{border-radius:12px;padding:15px 16px;border:1px solid var(--border)}
+.pc-card.pros{background:var(--green-bg);border-left:4px solid var(--green)}
+.pc-card.cons{background:var(--red-bg);border-left:4px solid var(--red)}
+.pc-card h4{margin-top:0;font-family:'Playfair Display',serif}
+.pc-card.pros h4{color:var(--green)}
+.pc-card.cons h4{color:var(--red)}
+.pc-card ul{padding-left:18px;margin:8px 0}
+.pc-card li{margin:5px 0;font-size:0.92rem}
+
+/* SCENARIO BARS */
+.scen-grid{display:grid;grid-template-columns:80px 1fr 80px;gap:10px;align-items:center;margin:12px 0}
+.scen-label{font-family:'Playfair Display',serif;font-weight:700;font-size:0.92rem;color:var(--navy)}
+body.dark .scen-label{color:var(--text)}
+.scen-bar-bg{background:var(--surface-2);border-radius:6px;height:30px;overflow:hidden}
+.scen-bar{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;color:#fff;font-weight:600;font-size:0.78rem}
+.scen-bear{background:linear-gradient(90deg, #b93232, #d65555)}
+.scen-base{background:linear-gradient(90deg, #0f2444, #1a5fa8)}
+.scen-bull{background:linear-gradient(90deg, #1a7a4a, #2ecc78)}
+.scen-value{font-family:'Playfair Display',serif;font-weight:900;text-align:right;font-size:1rem;color:var(--navy)}
+body.dark .scen-value{color:var(--text)}
+
+/* CONCLUSION BOX */
+.conclusion-box{
+  position:relative;background:linear-gradient(135deg, #0f2444 0%, #0d3568 100%);
+  color:#fff;border-radius:14px;padding:30px 26px;margin:20px 0;overflow:hidden;
+}
+.conclusion-box::before{
+  content:"";position:absolute;top:-80px;right:-80px;
+  width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle, rgba(245,200,66,0.25) 0%, transparent 70%);
+  pointer-events:none;
+}
+.conclusion-box h3{color:var(--gold);font-family:'Playfair Display',serif;margin-top:0;letter-spacing:0.04em;font-size:1.05rem;text-transform:uppercase}
+.conclusion-box p{color:rgba(255,255,255,0.92);font-size:0.97rem}
+.target-row{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0;position:relative;z-index:2}
+@media (max-width:400px){.target-row{flex-direction:column}}
+.target-box{
+  flex:1;min-width:140px;background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.18);border-radius:10px;
+  padding:12px 14px;backdrop-filter:blur(6px);
+}
+.target-label{font-family:'Playfair Display',serif;font-size:0.72rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.13em;margin-bottom:5px}
+.target-value{font-family:'Playfair Display',serif;font-weight:900;color:var(--gold);font-size:1.5rem;line-height:1.1}
+
+/* ROI TABS */
+.roi-tabs{display:flex;gap:0;margin:12px 0 0;border-bottom:2px solid var(--border)}
+.roi-tab-button{
+  font-family:'Playfair Display',serif;font-weight:700;font-size:0.92rem;
+  padding:10px 18px;background:transparent;border:none;color:var(--text-muted);
+  cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;
+  transition:color .2s, border-color .2s;
+}
+.roi-tab-button:hover{color:var(--blue)}
+.roi-tab-button.active{color:var(--blue);border-bottom-color:var(--gold)}
+.roi-tab-content{display:none;padding-top:14px}
+.roi-tab-content.active{display:block}
+
+.price-control{
+  display:flex;align-items:center;justify-content:center;
+  gap:14px;background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;margin:8px 0 14px;
+  box-shadow:var(--card-shadow);flex-wrap:wrap;
+}
+.price-control-button{
+  font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem;
+  padding:8px 14px;background:var(--navy);color:#fff;border:none;
+  border-radius:8px;cursor:pointer;transition:background .2s;
+}
+.price-control-button:hover{background:var(--blue)}
+.price-control-reset{background:transparent;color:var(--blue);border:1px solid var(--blue)}
+.price-control-reset:hover{background:var(--blue);color:#fff}
+.price-control-display{text-align:center;min-width:120px}
+.price-control-price{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:1.4rem;color:var(--navy);display:block;
+}
+body.dark .price-control-price{color:var(--gold)}
+.price-control-delta{font-size:0.82rem;color:var(--text-muted);font-style:italic}
+
+.roi-range-bar{
+  position:relative;height:8px;
+  background:linear-gradient(90deg, #fce8e8 0%, #fdeede 50%, #daf2e8 100%);
+  border-radius:999px;margin:30px 4px 22px;
+}
+body.dark .roi-range-bar{
+  background:linear-gradient(90deg, #2a1212 0%, #2a1e08 50%, #0e2a1c 100%);
+}
+.roi-anchor{
+  position:absolute;top:-4px;width:3px;height:16px;
+  background:var(--text-muted);border-radius:2px;transform:translateX(-50%);
+}
+.roi-you{
+  position:absolute;top:-22px;
+  font-family:'Playfair Display',serif;font-weight:700;font-size:0.78rem;
+  color:var(--navy);transform:translateX(-50%);transition:left .25s ease;white-space:nowrap;
+}
+body.dark .roi-you{color:var(--gold)}
+.roi-you::after{
+  content:"▼";display:block;text-align:center;margin-top:1px;
+  color:var(--gold);font-size:0.85rem;
+}
+.roi-range-labels{
+  display:flex;justify-content:space-between;font-size:0.78rem;
+  color:var(--text-muted);font-weight:600;
+}
+
+/* DISCLAIMER */
+.disclaimer{
+  font-size:0.78rem;color:var(--text-muted);font-style:italic;
+  border-top:1px solid var(--border);padding-top:14px;margin-top:30px;
+}
+
+/* PRINT */
+@media print{
+  body{background:#fff}
+  .toolbar{display:none}
+  .roi-tabs{display:none}
+  .roi-tab-content{display:none !important}
+  .roi-tab-content[data-tab="current"]{display:block !important}
+  .hero{break-inside:avoid}
+  .section{break-inside:avoid;animation:none}
+  .container{padding-bottom:30px}
+}
+
+/* RESPONSIVE */
+@media (max-width:400px){
+  .snap-grid{grid-template-columns:1fr}
+  .range-tile{grid-column:span 1}
+  .year-metrics{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:2rem}
+  .seg-label{flex:0 0 110px;font-size:0.78rem}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="badge">NYSE: TGLS · Tecnoglass Inc.</div>
+    <h1>Tecnoglass <span>Deep Analysis</span></h1>
+    <p class="hero-subtitle">A four-year forward analysis of the Colombia-based architectural glass leader — examining margin compression, vinyl ramp, valuation reset, and the short-seller overhang as the stock sits 51% off its 52-week high.</p>
+    <div class="meta-chips">
+      <span class="chip">May 3, 2026</span>
+      <span class="chip">Price: $44.10</span>
+      <span class="chip">Consensus: Strong Buy</span>
+      <span class="chip">1Y: −36%</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- 01 TOC -->
+<section class="section" id="toc">
+  <span class="section-label">01 — Contents</span>
+  <h2>Table of Contents</h2>
+  <ol class="toc-list">
+    <li><a href="#exec">Executive Summary</a></li>
+    <li><a href="#snapshot">Current Snapshot</a></li>
+    <li><a href="#strength">Financial Strength &amp; Bankruptcy Risk</a></li>
+    <li><a href="#quality">Quality Track Record</a></li>
+    <li><a href="#moat">Business Model &amp; Moat</a></li>
+    <li><a href="#segments">Revenue Sources &amp; Segments</a></li>
+    <li><a href="#revps">Revenue Per Share Forecast</a></li>
+    <li><a href="#margins">Margin Forecast</a></li>
+    <li><a href="#eps">EPS Forecast</a></li>
+    <li><a href="#roic">ROIC Forecast</a></li>
+    <li><a href="#pe">P/E Multiple Forecast</a></li>
+    <li><a href="#targets">Price Targets &amp; Scenarios</a></li>
+    <li><a href="#yearly">Year-by-Year Rationale</a></li>
+    <li><a href="#roi">Yearly ROI from Today</a></li>
+    <li><a href="#advrisk">Structural Advantages &amp; Key Risks</a></li>
+    <li><a href="#macro">Macro, Regulation &amp; Competition</a></li>
+    <li><a href="#conclusion">Investment Conclusion</a></li>
+    <li><a href="#disclaimer">Disclaimer</a></li>
+  </ol>
+</section>
+
+<!-- 02 EXEC -->
+<section class="section" id="exec">
+  <span class="section-label">02 — Executive Summary</span>
+  <h2>The Setup in One Page</h2>
+  <div class="card card-blue">
+    <p><strong>Core thesis:</strong> Tecnoglass is a vertically integrated, low-cost architectural glass leader trading at 12.9x trailing earnings — roughly 38% below its 10-year P/E average — after a Q4 EPS miss, an 11% guided EBITDA midpoint contraction, and a Culper Research short report alleging cartel ties. Underlying business quality remains intact: 42.8% gross margins (vs JELD-WEN's 16% and Apogee's 24%), record $1.3B backlog, 0.24x net leverage, and a $250M buyback authorization with $110M remaining. The stock prices in stagnation; the operating reality is more nuanced.</p>
+    <p style="margin-top:8px"><em>Key tension: Wall Street sees 35–55% one-year upside ($63–71 targets) on consensus EPS recovery to $4.20+ by 2027. Bears see a Florida residential cooldown, persistent aluminum/peso headwinds, and unresolved governance overhang. The truth is probably in between — and probably worth more than $44.</em></p>
+  </div>
+</section>
+
+<!-- 03 SNAPSHOT -->
+<section class="section" id="snapshot">
+  <span class="section-label">03 — Current Snapshot</span>
+  <h2>Where TGLS Trades Today</h2>
+  <p>The stock has retraced from a $90 peak to the low $40s — a 51% drawdown — driven by Q4 margin compression and short-seller pressure. Valuation has compressed alongside, but balance sheet quality and cash generation remain strong.</p>
+  <div class="snap-grid">
+    <div class="tile tile-hi">
+      <div class="tile-label">Current Price</div>
+      <div class="tile-value tile-value-gold">$44.10</div>
+      <div class="tile-sub" style="color:rgba(255,255,255,0.7)">As of mid-April 2026</div>
+    </div>
+    <div class="tile tile-hi">
+      <div class="tile-label">Market Cap</div>
+      <div class="tile-value tile-value-gold">$1.97B</div>
+      <div class="tile-sub" style="color:rgba(255,255,255,0.7)">Small-cap industrial</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">P/E (Trailing)</div>
+      <div class="tile-value">12.9x</div>
+      <div class="tile-sub">vs 10Y avg 21x</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">P/E (Forward)</div>
+      <div class="tile-value">13.4x</div>
+      <div class="tile-sub">FY26 cons. EPS $3.69</div>
+    </div>
+    <div class="tile tile-green-hi">
+      <div class="tile-label">FY25 Revenue</div>
+      <div class="tile-value">$983.6M</div>
+      <div class="tile-sub">+10.5% YoY · record</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">FY25 EPS</div>
+      <div class="tile-value">$3.42</div>
+      <div class="tile-sub">Adj $3.58</div>
+    </div>
+    <div class="tile tile-green-hi">
+      <div class="tile-label">Backlog</div>
+      <div class="tile-value">$1.30B</div>
+      <div class="tile-sub">+16% YoY · record</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Adj EBITDA Margin</div>
+      <div class="tile-value">29.6%</div>
+      <div class="tile-sub">FY25; FY24 was 31.0%</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Net Leverage</div>
+      <div class="tile-value">0.24x</div>
+      <div class="tile-sub">Net debt / Adj EBITDA</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Dividend Yield</div>
+      <div class="tile-value">1.36%</div>
+      <div class="tile-sub">$0.60 annualized</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Beta</div>
+      <div class="tile-value">1.08–1.71</div>
+      <div class="tile-sub">Provider-dependent</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">YTD Return</div>
+      <div class="tile-value" style="color:var(--red)">−12%</div>
+      <div class="tile-sub">vs S&amp;P +5%</div>
+    </div>
+    <div class="range-tile">
+      <div class="range-tile-label">52-Week Range</div>
+      <div class="range-bar">
+        <div class="range-bar-marker" style="left:9.0%"></div>
+      </div>
+      <div class="range-bar-labels">
+        <span>$39.53</span>
+        <span>$90.34</span>
+      </div>
+      <div class="range-bar-current">Current: $44.10 (9% of range)</div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 FINANCIAL STRENGTH -->
+<section class="section" id="strength">
+  <span class="section-label">04 — Financial Strength</span>
+  <h2>Bankruptcy Risk &amp; Balance Sheet Quality</h2>
+  <p>This section answers a single binary question: can Tecnoglass survive a downturn? The verdict is read in five seconds via the badges below; the tables and caveats card explain the reasoning.</p>
+
+  <div class="card card-blue">
+    <div class="verdict-row">
+      <span class="verdict-badge verdict-safe">✓ Safe</span>
+      <span class="grade-badge grade-A">A</span>
+      <div class="verdict-text">
+        <p style="margin:0"><strong>Verdict:</strong> Tecnoglass has fortress-grade financial strength. Net leverage of 0.24x, an Altman Z-Score of 7.11, and $465M of liquidity against just $123M of total debt place this firmly in the safe zone — the company could absorb a multi-year revenue contraction without meaningful financial stress.</p>
+      </div>
+    </div>
+    <p style="margin-top:6px"><em>Framework: Standard Industrial</em></p>
+  </div>
+
+  <h3>Layer 1 — Bankruptcy Risk</h3>
+  <p style="font-style:italic;color:var(--text-muted);font-size:0.9rem">Four metrics calibrated for industrial manufacturers; verdict is based on the dominant signal across all four.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+          <th>Safe Threshold</th>
+          <th>What It Catches</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Altman Z-Score</td>
+          <td>7.11</td>
+          <td>&gt; 2.99</td>
+          <td>Bankruptcy in 2 years</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Beneish M-Score (est.)</td>
+          <td>~ −2.4</td>
+          <td>&lt; −2.22</td>
+          <td>Earnings manipulation</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Debt / EBITDA</td>
+          <td>0.42x</td>
+          <td>&lt; 3x</td>
+          <td>Excess leverage</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Interest Coverage</td>
+          <td>~17x</td>
+          <td>&gt; 5x</td>
+          <td>Inability to service debt</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+
+  <h3>Layer 2 — Balance Sheet Quality</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Value</th>
+          <th>What It Tells You</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cash-to-Debt</td>
+          <td>0.82x ($101M / $123M)</td>
+          <td>Liquidity vs obligations</td>
+          <td><span class="grade-mini grade-mini-B">B</span></td>
+        </tr>
+        <tr>
+          <td>Equity-to-Asset</td>
+          <td>~52%</td>
+          <td>Solvency cushion</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+        <tr>
+          <td>Debt-to-Equity</td>
+          <td>0.16x</td>
+          <td>Capital structure conservatism</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+        <tr>
+          <td>Piotroski F-Score</td>
+          <td>6 / 9</td>
+          <td>Operational fundamentals trend</td>
+          <td><span class="grade-mini grade-mini-C">C</span></td>
+        </tr>
+        <tr>
+          <td>ROIC vs WACC Spread</td>
+          <td>~ +8 ppts (18% vs ~10%)</td>
+          <td>Value creation per dollar invested</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+
+  <div class="card card-yellow">
+    <h4>Industry Context &amp; Caveats</h4>
+    <p>Tecnoglass operates as a Standard Industrial manufacturer (architectural glass &amp; aluminum products, GICS Building Products). All four bankruptcy-risk metrics are calibrated for this sector and apply cleanly — there are no industry-specific overrides needed.</p>
+    <p>Two caveats are worth flagging. First, Beneish M-Score is estimated rather than reported because we lack full ten-year detail on receivables/inventory days, but every component we can observe (gross margin direction, SG&amp;A trend, asset growth) sits comfortably outside manipulator ranges. Second, the Piotroski score of 6/9 is dragged down by Q4 2025 margin compression — three of the nine criteria flipped negative due to falling gross margin and rising leverage on the Continental Glass deal, both of which are explainable rather than structural.</p>
+    <p>The qualitative caveat dwarfs the quantitative ones: in August 2025, Culper Research published a short report alleging ties between executives and the Sinaloa cartel through Colombia's Char family, citing $345M of insider selling by the Daes brothers over nine months. Tecnoglass categorically rejected the claims and noted a 2022 Special Committee review (after a similar 2021 Hindenburg report) found no evidence of wrongdoing. The financial statements look clean — but a reader who weights forensic accounting metrics alone is missing the discount the market has applied for governance risk.</p>
+  </div>
+
+  <p style="font-size:0.83rem;color:var(--text-muted);margin-top:14px">
+    <em>Reference: Altman Z-Score is a 1968 bankruptcy-risk model combining liquidity, profitability, leverage, solvency and turnover; values above 2.99 indicate distance from default. Beneish M-Score (1999) flags potential earnings manipulation via 8 ratios — values below −2.22 are "unlikely manipulator." Piotroski F-Score (2000) checks 9 binary fundamental criteria; 7+ is high quality, 0–3 indicates weak fundamentals.</em>
+  </p>
+</section>
+
+<!-- 05 QUALITY TRACK RECORD -->
+<section class="section" id="quality">
+  <span class="section-label">05 — Quality Track Record</span>
+  <h2>Has the Business Actually Compounded?</h2>
+  <p>Whether the business has actually delivered over the long run. This section tracks profitability, capital returns, and growth consistency over 5- and 10-year periods to separate genuine compounders from optical performers.</p>
+
+  <div class="snap-grid">
+    <div class="tile tile-green-hi">
+      <div class="tile-label">10Y Revenue CAGR</div>
+      <div class="tile-value">~13%</div>
+      <div class="tile-sub">$300M (2015) → $984M</div>
+    </div>
+    <div class="tile tile-green-hi">
+      <div class="tile-label">5Y EPS CAGR</div>
+      <div class="tile-value">~35%</div>
+      <div class="tile-sub">$0.55 (2020) → $3.42</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">5Y Avg ROIC</div>
+      <div class="tile-value">~19%</div>
+      <div class="tile-sub">vs WACC ~10%</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">5Y Avg Op Margin</div>
+      <div class="tile-value">~24%</div>
+      <div class="tile-sub">vs peers 9–17%</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">5Y Avg FCF Margin</div>
+      <div class="tile-value">~10%</div>
+      <div class="tile-sub">Volatile due to capex</div>
+    </div>
+  </div>
+
+  <h3>Profitability Quality</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Current</th>
+          <th>5Y Avg</th>
+          <th>10Y Avg</th>
+          <th>Trend</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gross Margin</td>
+          <td class="pos-val">42.8%</td>
+          <td>41%</td>
+          <td>36%</td>
+          <td><span class="pos-val">↑</span></td>
+          <td>Pricing power</td>
+        </tr>
+        <tr>
+          <td>Operating Margin</td>
+          <td class="pos-val">26.2%</td>
+          <td>24%</td>
+          <td>18%</td>
+          <td><span class="pos-val">↑</span></td>
+          <td>Operating leverage</td>
+        </tr>
+        <tr>
+          <td>Net Margin</td>
+          <td class="neg-val">16.2%</td>
+          <td>17%</td>
+          <td>13%</td>
+          <td>→</td>
+          <td>Moat strength</td>
+        </tr>
+        <tr>
+          <td>FCF Margin</td>
+          <td class="neg-val">~6%</td>
+          <td>10%</td>
+          <td>8%</td>
+          <td><span class="neg-val">↓</span></td>
+          <td>Earnings quality</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+
+  <h3>Returns on Capital</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Current</th>
+          <th>5Y Avg</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ROIC</td>
+          <td>17.95%</td>
+          <td>~19%</td>
+          <td>Capital efficiency</td>
+        </tr>
+        <tr>
+          <td>ROE</td>
+          <td class="pos-val">26.21%</td>
+          <td>~25%</td>
+          <td>Equity returns</td>
+        </tr>
+        <tr>
+          <td>ROA</td>
+          <td>~16%</td>
+          <td>~16%</td>
+          <td>Asset productivity</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+
+  <h3>Growth Track Record</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>10Y CAGR</th>
+          <th>5Y CAGR</th>
+          <th>1Y</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Revenue Growth</td>
+          <td class="pos-val">~13%</td>
+          <td class="pos-val">~21%</td>
+          <td class="pos-val">+10.5%</td>
+          <td>Top-line story</td>
+        </tr>
+        <tr>
+          <td>EPS Growth</td>
+          <td class="pos-val">~30%</td>
+          <td class="pos-val">~35%</td>
+          <td class="neg-val">−0.3%</td>
+          <td>Headline number</td>
+        </tr>
+        <tr>
+          <td>FCF Growth</td>
+          <td>~14%</td>
+          <td>~12%</td>
+          <td class="neg-val">−42%</td>
+          <td>Cash quality (should track EPS)</td>
+        </tr>
+        <tr>
+          <td>Book Value Growth</td>
+          <td class="pos-val">~16%</td>
+          <td class="pos-val">~22%</td>
+          <td class="pos-val">+8%</td>
+          <td>Compounding check</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+  <p style="font-style:italic;color:var(--text-muted);font-size:0.9rem">The 1-year FCF decline of 42% versus essentially flat EPS is the single most important quality signal in this section. Working capital headwinds (inventory build, longer collection cycles on commercial projects) explain part of it; the Continental Glass acquisition and elevated capex on the U.S. expansion explain the rest. This is a yellow flag, not a red one — but it bears watching across 2026.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">Consistency Scorecard</h3>
+    <div class="scorecard-row">
+      <div class="scorecard-label">Profitable Years (out of 10)</div>
+      <div class="scorecard-value">10 of 10 <span class="status-badge status-safe">✓ Safe</span></div>
+    </div>
+    <div class="scorecard-row">
+      <div class="scorecard-label">Positive FCF Years (out of 10)</div>
+      <div class="scorecard-value">9 of 10 <span class="status-badge status-safe">✓ Safe</span></div>
+    </div>
+    <div class="scorecard-row">
+      <div class="scorecard-label">Revenue Growth Years (out of 10)</div>
+      <div class="scorecard-value">9 of 10 <span class="status-badge status-safe">✓ Safe</span></div>
+    </div>
+    <div class="scorecard-row">
+      <div class="scorecard-label">Buyback Discipline (5Y share count)</div>
+      <div class="scorecard-value">Shrinking ($118M FY25) <span class="status-badge status-safe">✓ Yes</span></div>
+    </div>
+    <div class="scorecard-row">
+      <div class="scorecard-label">Margin Stability (5Y Op Mgn SD)</div>
+      <div class="scorecard-value">~4 ppts <span class="status-badge status-watch">⚠ Medium</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 MOAT -->
+<section class="section" id="moat">
+  <span class="section-label">06 — Business &amp; Moat</span>
+  <h2>What Tecnoglass Actually Does</h2>
+  <p>Tecnoglass is the second-largest glass fabricator in the United States and the #1 architectural glass transformation company in Latin America. Operations are built around a single 5.8 million sq ft vertically integrated complex in Barranquilla, Colombia — likely the largest of its kind in the Americas. Roughly 95% of revenue comes from the U.S. market, with Florida as the historical anchor and aggressive geographic expansion now extending across the Southeast, West Coast, and Northeast.</p>
+  <ul class="bull-list">
+    <li><strong>Cost-structure moat.</strong> Colombian labor and energy costs are a fraction of U.S. comparables, yet the plant is held to Florida's strict hurricane (Miami-Dade NOA) impact codes. The result: 42.8% gross margin versus 24% at Apogee and 16% at JELD-WEN.</li>
+    <li><strong>Vertical integration.</strong> Glass, aluminum extrusion, vinyl, and final assembly happen under one roof. This compresses lead times, locks in supply during commodity squeezes, and lets management protect margin through pricing rather than cost-passing.</li>
+    <li><strong>Hurricane-impact specialization.</strong> The Florida code-compliance niche commands premium pricing and creates real switching costs — architects spec by manufacturer because of code certification, not just product.</li>
+    <li><strong>Backlog visibility.</strong> A $1.3B backlog representing roughly 1.3 years of revenue, with book-to-bill above 1.1x for 20 consecutive quarters and "near-zero" cancellation rates per management.</li>
+    <li><strong>Vinyl optionality.</strong> Single-family vinyl revenue, just $10M in 2025, is targeted at $25–30M in 2026 — a small base today but the highest-growth wedge in the portfolio and a potential margin tailwind.</li>
+  </ul>
+</section>
+
+<!-- 07 SEGMENTS -->
+<section class="section" id="segments">
+  <span class="section-label">07 — Segments</span>
+  <h2>Revenue Sources</h2>
+  <p>Tecnoglass reports a single operating segment but discloses revenue split by end market and geography. The mix tilts heavily commercial, but the single-family business has been the faster-growing wedge.</p>
+  <div class="card">
+    <h4>FY2025 Revenue by End Market ($983.6M total)</h4>
+    <div class="seg-row">
+      <div class="seg-label">Multi-family / Commercial</div>
+      <div class="seg-bar-bg"><div class="seg-bar" style="width:59%">$580M</div></div>
+      <div class="seg-pct">59%</div>
+    </div>
+    <div class="seg-row">
+      <div class="seg-label">Single-family Residential</div>
+      <div class="seg-bar-bg"><div class="seg-bar" style="width:41%">$403M</div></div>
+      <div class="seg-pct">41%</div>
+    </div>
+    <h4 style="margin-top:18px">Geography</h4>
+    <div class="seg-row">
+      <div class="seg-label">United States</div>
+      <div class="seg-bar-bg"><div class="seg-bar" style="width:95%">~$935M</div></div>
+      <div class="seg-pct">95%</div>
+    </div>
+    <div class="seg-row">
+      <div class="seg-label">Colombia / Panama / Other</div>
+      <div class="seg-bar-bg"><div class="seg-bar" style="width:5%">~$49M</div></div>
+      <div class="seg-pct">5%</div>
+    </div>
+  </div>
+  <p>The Continental Glass Systems acquisition (March 2025, $30M) added U.S. manufacturing footprint in Florida and is concentrated in the high-end commercial segment. Within single-family, the high-growth subcategories are vinyl windows ($10M base, targeted 2.5–3x in 2026) and showrooms (~$10M base, targeted $30–35M).</p>
+</section>
+
+<!-- 08 REVENUE PER SHARE -->
+<section class="section" id="revps">
+  <span class="section-label">08 — Revenue per Share</span>
+  <h2>Top-Line Forecast</h2>
+  <p>My revenue trajectory sits at the lower half of management's guided 2026 range ($1.06–1.13B). Q1 2026 was telegraphed by the CFO as "in line with Q4" on scheduled maintenance shutdowns plus persistent aluminum/peso headwinds — that drag should ease through H2 as pricing actions catch up. On a per-share basis, ongoing buybacks add a 3–4% tailwind to revenue per share growth.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Revenue ($B)</td>
+          <td class="act-col">$0.98</td>
+          <td>$1.05</td>
+          <td>$1.16</td>
+          <td>$1.27</td>
+          <td>$1.36</td>
+        </tr>
+        <tr>
+          <td>YoY Growth</td>
+          <td class="act-col pos-val">+10.5%</td>
+          <td class="pos-val">+6.8%</td>
+          <td class="pos-val">+10.5%</td>
+          <td class="pos-val">+9.5%</td>
+          <td class="pos-val">+7.0%</td>
+        </tr>
+        <tr>
+          <td>Diluted Shares (M)</td>
+          <td class="act-col">47.0</td>
+          <td>45.5</td>
+          <td>43.5</td>
+          <td>42.0</td>
+          <td>40.5</td>
+        </tr>
+        <tr>
+          <td>My Rev / Share</td>
+          <td class="act-col">$20.93</td>
+          <td>$23.08</td>
+          <td>$26.67</td>
+          <td>$30.24</td>
+          <td>$33.58</td>
+        </tr>
+        <tr>
+          <td>YoY RPS Growth</td>
+          <td class="act-col pos-val">+13.5%</td>
+          <td class="pos-val">+10.3%</td>
+          <td class="pos-val">+15.6%</td>
+          <td class="pos-val">+13.4%</td>
+          <td class="pos-val">+11.0%</td>
+        </tr>
+        <tr>
+          <td>Street Revenue ($B)</td>
+          <td class="act-col">$0.98</td>
+          <td>$1.07</td>
+          <td>$1.18</td>
+          <td>$1.27</td>
+          <td>$1.35</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+  <div class="card card-yellow">
+    <h4>Why I'm slightly below Street on FY26 revenue</h4>
+    <p>Management's guided midpoint of $1.095B implies +11% YoY, but two factors give me pause: (1) the CFO explicitly framed Q1 as in line with Q4's $245M, which annualizes to under $1.0B if H2 doesn't accelerate sharply; (2) Florida residential commentary from peers (PGT, builders) has softened materially. I assume the back half delivers — but at the low end of guidance, not the midpoint. Beyond 2026, my growth assumptions converge with consensus.</p>
+  </div>
+</section>
+
+<!-- 09 MARGINS -->
+<section class="section" id="margins">
+  <span class="section-label">09 — Margins</span>
+  <h2>Margin Forecast</h2>
+  <p>Q4 2025 was a margin shock — gross margin fell to 40.0% from 44.5%, hit by near-record U.S. aluminum costs (+$4.6M impact in the quarter), a 9.5% Colombian peso appreciation, and adverse mix as commercial timing shifted. Management has implemented pricing initiatives, but the lag means H1 2026 stays pressured. My base case has operating margin troughing in 2026 before recovering modestly through 2028.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Margin</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Operating Margin</td>
+          <td class="act-col">26.2%</td>
+          <td class="neg-val">23.5%</td>
+          <td class="neg-val">24.5%</td>
+          <td class="neg-val">25.0%</td>
+          <td class="neg-val">25.0%</td>
+        </tr>
+        <tr>
+          <td>Street Op Margin</td>
+          <td class="act-col">26.2%</td>
+          <td>24.5%</td>
+          <td>26.0%</td>
+          <td>26.5%</td>
+          <td>26.5%</td>
+        </tr>
+        <tr>
+          <td>My Net Margin</td>
+          <td class="act-col">16.2%</td>
+          <td class="neg-val">14.1%</td>
+          <td class="neg-val">15.2%</td>
+          <td class="neg-val">15.5%</td>
+          <td class="neg-val">15.7%</td>
+        </tr>
+        <tr>
+          <td>Street Net Margin</td>
+          <td class="act-col">16.2%</td>
+          <td>15.5%</td>
+          <td>16.0%</td>
+          <td>15.5%</td>
+          <td>15.5%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+  <div class="card card-yellow">
+    <h4>Where I differ from consensus on margins</h4>
+    <p>Street has operating margin recovering to a 26% level by 2027 — back to the FY25 baseline. I assume a structural reset: aluminum tariff frictions and the stronger peso are partially permanent, and even with full pricing offset, the run-rate margin sits about 100 bps below the FY24 peak. That alone explains nearly all of my EPS gap to consensus through 2027.</p>
+  </div>
+</section>
+
+<!-- 10 EPS -->
+<section class="section" id="eps">
+  <span class="section-label">10 — EPS</span>
+  <h2>Earnings Per Share Forecast</h2>
+  <p>My EPS path runs about 5–10% below consensus through 2026–27, then converges as buybacks compound. The convergence is more about share count than earnings — at the current price, every $100M of buyback retires ~2.3M shares and adds 5%+ to EPS.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>EPS Forecast</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My EPS (Non-GAAP)</td>
+          <td class="act-col">$3.58</td>
+          <td>$3.30</td>
+          <td>$4.05</td>
+          <td>$4.70</td>
+          <td>$5.30</td>
+        </tr>
+        <tr>
+          <td>YoY Growth</td>
+          <td class="act-col pos-val">+5%</td>
+          <td class="neg-val">−7.8%</td>
+          <td class="pos-val">+22.7%</td>
+          <td class="pos-val">+16.0%</td>
+          <td class="pos-val">+12.8%</td>
+        </tr>
+        <tr>
+          <td>Street Low</td>
+          <td class="act-col">—</td>
+          <td>$3.40</td>
+          <td>$3.82</td>
+          <td>$4.21</td>
+          <td>$4.40</td>
+        </tr>
+        <tr>
+          <td>Street Avg</td>
+          <td class="act-col">—</td>
+          <td>$3.69</td>
+          <td>$4.23</td>
+          <td>$4.39</td>
+          <td>$4.65</td>
+        </tr>
+        <tr>
+          <td>Street High</td>
+          <td class="act-col">—</td>
+          <td>$3.93</td>
+          <td>$4.57</td>
+          <td>$4.52</td>
+          <td>$4.95</td>
+        </tr>
+        <tr>
+          <td>My EPS vs Street Avg</td>
+          <td class="act-col">—</td>
+          <td class="neg-val">−10.6%</td>
+          <td class="neg-val">−4.3%</td>
+          <td class="pos-val">+7.1%</td>
+          <td class="pos-val">+14.0%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+</section>
+
+<!-- 11 ROIC -->
+<section class="section" id="roic">
+  <span class="section-label">11 — ROIC</span>
+  <h2>Return on Invested Capital</h2>
+  <p>ROIC is the single best quality test of an industrial business. Tecnoglass has compounded invested capital at materially above its WACC for at least seven years — a track record few peers can match.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>ROIC</th>
+          <th>WACC</th>
+          <th>Spread</th>
+          <th>Commentary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="act-col">FY23A</td>
+          <td class="act-col">~22%</td>
+          <td class="act-col">~10%</td>
+          <td class="act-col pos-val">+12 ppts</td>
+          <td class="act-col">Peak margin year</td>
+        </tr>
+        <tr>
+          <td class="act-col">FY24A</td>
+          <td class="act-col">~20%</td>
+          <td class="act-col">~10%</td>
+          <td class="act-col pos-val">+10 ppts</td>
+          <td class="act-col">Stable</td>
+        </tr>
+        <tr>
+          <td class="act-col">FY25A</td>
+          <td class="act-col">17.95%</td>
+          <td class="act-col">~10%</td>
+          <td class="act-col pos-val">+8 ppts</td>
+          <td class="act-col">Compressed by Q4 mix</td>
+        </tr>
+        <tr>
+          <td>FY26E</td>
+          <td>16%</td>
+          <td>~10%</td>
+          <td class="pos-val">+6 ppts</td>
+          <td>Cost headwinds bottom</td>
+        </tr>
+        <tr>
+          <td>FY27E</td>
+          <td>17%</td>
+          <td>~10%</td>
+          <td class="pos-val">+7 ppts</td>
+          <td>Pricing absorbed</td>
+        </tr>
+        <tr>
+          <td>FY28E</td>
+          <td>18%</td>
+          <td>~10%</td>
+          <td class="pos-val">+8 ppts</td>
+          <td>Vinyl scales accretively</td>
+        </tr>
+        <tr>
+          <td>FY29E</td>
+          <td>18%</td>
+          <td>~10%</td>
+          <td class="pos-val">+8 ppts</td>
+          <td>Steady-state</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+  <p>Note: Some sources publish a 21% WACC for TGLS owing to a Colombia country risk premium. I use a 10% WACC because (a) 95% of revenue is U.S.-denominated, (b) the planned U.S. redomicile reduces tax/jurisdictional risk, and (c) a 21% hurdle would imply the company is destroying value at every margin level it has ever reported — a conclusion that contradicts the 35% 5-year EPS CAGR.</p>
+</section>
+
+<!-- 12 P/E -->
+<section class="section" id="pe">
+  <span class="section-label">12 — P/E Multiple</span>
+  <h2>Multiple Forecast</h2>
+  <p>The 5-year average P/E sits at 14.7x and the 10-year at 21.1x. Today's 12.9x is the lowest the stock has traded since the Hindenburg-era reset of 2021. A return to the 5-year average alone would re-rate the stock by ~14% from today; a return to the 10-year average — which is admittedly aggressive given Florida cyclicality — would imply a 60% re-rating.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>P/E Multiple</th>
+          <th class="act-col">FY25A (TTM)</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My P/E (Base)</td>
+          <td class="act-col">12.9x</td>
+          <td>13.0x</td>
+          <td>14.0x</td>
+          <td>14.0x</td>
+          <td>14.0x</td>
+        </tr>
+        <tr>
+          <td>Street Implied</td>
+          <td class="act-col">12.9x</td>
+          <td>13.4x</td>
+          <td>16.0x</td>
+          <td>16.5x</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>5Y Avg</td>
+          <td class="act-col">14.7x</td>
+          <td>14.7x</td>
+          <td>14.7x</td>
+          <td>14.7x</td>
+          <td>14.7x</td>
+        </tr>
+        <tr>
+          <td>10Y Avg</td>
+          <td class="act-col">21.1x</td>
+          <td>21.1x</td>
+          <td>21.1x</td>
+          <td>21.1x</td>
+          <td>21.1x</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+  <p>I anchor base-case P/E at 14x — modestly below the 5-year average to reflect a permanent governance discount from the unresolved short-seller overhang. Bull case (16.5x) assumes the Culper allegations fade, U.S. redomicile completes, and the discount unwinds. Bear case (11x) assumes the overhang persists and growth slows toward the building products group average.</p>
+</section>
+
+<!-- 13 PRICE TARGETS -->
+<section class="section" id="targets">
+  <span class="section-label">13 — Price Targets</span>
+  <h2>Price Targets &amp; Scenarios</h2>
+  <p>Each scenario combines an EPS path with a P/E. Bear runs 11x on slightly lower EPS, base runs 13–14x on my baseline EPS, bull runs 15–17x on consensus-or-higher EPS. The Street's 12-month target range ($55–$80) sits between my base and bull cases.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bear</td>
+          <td class="neg-val">$30</td>
+          <td class="neg-val">$40</td>
+          <td class="pos-val">$45</td>
+          <td class="pos-val">$50</td>
+        </tr>
+        <tr>
+          <td>Base</td>
+          <td class="neg-val">$43</td>
+          <td class="pos-val">$57</td>
+          <td class="pos-val">$66</td>
+          <td class="pos-val">$74</td>
+        </tr>
+        <tr>
+          <td>Bull</td>
+          <td class="pos-val">$53</td>
+          <td class="pos-val">$68</td>
+          <td class="pos-val">$85</td>
+          <td class="pos-val">$99</td>
+        </tr>
+        <tr>
+          <td>Street 12-Mo</td>
+          <td>$55–$80</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="scroll-hint">← scroll table sideways if needed →</p>
+  <h4>Terminal Year (FY29) Scenarios</h4>
+  <div class="scen-grid">
+    <div class="scen-label">Bear</div>
+    <div class="scen-bar-bg"><div class="scen-bar scen-bear" style="width:50%">$50</div></div>
+    <div class="scen-value">$50</div>
+    <div class="scen-label">Base</div>
+    <div class="scen-bar-bg"><div class="scen-bar scen-base" style="width:75%">$74</div></div>
+    <div class="scen-value">$74</div>
+    <div class="scen-label">Bull</div>
+    <div class="scen-bar-bg"><div class="scen-bar scen-bull" style="width:100%">$99</div></div>
+    <div class="scen-value">$99</div>
+  </div>
+</section>
+
+<!-- 14 YEAR-BY-YEAR -->
+<section class="section" id="yearly">
+  <span class="section-label">14 — Year by Year</span>
+  <h2>Annual Rationale</h2>
+  <p>Each year tells a different story. 2026 is about absorbing the 2025 cost shock; 2027 is the first clean year with normalized margins; 2028 is when the vinyl/U.S.-plant capacity story shows; 2029 is steady-state compounding.</p>
+
+  <div class="year-card">
+    <div class="year-head">
+      <div class="year-title">FY26E</div>
+      <div class="year-eps-badge">EPS −7.8% YoY</div>
+    </div>
+    <div class="year-body">
+      <div class="year-metrics">
+        <div class="ym"><div class="ym-label">Rev/Sh</div><div class="ym-value">$23.08</div></div>
+        <div class="ym"><div class="ym-label">EPS</div><div class="ym-value">$3.30</div></div>
+        <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-value">10–15x</div></div>
+      </div>
+      <p class="year-rationale">The "absorption year." Q1 prints in line with Q4's compressed margin per management commentary. Aluminum costs and Colombian peso strength persist into H1; pricing initiatives offset only about 60% of the input-cost step-up. H2 sees vinyl revenue triple off a $10M base and the Continental Glass acquisition contribute its first full year. Buybacks under the $250M authorization continue at roughly the 2025 pace, retiring 1.5–2M shares. The headline-EPS decline is real but mostly mix and FX, not demand.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-head">
+      <div class="year-title">FY27E</div>
+      <div class="year-eps-badge">EPS +22.7% YoY</div>
+    </div>
+    <div class="year-body">
+      <div class="year-metrics">
+        <div class="ym"><div class="ym-label">Rev/Sh</div><div class="ym-value">$26.67</div></div>
+        <div class="ym"><div class="ym-label">EPS</div><div class="ym-value">$4.05</div></div>
+        <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-value">11–15.5x</div></div>
+      </div>
+      <p class="year-rationale">First clean year. Pricing actions are fully baked, aluminum normalizes, and the Colombian peso reaches a new equilibrium. Operating margin recovers ~100 bps to 24.5%, but stays below the FY24 peak. Vinyl approaches $50–60M of revenue and starts contributing positive mix. The U.S. redomicile (assuming shareholder approval mid-2026) is fully effective, reducing the structural valuation discount tied to Cayman domicile. The 22% EPS jump is partly real margin recovery, partly buyback compounding.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-head">
+      <div class="year-title">FY28E</div>
+      <div class="year-eps-badge">EPS +16.0% YoY</div>
+    </div>
+    <div class="year-body">
+      <div class="year-metrics">
+        <div class="ym"><div class="ym-label">Rev/Sh</div><div class="ym-value">$30.24</div></div>
+        <div class="ym"><div class="ym-label">EPS</div><div class="ym-value">$4.70</div></div>
+        <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-value">11–16x</div></div>
+      </div>
+      <p class="year-rationale">U.S. capacity story year. The proposed U.S. automated facility (under feasibility study as of Q4 2025) likely begins commissioning, opening Buy America procurement and shrinking transportation cost. Vinyl reaches a $100M+ run-rate. The single-family/multi-family mix shifts toward 50/50, taking aggregate margin slightly higher. Backlog visibility extends well into 2029. Interest income from cash/Treasury holdings becomes a meaningful EPS contributor at this size.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-head">
+      <div class="year-title">FY29E</div>
+      <div class="year-eps-badge">EPS +12.8% YoY</div>
+    </div>
+    <div class="year-body">
+      <div class="year-metrics">
+        <div class="ym"><div class="ym-label">Rev/Sh</div><div class="ym-value">$33.58</div></div>
+        <div class="ym"><div class="ym-label">EPS</div><div class="ym-value">$5.30</div></div>
+        <div class="ym"><div class="ym-label">P/E Range</div><div class="ym-value">11–16.5x</div></div>
+      </div>
+      <p class="year-rationale">Steady-state compounding. Revenue growth decelerates to a more sustainable 7% as the Florida share ceiling approaches and U.S. national rollout matures. Buybacks continue but at a moderating pace as the share count thins. The "low" share count starts to inflate per-share metrics meaningfully — a 13% EPS growth year on only 7% revenue growth and flat margin. From here, the question is whether Tecnoglass enters a new geographic chapter (Mexico, Canada, Caribbean) or becomes a slower, more defensive compounder.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 15 ROI -->
+<section class="section" id="roi">
+  <span class="section-label">15 — ROI</span>
+  <h2>Yearly ROI from Today</h2>
+  <p>Cumulative and annualized returns from the current $44.10 entry across each scenario, year by year. The table updates if you adjust the entry price in the second tab.</p>
+
+  <div class="roi-tabs">
+    <button class="roi-tab-button active" data-tab="current" onclick="switchRoiTab('current')">At Current Price</button>
+    <button class="roi-tab-button" data-tab="custom" onclick="switchRoiTab('custom')">Try Different Price</button>
+  </div>
+
+  <div class="roi-tab-content active" data-tab="current">
+    <h4 style="margin-top:14px">Cumulative &amp; Annualized Returns from $44.10</h4>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Horizon</th>
+            <th>Bear Cum</th>
+            <th>Bear Ann</th>
+            <th>Base Cum</th>
+            <th>Base Ann</th>
+            <th>Bull Cum</th>
+            <th>Bull Ann</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 Year</td>
+            <td class="neg-val">−32.0%</td>
+            <td class="neg-val">−32.0%</td>
+            <td class="neg-val">−2.5%</td>
+            <td class="neg-val">−2.5%</td>
+            <td class="pos-val">+20.2%</td>
+            <td class="pos-val">+20.2%</td>
+          </tr>
+          <tr>
+            <td>2 Year</td>
+            <td class="neg-val">−9.3%</td>
+            <td class="neg-val">−4.7%</td>
+            <td class="pos-val">+29.3%</td>
+            <td class="pos-val">+13.7%</td>
+            <td class="pos-val">+54.2%</td>
+            <td class="pos-val">+24.2%</td>
+          </tr>
+          <tr>
+            <td>3 Year</td>
+            <td class="pos-val">+2.0%</td>
+            <td class="pos-val">+0.7%</td>
+            <td class="pos-val">+49.7%</td>
+            <td class="pos-val">+14.4%</td>
+            <td class="pos-val">+92.7%</td>
+            <td class="pos-val">+24.4%</td>
+          </tr>
+          <tr>
+            <td>4 Year</td>
+            <td class="pos-val">+13.4%</td>
+            <td class="pos-val">+3.2%</td>
+            <td class="pos-val">+67.8%</td>
+            <td class="pos-val">+13.8%</td>
+            <td class="pos-val">+124.5%</td>
+            <td class="pos-val">+22.5%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+  </div>
+
+  <div class="roi-tab-content" data-tab="custom">
+    <div class="price-control">
+      <button class="price-control-button" onclick="adjustRoiPrice(-5)">−5%</button>
+      <div class="price-control-display">
+        <span class="price-control-price" id="roiCustomPrice">$44.10</span>
+        <span class="price-control-delta" id="roiPriceDelta">+0.0% vs current</span>
+      </div>
+      <button class="price-control-button" onclick="adjustRoiPrice(5)">+5%</button>
+      <button class="price-control-button price-control-reset" onclick="resetRoiPrice()">Reset</button>
+    </div>
+    <div style="position:relative;margin:30px 8px 22px">
+      <div class="roi-range-bar" style="margin:0">
+        <div class="roi-anchor" style="left:9.0%"></div>
+        <div class="roi-you" id="roiYouMarker" style="left:9.0%">You</div>
+      </div>
+      <div class="roi-range-labels" style="margin-top:6px">
+        <span>52W Low $39.53</span>
+        <span>52W High $90.34</span>
+      </div>
+    </div>
+    <h4 id="roiCustomTitle">Cumulative &amp; Annualized Returns from $44.10</h4>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Horizon</th>
+            <th>Bear Cum</th>
+            <th>Bear Ann</th>
+            <th>Base Cum</th>
+            <th>Base Ann</th>
+            <th>Bull Cum</th>
+            <th>Bull Ann</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 Year</td>
+            <td data-roi="bear-1-cum" class="neg-val">−32.0%</td>
+            <td data-roi="bear-1-ann" class="neg-val">−32.0%</td>
+            <td data-roi="base-1-cum" class="neg-val">−2.5%</td>
+            <td data-roi="base-1-ann" class="neg-val">−2.5%</td>
+            <td data-roi="bull-1-cum" class="pos-val">+20.2%</td>
+            <td data-roi="bull-1-ann" class="pos-val">+20.2%</td>
+          </tr>
+          <tr>
+            <td>2 Year</td>
+            <td data-roi="bear-2-cum" class="neg-val">−9.3%</td>
+            <td data-roi="bear-2-ann" class="neg-val">−4.7%</td>
+            <td data-roi="base-2-cum" class="pos-val">+29.3%</td>
+            <td data-roi="base-2-ann" class="pos-val">+13.7%</td>
+            <td data-roi="bull-2-cum" class="pos-val">+54.2%</td>
+            <td data-roi="bull-2-ann" class="pos-val">+24.2%</td>
+          </tr>
+          <tr>
+            <td>3 Year</td>
+            <td data-roi="bear-3-cum" class="pos-val">+2.0%</td>
+            <td data-roi="bear-3-ann" class="pos-val">+0.7%</td>
+            <td data-roi="base-3-cum" class="pos-val">+49.7%</td>
+            <td data-roi="base-3-ann" class="pos-val">+14.4%</td>
+            <td data-roi="bull-3-cum" class="pos-val">+92.7%</td>
+            <td data-roi="bull-3-ann" class="pos-val">+24.4%</td>
+          </tr>
+          <tr>
+            <td>4 Year</td>
+            <td data-roi="bear-4-cum" class="pos-val">+13.4%</td>
+            <td data-roi="bear-4-ann" class="pos-val">+3.2%</td>
+            <td data-roi="base-4-cum" class="pos-val">+67.8%</td>
+            <td data-roi="base-4-ann" class="pos-val">+13.8%</td>
+            <td data-roi="bull-4-cum" class="pos-val">+124.5%</td>
+            <td data-roi="bull-4-ann" class="pos-val">+22.5%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">← scroll table sideways if needed →</p>
+  </div>
+</section>
+
+<!-- 16 ADVANTAGES & RISKS -->
+<section class="section" id="advrisk">
+  <span class="section-label">16 — Pros &amp; Cons</span>
+  <h2>Structural Advantages &amp; Key Risks</h2>
+  <div class="proscons">
+    <div class="pc-card pros">
+      <h4>Structural Advantages</h4>
+      <ul>
+        <li><strong>Cost moat.</strong> 42.8% gross margin vs JELD-WEN 16% and Apogee 24% — vertical integration plus Colombian cost base</li>
+        <li><strong>Specification lock-in.</strong> Florida hurricane code (NOA) certification creates real switching costs at the architect/spec level</li>
+        <li><strong>Backlog &amp; book-to-bill.</strong> $1.3B backlog with 20 consecutive quarters of 1.1x+ book-to-bill</li>
+        <li><strong>Capital allocation.</strong> $250M repurchase authorization, $118M deployed in 2025; net leverage 0.24x</li>
+        <li><strong>Optionality.</strong> Vinyl ramp, U.S. plant feasibility, Continental Glass tuck-in, U.S. redomicile</li>
+      </ul>
+    </div>
+    <div class="pc-card cons">
+      <h4>Key Risks</h4>
+      <ul>
+        <li><strong>Governance overhang.</strong> Two short reports in five years (Hindenburg 2021, Culper 2025); insider selling of $345M+</li>
+        <li><strong>Florida concentration.</strong> Outsized exposure to a single state, single weather pattern, and single insurance regime</li>
+        <li><strong>Aluminum / FX.</strong> Q4 2025 showed the magnitude — 4.5 ppts of gross-margin compression from inputs alone</li>
+        <li><strong>Cyclicality.</strong> Construction is the most cyclical sector outside finance; backlog cushions but does not eliminate this</li>
+        <li><strong>Regulatory / tariff.</strong> U.S. import tariffs on Colombian goods and aluminum tariffs on Chinese inputs both pressure the cost stack</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:22px">Risk Severity Assessment</h3>
+  <div class="risk-item risk-high">
+    <span class="risk-badge risk-badge-high">High</span>
+    <div class="risk-text">
+      <strong>Governance / short-seller overhang</strong>
+      The Culper Research report (Aug 2025) alleges executive ties to the Sinaloa cartel via the Char family and flags $345M in insider selling. Tecnoglass denies the allegations and notes a 2022 independent review found nothing. But the discount is real — the stock trades 38% below its 10-year average P/E. A formal regulatory inquiry, even one that ultimately clears the company, would likely trigger another leg down. This is the single most important factor in any TGLS thesis.
+    </div>
+  </div>
+  <div class="risk-item risk-high">
+    <span class="risk-badge risk-badge-high">High</span>
+    <div class="risk-text">
+      <strong>Florida residential cyclicality</strong>
+      Roughly half of single-family residential revenue (and a large share of multi-family commercial) is Florida-exposed. Florida's housing affordability has cracked, insurance premiums are spiking, and population inflows are slowing. A genuine Florida residential recession would compress 2026–27 revenue growth toward zero.
+    </div>
+  </div>
+  <div class="risk-item risk-med">
+    <span class="risk-badge risk-badge-med">Medium</span>
+    <div class="risk-text">
+      <strong>Aluminum / Colombian peso exposure</strong>
+      U.S. aluminum costs sit near multi-year highs, and the Colombian peso appreciated 9.5% YoY in Q4 2025 — a one-two punch that took 4.5 ppts off Q4 gross margin. Hedging programs blunt but do not eliminate this exposure, and any further peso strength would extend margin pressure into 2027.
+    </div>
+  </div>
+  <div class="risk-item risk-med">
+    <span class="risk-badge risk-badge-med">Medium</span>
+    <div class="risk-text">
+      <strong>U.S. tariff regime</strong>
+      Cross-border manufacturing exposes Tecnoglass to any future tightening of U.S.–Colombia trade frictions, and Florida-specific Buy America rules at the state and federal level could disadvantage Colombia-fabricated product. The proposed U.S. plant is the natural hedge but is years from production.
+    </div>
+  </div>
+  <div class="risk-item risk-low">
+    <span class="risk-badge risk-badge-low">Low</span>
+    <div class="risk-text">
+      <strong>Balance sheet / liquidity</strong>
+      Net leverage of 0.24x, $465M of liquidity, and 17x interest coverage make a financing-driven distress scenario nearly inconceivable in any reasonable downturn.
+    </div>
+  </div>
+</section>
+
+<!-- 17 MACRO -->
+<section class="section" id="macro">
+  <span class="section-label">17 — Macro &amp; Competition</span>
+  <h2>Macro, Regulation &amp; Competition</h2>
+  <h3>Macro Drivers</h3>
+  <ul class="bull-list">
+    <li><strong>Interest rates.</strong> Mortgage rates at 6%+ have cooled new construction starts; multi-family permits are negative YoY in most sun-belt metros. A 100bp Fed cut path through 2026 would be the single biggest tailwind for the residential book.</li>
+    <li><strong>Foreign exchange.</strong> Roughly 40% of cost base is Colombian-peso denominated. A 10% peso appreciation costs ~$30M of EBITDA — a non-trivial drag. The peso has strengthened materially in 2024–25; mean reversion would help.</li>
+    <li><strong>Aluminum / commodity prices.</strong> LME aluminum at ~$2,800/ton vs $2,300 long-run average is the single largest input. Tariffs on Chinese aluminum extrusions add a tariff layer on top.</li>
+    <li><strong>Florida insurance crisis.</strong> Spiking homeowner insurance premiums are the most underrated headwind — they are creating de-facto demand destruction in the high-end coastal segment that anchors TGLS's residential business.</li>
+    <li><strong>Construction labor inflation.</strong> Wage costs in installation/glazing have run 6–8% annually. TGLS's manufacturing-heavy mix is partially insulated, but installation revenue (~15% of mix) is fully exposed.</li>
+  </ul>
+
+  <h3>Regulatory Backdrop</h3>
+  <div class="card card-yellow">
+    <p><strong>Hurricane impact codes.</strong> Florida's NOA certification (Notice of Acceptance from Miami-Dade and Florida Building Code) is the highest-bar window/glass spec in North America. Tecnoglass's certified product line is a structural moat. Any code tightening generally helps; relaxation would compress moat.</p>
+    <p style="margin-top:6px"><strong>Tariffs.</strong> U.S. Section 232 tariffs on aluminum and Section 301 tariffs on Chinese-origin extrusions raised costs by ~$4.6M in Q4 2025 alone. Trade policy under the current administration has been mixed — direct tariffs on Colombian goods remain unlikely but cannot be ruled out.</p>
+    <p style="margin-top:6px"><strong>U.S. redomicile.</strong> Subject to shareholder approval (vote expected mid-2026). The move converts TGLS from a Cayman-domiciled company to a Delaware corporation — improves dividend tax efficiency, expands the eligible institutional investor base, and removes one structural valuation discount.</p>
+  </div>
+
+  <h3>Competitive Landscape</h3>
+  <ul class="bull-list">
+    <li><strong>Apogee Enterprises (APOG).</strong> Pure-play U.S. commercial glass. Higher domestic content but materially lower margins (~24% gross vs TGLS 43%). TGLS's cost advantage is structural and unlikely to be matched.</li>
+    <li><strong>JELD-WEN (JELD).</strong> Far larger, mass-market windows and doors. 16% gross margins, distressed balance sheet (~12x debt/equity). Different product tier; not a direct head-to-head.</li>
+    <li><strong>MITER Brands (private, formerly PGT).</strong> The closest direct comp in Florida hurricane impact. Acquired by Koch's MITER in 2024. Now part of a much larger building products platform with deeper distribution. The strategic threat is real — MITER has more channel reach.</li>
+    <li><strong>Quanex Building Products (NX).</strong> Components rather than finished glass; less direct.</li>
+    <li><strong>Vitro / Saint-Gobain / NSG.</strong> Float-glass producers, upstream of TGLS rather than competitors. Saint-Gobain is also a JV partner.</li>
+  </ul>
+  <p>TGLS's 60% Florida share in hurricane-impact glass is the moat to defend. MITER will press on share through dealer networks; TGLS counters via direct showrooms and the Continental Glass acquisition. Watch dealer count and share metrics through 2026 for evidence of which side is winning the rollout.</p>
+</section>
+
+<!-- 18 CONCLUSION -->
+<section class="section" id="conclusion">
+  <span class="section-label">18 — Conclusion</span>
+  <h2>Investment Conclusion</h2>
+  <div class="conclusion-box">
+    <h3>Bottom Line</h3>
+    <p>Tecnoglass is a high-quality industrial trading at a small-cap forensic-accounting discount. The underlying business — vertically integrated, 43% gross margins, $1.3B backlog, 0.24x net leverage — is in better shape than the share price suggests. The discount exists for a reason (governance overhang, Florida concentration, margin compression), but at 13x trailing earnings on a business that has compounded EPS at 35% over five years, the asymmetry favors patient capital.</p>
+    <div class="target-row">
+      <div class="target-box">
+        <div class="target-label">12-Mo Base</div>
+        <div class="target-value">$57</div>
+      </div>
+      <div class="target-box">
+        <div class="target-label">4-Yr Base</div>
+        <div class="target-value">$74</div>
+      </div>
+      <div class="target-box">
+        <div class="target-label">4-Yr Bull</div>
+        <div class="target-value">$99</div>
+      </div>
+    </div>
+    <p>The base case implies a 14% annualized return over four years from $44 — attractive but not extraordinary for a stock with this much idiosyncratic risk. The bull case (margin recovery + multiple re-rating + governance discount unwinds) implies 22% annualized; the bear case loses money for a year before recovering. The shape of the distribution — modest downside, meaningful upside, and a real governance tail — is the actual investment thesis. Position sizing matters more than directional conviction.</p>
+    <p style="font-style:italic;margin-top:12px;color:rgba(255,255,255,0.8)">Rating: Constructive. The setup rewards the patient, modestly contrarian buyer who can size for the governance tail.</p>
+  </div>
+</section>
+
+<!-- 19 DISCLAIMER -->
+<section class="section" id="disclaimer">
+  <span class="section-label">19 — Disclaimer</span>
+  <p class="disclaimer">This document is an educational research note and not investment advice. Claude is an AI assistant, not a registered investment advisor or broker-dealer. All forecasts are estimates based on publicly available information and explicit assumptions; actual results will differ, possibly materially. Any decision to buy, sell or hold securities should be made in consultation with a qualified financial professional. Information believed accurate as of May 3, 2026; data sourced from company filings, earnings releases, analyst databases and public news. Past performance is not indicative of future results. The author has no position in TGLS. Allegations referenced from third-party short-seller reports are summarized without endorsement; readers should evaluate primary sources independently.</p>
+</section>
+
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar" id="toolbar">
+  <button onclick="changeFont(-1)" aria-label="Decrease font size">A−</button>
+  <span class="fs-display" id="fsDisplay">16px</span>
+  <button onclick="changeFont(1)" aria-label="Increase font size">A+</button>
+  <span class="sep"></span>
+  <button id="modeBtn" onclick="toggleMode()" aria-label="Toggle dark mode">🌙</button>
+</div>
+
+<script>
+/* === TOOLBAR === */
+const MIN_FS = 12, MAX_FS = 26, STEP = 1;
+let currentFs = parseInt(localStorage.getItem('TGLS_fs') || '16', 10);
+let isDark = localStorage.getItem('TGLS_dark') === '1';
+
+function applyFont(size) {
+  currentFs = Math.min(MAX_FS, Math.max(MIN_FS, size));
+  document.documentElement.style.setProperty('--fs-base', currentFs + 'px');
+  document.getElementById('fsDisplay').textContent = currentFs + 'px';
+  localStorage.setItem('TGLS_fs', currentFs);
+}
+function changeFont(delta) { applyFont(currentFs + delta * STEP); }
+function applyMode() {
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('modeBtn').textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('TGLS_dark', isDark ? '1' : '0');
+}
+function toggleMode() { isDark = !isDark; applyMode(); }
+applyFont(currentFs);
+applyMode();
+
+/* === ROI TABS === */
+const ROI_CURRENT_PRICE = 44.10;
+const ROI_52W_LOW       = 39.53;
+const ROI_52W_HIGH      = 90.34;
+const ROI_TARGETS = {
+  bear: { 1: 30, 2: 40, 3: 45, 4: 50 },
+  base: { 1: 43, 2: 57, 3: 66, 4: 74 },
+  bull: { 1: 53, 2: 68, 3: 85, 4: 99 }
+};
+let roiCustomPrice = ROI_CURRENT_PRICE;
+
+function switchRoiTab(tabName) {
+  document.querySelectorAll('.roi-tab-button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.roi-tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector('.roi-tab-button[data-tab="' + tabName + '"]').classList.add('active');
+  document.querySelector('.roi-tab-content[data-tab="' + tabName + '"]').classList.add('active');
+}
+function adjustRoiPrice(deltaPct) {
+  roiCustomPrice = roiCustomPrice * (1 + deltaPct / 100);
+  recalcRoiTable();
+}
+function resetRoiPrice() {
+  roiCustomPrice = ROI_CURRENT_PRICE;
+  recalcRoiTable();
+}
+function recalcRoiTable() {
+  document.getElementById('roiCustomPrice').textContent = '$' + roiCustomPrice.toFixed(2);
+  const deltaPct = (roiCustomPrice - ROI_CURRENT_PRICE) / ROI_CURRENT_PRICE * 100;
+  const sign = deltaPct >= 0 ? '+' : '';
+  document.getElementById('roiPriceDelta').textContent = sign + deltaPct.toFixed(1) + '% vs current';
+  document.getElementById('roiCustomTitle').innerHTML = 'Cumulative &amp; Annualized Returns from $' + roiCustomPrice.toFixed(2);
+
+  const range = ROI_52W_HIGH - ROI_52W_LOW;
+  const pct = Math.max(-15, Math.min(115, ((roiCustomPrice - ROI_52W_LOW) / range) * 100));
+  document.getElementById('roiYouMarker').style.left = pct + '%';
+
+  ['bear','base','bull'].forEach(scenario => {
+    [1,2,3,4].forEach(year => {
+      const target = ROI_TARGETS[scenario][year];
+      const cum = (target / roiCustomPrice - 1) * 100;
+      const ann = (Math.pow(target / roiCustomPrice, 1/year) - 1) * 100;
+      const cumStr = (cum >= 0 ? '+' : '') + cum.toFixed(1) + '%';
+      const annStr = (ann >= 0 ? '+' : '') + ann.toFixed(1) + '%';
+      const cumCell = document.querySelector('[data-roi="' + scenario + '-' + year + '-cum"]');
+      const annCell = document.querySelector('[data-roi="' + scenario + '-' + year + '-ann"]');
+      cumCell.textContent = cumStr;
+      annCell.textContent = annStr;
+      cumCell.className = cum >= 0 ? 'pos-val' : 'neg-val';
+      annCell.className = ann >= 0 ? 'pos-val' : 'neg-val';
+    });
+  });
+}
+</script>
+
+</body>
+</html>
