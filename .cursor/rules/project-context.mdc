@@ -50,6 +50,15 @@ When the user provides a new HTML report file:
 4. Verify 0 null bytes after writing
 5. Update the Project Structure section in this rules file to include the new file
 
+## CRITICAL -- Git Workflow (MUST FOLLOW EVERY TIME)
+NEVER run `git commit` or `git push` without first:
+1. Stopping and telling the user what changes were made
+2. Explicitly asking the user to test the site in their browser
+3. Waiting for the user to confirm everything looks correct
+4. Only then committing and pushing when the user gives the go-ahead
+
+Do NOT auto-commit or auto-push as part of any workflow, even if the task appears complete.
+
 ## Key Notes
 - This is a Windows machine running PowerShell -- use `;` instead of `&&` to chain shell commands
 - The project uses plain HTML/CSS (no build tools or frameworks)
