@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Applied Materials (AMAT) — Deep Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-2: #edf3fb;
+  --text: #111d29;
+  --text-muted: #3a526a;
+  --border: #d0dcea;
+  --navy: #0f2444;
+  --blue: #1a5fa8;
+  --sky: #3b8fd4;
+  --gold: #f5c842;
+  --accent: #e8a020;
+  --green: #1a7a4a;
+  --green-bg: #e8f5ee;
+  --red: #b93232;
+  --red-bg: #fbeaea;
+  --orange: #c45c10;
+  --card-shadow: 0 2px 16px rgba(15,36,68,0.10);
+  --fs-base: 16px;
+}
+body.dark {
+  --bg: #0e1520;
+  --surface: #172032;
+  --surface-2: #1e2d44;
+  --text: #dde4ef;
+  --text-muted: #8fa3be;
+  --border: #2a3d58;
+  --navy: #1e3a60;
+  --blue: #4b8ed4;
+  --sky: #6ab0e8;
+  --green: #2ecc78;
+  --green-bg: #0e2a1c;
+  --red: #e05555;
+  --red-bg: #2a1212;
+  --card-shadow: 0 2px 20px rgba(0,0,0,0.40);
+}
+* { box-sizing: border-box; }
+html { font-size: var(--fs-base); }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  transition: background .25s, color .25s;
+}
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 18px 100px;
+}
+h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--text); margin: 0; }
+p { margin: 0.7em 0; }
+em, i { font-style: italic; }
+
+/* Hero */
+.hero {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(145deg, #0a1e38 0%, #0f2f5c 50%, #1a5fa8 100%);
+  color: #fff;
+  padding: 60px 24px 70px;
+  overflow: hidden;
+  margin-bottom: 36px;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,200,66,0.30) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -160px;
+  left: -120px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,143,212,0.40) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 2; }
+.hero-badge {
+  display: inline-block;
+  background: var(--gold);
+  color: #0a1e38;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  padding: 6px 16px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
+}
+.hero h1 span { color: var(--gold); font-style: italic; }
+.hero-subtitle {
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.88);
+  max-width: 580px;
+  margin-bottom: 22px;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.meta-chip {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+}
+
+/* Sections */
+.section { animation: fadeUp 0.5s ease both; margin-bottom: 36px; }
+.section:nth-child(2)  { animation-delay: 0.05s; }
+.section:nth-child(3)  { animation-delay: 0.10s; }
+.section:nth-child(4)  { animation-delay: 0.15s; }
+.section:nth-child(5)  { animation-delay: 0.20s; }
+.section:nth-child(6)  { animation-delay: 0.25s; }
+.section:nth-child(7)  { animation-delay: 0.30s; }
+.section:nth-child(8)  { animation-delay: 0.35s; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.section-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+.section h2 {
+  font-size: 1.55rem;
+  font-weight: 900;
+  margin-bottom: 14px;
+  letter-spacing: -0.3px;
+}
+.section h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 20px 0 10px;
+  color: var(--navy);
+}
+body.dark .section h3 { color: var(--sky); }
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+  margin: 12px 0;
+}
+.card-blue {
+  background: linear-gradient(135deg, rgba(26,95,168,0.08) 0%, rgba(59,143,212,0.05) 100%);
+  border-left: 4px solid var(--blue);
+}
+body.dark .card-blue {
+  background: linear-gradient(135deg, rgba(75,142,212,0.10) 0%, rgba(106,176,232,0.05) 100%);
+}
+.card-yellow {
+  background: #fff8df;
+  border-left: 4px solid var(--gold);
+}
+body.dark .card-yellow {
+  background: #2a2410;
+  border-left-color: var(--gold);
+}
+.card-insight {
+  background: #fff8df;
+  border-left: 4px solid var(--gold);
+  padding: 14px 18px;
+  margin: 14px 0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+body.dark .card-insight { background: #2a2410; }
+
+/* TOC */
+.toc { counter-reset: tocitem; padding-left: 0; list-style: none; columns: 2; column-gap: 24px; }
+.toc li {
+  counter-increment: tocitem;
+  padding: 6px 0;
+  font-size: 0.92rem;
+  break-inside: avoid;
+}
+.toc li::before {
+  content: counter(tocitem, decimal-leading-zero) "  ";
+  color: var(--blue);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  margin-right: 4px;
+}
+.toc a { color: var(--text); text-decoration: none; border-bottom: 1px dotted var(--border); }
+.toc a:hover { color: var(--blue); border-bottom-color: var(--blue); }
+@media (max-width: 480px) { .toc { columns: 1; } }
+
+/* Snapshot grid */
+.snap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 12px 0;
+}
+.snap-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: var(--card-shadow);
+}
+.snap-tile-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.snap-tile-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.2;
+}
+body.dark .snap-tile-value { color: var(--gold); }
+.snap-tile-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+.snap-tile.highlighted {
+  background: linear-gradient(135deg, #0f2444, #1a5fa8);
+  color: #fff;
+  border: none;
+}
+.snap-tile.highlighted .snap-tile-label { color: rgba(255,255,255,0.75); }
+.snap-tile.highlighted .snap-tile-value { color: var(--gold); }
+.snap-tile.highlighted .snap-tile-sub { color: rgba(255,255,255,0.85); }
+.snap-tile.green-hi { background: var(--green-bg); border-color: var(--green); }
+.snap-tile.green-hi .snap-tile-value { color: var(--green); }
+body.dark .snap-tile.green-hi { background: #0e2a1c; border-color: var(--green); }
+body.dark .snap-tile.green-hi .snap-tile-value { color: var(--green); }
+.snap-tile.red-hi { background: var(--red-bg); border-color: var(--red); }
+.snap-tile.red-hi .snap-tile-value { color: var(--red); }
+body.dark .snap-tile.red-hi { background: #2a1212; border-color: var(--red); }
+@media (max-width: 400px) { .snap-grid { grid-template-columns: 1fr; } }
+
+/* 52-week range tile */
+.range-tile {
+  grid-column: span 2;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: var(--card-shadow);
+}
+.range-tile-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.range-bar {
+  position: relative;
+  height: 8px;
+  background: linear-gradient(90deg, #fce8e8 0%, #fdeede 50%, #daf2e8 100%);
+  border-radius: 999px;
+  margin: 18px 4px 14px;
+}
+.range-bar-marker {
+  position: absolute;
+  top: -6px;
+  width: 14px;
+  height: 20px;
+  background: var(--navy);
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(15,36,68,0.30);
+}
+.range-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.range-bar-current {
+  text-align: center;
+  margin-top: 6px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 0.92rem;
+}
+body.dark .range-bar {
+  background: linear-gradient(90deg, #2a1212 0%, #2a1e08 50%, #0e2a1c 100%);
+}
+body.dark .range-bar-current { color: var(--gold); }
+@media (max-width: 400px) { .range-tile { grid-column: span 1; } }
+
+/* Forecast tables */
+.forecast-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin: 10px 0 6px;
+  background: var(--surface);
+}
+.forecast-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 520px;
+  background: var(--surface);
+}
+.forecast-table thead th {
+  background: var(--navy);
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  padding: 12px 10px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.forecast-table thead th:first-child {
+  text-align: left;
+  border-radius: 12px 0 0 0;
+}
+.forecast-table thead th:last-child {
+  border-radius: 0 12px 0 0;
+}
+.forecast-table tbody td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  color: var(--text);
+}
+.forecast-table tbody td:first-child {
+  text-align: left;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--blue);
+}
+.forecast-table tbody tr:nth-child(even) td:not(:first-child) {
+  background: var(--surface-2);
+}
+.forecast-table .act-col {
+  background: #e8f0f8 !important;
+  color: var(--navy) !important;
+}
+.forecast-table thead th.act-col {
+  background: #c8ddf5 !important;
+  color: var(--navy) !important;
+}
+body.dark .forecast-table .act-col {
+  background: #1a2e4a !important;
+  color: #c8d8f0 !important;
+}
+body.dark .forecast-table thead th.act-col {
+  background: #223a5c !important;
+  color: #c8d8f0 !important;
+}
+.pos-val { color: var(--green) !important; font-weight: 600; }
+.neg-val { color: var(--red) !important; font-weight: 600; }
+.scroll-hint { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin: 4px 0 14px; font-style: italic; }
+
+/* Financial strength components */
+.verdict-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  padding: 9px 22px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+.verdict-safe { background: #daf2e8; color: #1a7a4a; }
+.verdict-watch { background: #fdeede; color: #c45c10; }
+.verdict-distress { background: #fce8e8; color: #b93232; }
+body.dark .verdict-safe { background: #0a2016; color: #2ecc78; }
+body.dark .verdict-watch { background: #2a1e08; color: #f5b042; }
+body.dark .verdict-distress { background: #2a1010; color: #e05555; }
+
+.grade-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2rem;
+  border: 3px solid;
+  flex-shrink: 0;
+}
+.grade-A, .grade-B { background: var(--navy); color: var(--gold); border-color: var(--gold); }
+.grade-C { background: #edf3fb; color: var(--navy); border-color: var(--navy); }
+.grade-D, .grade-F { background: #fce8e8; color: var(--red); border-color: var(--red); }
+body.dark .grade-C { background: #1e2d44; color: var(--text); border-color: var(--text-muted); }
+body.dark .grade-D, body.dark .grade-F { background: #2a1010; }
+
+.status-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status-safe { background: #daf2e8; color: #1a7a4a; }
+.status-watch { background: #fdeede; color: #c45c10; }
+.status-distress { background: #fce8e8; color: #b93232; }
+body.dark .status-safe { background: #0a2016; color: #2ecc78; }
+body.dark .status-watch { background: #2a1e08; color: #f5b042; }
+body.dark .status-distress { background: #2a1010; color: #e05555; }
+
+.grade-mini {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 0.95rem;
+  line-height: 28px;
+  text-align: center;
+  border: 2px solid;
+}
+.grade-mini-A, .grade-mini-B { background: var(--navy); color: var(--gold); border-color: var(--gold); }
+.grade-mini-C { background: #edf3fb; color: var(--navy); border-color: var(--navy); }
+.grade-mini-D, .grade-mini-F { background: #fce8e8; color: var(--red); border-color: var(--red); }
+body.dark .grade-mini-C { background: #1e2d44; color: var(--text); border-color: var(--text-muted); }
+body.dark .grade-mini-D, body.dark .grade-mini-F { background: #2a1010; }
+
+.verdict-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 10px 0 14px;
+  flex-wrap: wrap;
+}
+.verdict-row .verdict-text { flex: 1; min-width: 200px; }
+@media (max-width: 480px) {
+  .verdict-row { flex-direction: column; align-items: flex-start; }
+}
+
+/* Segment bars */
+.seg-bar-row { display: flex; align-items: center; margin: 8px 0; gap: 10px; }
+.seg-bar-label { flex: 0 0 165px; font-size: 0.88rem; font-weight: 600; }
+.seg-bar-track { flex: 1; height: 22px; background: var(--surface-2); border-radius: 8px; position: relative; overflow: hidden; }
+.seg-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy), var(--blue));
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+}
+
+/* Year cards */
+.year-card {
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+  margin: 14px 0;
+  overflow: hidden;
+}
+.year-card-header {
+  background: linear-gradient(90deg, #0f2444, #1a5fa8);
+  color: #fff;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.year-card-header h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  margin: 0;
+}
+.eps-badge {
+  background: rgba(245,200,66,0.22);
+  color: var(--gold);
+  border: 1px solid rgba(245,200,66,0.5);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.06em;
+}
+.year-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.year-metric {
+  text-align: center;
+  padding: 6px;
+  border-right: 1px solid var(--border);
+}
+.year-metric:last-child { border-right: none; }
+.year-metric-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.year-metric-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--navy);
+  margin-top: 2px;
+}
+body.dark .year-metric-value { color: var(--sky); }
+.year-rationale { padding: 14px 20px; font-size: 0.93rem; }
+@media (max-width: 400px) {
+  .year-metrics { grid-template-columns: repeat(2, 1fr); }
+  .year-metric:nth-child(2) { border-right: none; }
+  .year-metric:nth-child(3) { grid-column: span 2; border-top: 1px solid var(--border); border-right: none; }
+}
+
+/* Pros/Cons */
+.proscons-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+@media (min-width: 560px) { .proscons-grid { grid-template-columns: 1fr 1fr; } }
+.pro-card, .con-card {
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+}
+.pro-card { background: var(--green-bg); border-left: 4px solid var(--green); }
+.con-card { background: var(--red-bg); border-left: 4px solid var(--red); }
+.pro-card h4 { color: var(--green); font-size: 0.95rem; letter-spacing: 0.05em; }
+.con-card h4 { color: var(--red); font-size: 0.95rem; letter-spacing: 0.05em; }
+.pro-card ul, .con-card ul { padding-left: 18px; margin: 8px 0; font-size: 0.91rem; }
+.pro-card li, .con-card li { margin-bottom: 6px; }
+
+/* Risk items */
+.risk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+.risk-item.risk-high { background: #fce8e8; }
+.risk-item.risk-med { background: #fdeede; }
+.risk-item.risk-low { background: #daf2e8; }
+body.dark .risk-item.risk-high { background: #2a1010; }
+body.dark .risk-item.risk-med { background: #2a1e08; }
+body.dark .risk-item.risk-low { background: #0a2016; }
+.risk-badge {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.risk-item.risk-high .risk-badge { background: var(--red); color: #fff; }
+.risk-item.risk-med .risk-badge { background: var(--orange); color: #fff; }
+.risk-item.risk-low .risk-badge { background: var(--green); color: #fff; }
+.risk-text { font-size: 0.91rem; flex: 1; }
+
+/* Scenario bars */
+.scenario-bars { margin: 16px 0; }
+.scenario-row { display: flex; align-items: center; margin: 6px 0; gap: 10px; }
+.scenario-label {
+  flex: 0 0 60px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: right;
+  color: var(--text-muted);
+}
+.scenario-track { flex: 1; height: 32px; background: var(--surface-2); border-radius: 8px; position: relative; overflow: hidden; }
+.scenario-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #fff;
+}
+.scenario-bear { background: linear-gradient(90deg, #8a2424, #b93232); }
+.scenario-base { background: linear-gradient(90deg, #0f2444, #1a5fa8); }
+.scenario-bull { background: linear-gradient(90deg, #1a7a4a, #2ecc78); }
+
+/* Conclusion box */
+.conclusion-box {
+  position: relative;
+  background: linear-gradient(135deg, #0f2444 0%, #0d3568 100%);
+  color: #fff;
+  border-radius: 16px;
+  padding: 28px 24px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+.conclusion-box::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,200,66,0.30) 0%, transparent 70%);
+  pointer-events: none;
+}
+.conclusion-box h3 { color: var(--gold); margin-bottom: 12px; }
+.conclusion-box p { color: rgba(255,255,255,0.92); position: relative; z-index: 1; }
+.target-row {
+  display: flex;
+  gap: 12px;
+  margin: 18px 0;
+  flex-wrap: wrap;
+}
+.target-box {
+  flex: 1;
+  min-width: 130px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(245,200,66,0.30);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+.target-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: rgba(255,255,255,0.65);
+  text-transform: uppercase;
+}
+.target-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 900;
+  color: var(--gold);
+  margin-top: 4px;
+}
+@media (max-width: 400px) {
+  .target-row { flex-direction: column; }
+}
+
+/* Bullet lists */
+.bull-list { padding-left: 0; list-style: none; }
+.bull-list li {
+  padding: 6px 0 6px 24px;
+  position: relative;
+  font-size: 0.95rem;
+}
+.bull-list li::before {
+  content: '◆';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 0.7rem;
+  top: 11px;
+}
+
+/* ROI Tabs */
+.roi-tabs {
+  display: flex;
+  gap: 0;
+  margin: 12px 0 0;
+  border-bottom: 2px solid var(--border);
+}
+.roi-tab-button {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 10px 18px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color .2s, border-color .2s;
+}
+.roi-tab-button:hover { color: var(--blue); }
+.roi-tab-button.active { color: var(--blue); border-bottom-color: var(--gold); }
+.roi-tab-content { display: none; padding-top: 14px; }
+.roi-tab-content.active { display: block; }
+
+/* Price control bar */
+.price-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 8px 0 14px;
+  box-shadow: var(--card-shadow);
+  flex-wrap: wrap;
+}
+.price-control-button {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.price-control-button:hover { background: var(--blue); }
+.price-control-reset {
+  background: transparent;
+  color: var(--blue);
+  border: 1px solid var(--blue);
+}
+.price-control-reset:hover { background: var(--blue); color: #fff; }
+.price-control-display { text-align: center; min-width: 120px; }
+.price-control-price {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: var(--navy);
+  display: block;
+}
+body.dark .price-control-price { color: var(--gold); }
+.price-control-delta { font-size: 0.82rem; color: var(--text-muted); font-style: italic; }
+
+/* Custom range visualization */
+.custom-range {
+  position: relative;
+  height: 8px;
+  background: linear-gradient(90deg, #fce8e8 0%, #fdeede 50%, #daf2e8 100%);
+  border-radius: 999px;
+  margin: 30px 4px 14px;
+}
+body.dark .custom-range {
+  background: linear-gradient(90deg, #2a1212 0%, #2a1e08 50%, #0e2a1c 100%);
+}
+.custom-range-marker {
+  position: absolute;
+  top: -22px;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.custom-range-marker::after {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 14px;
+  background: var(--text-muted);
+  margin: 4px auto 0;
+}
+.custom-range-marker.you {
+  color: var(--navy);
+}
+body.dark .custom-range-marker.you { color: var(--gold); }
+.custom-range-marker.you::after { background: var(--gold); width: 3px; }
+
+/* Floating toolbar */
+.toolbar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0a1e38;
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.30);
+  z-index: 999;
+}
+.toolbar-button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: background .2s;
+}
+.toolbar-button:hover { background: rgba(255,255,255,0.10); }
+.toolbar-display {
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0 10px;
+  min-width: 50px;
+  text-align: center;
+}
+.toolbar-sep { width: 1px; height: 22px; background: rgba(255,255,255,0.25); margin: 0 4px; }
+
+@media print {
+  .toolbar { display: none; }
+  .roi-tabs { display: none; }
+  .roi-tab-content { display: none !important; }
+  .roi-tab-content[data-tab="current"] { display: block !important; }
+  .section { animation: none; }
+  body { background: #fff; }
+}
+
+/* Disclaimer */
+.disclaimer {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  margin-top: 30px;
+}
+
+a { color: var(--blue); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="hero-badge">NASDAQ: AMAT · Applied Materials, Inc.</span>
+    <h1>Applied Materials <span>Deep Analysis</span></h1>
+    <p class="hero-subtitle">A 4-year forward look at the world's largest wafer fab equipment vendor as AI capex meets China-export reality. Bull-case priced, bear-case unpriced, and what it would take for the next leg up.</p>
+    <div class="hero-meta">
+      <span class="meta-chip">May 11, 2026</span>
+      <span class="meta-chip">$435.44</span>
+      <span class="meta-chip">Consensus: Strong Buy</span>
+      <span class="meta-chip">52W +183%</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- 01 TOC -->
+<section class="section" id="toc">
+  <span class="section-label">01 — Contents</span>
+  <h2>Table of Contents</h2>
+  <ol class="toc">
+    <li><a href="#summary">Executive Summary</a></li>
+    <li><a href="#snapshot">Current Snapshot</a></li>
+    <li><a href="#strength">Financial Strength</a></li>
+    <li><a href="#track-record">Quality Track Record</a></li>
+    <li><a href="#moat">Business Model &amp; Moat</a></li>
+    <li><a href="#segments">Revenue Sources &amp; Segments</a></li>
+    <li><a href="#rps">Revenue Per Share Forecast</a></li>
+    <li><a href="#margins">Margin Forecast</a></li>
+    <li><a href="#eps">EPS Forecast</a></li>
+    <li><a href="#roic">ROIC Forecast</a></li>
+    <li><a href="#pe">P/E Multiple Forecast</a></li>
+    <li><a href="#targets">Price Targets &amp; Scenarios</a></li>
+    <li><a href="#years">Year-by-Year Rationale</a></li>
+    <li><a href="#roi">Yearly ROI from Today</a></li>
+    <li><a href="#advrisks">Advantages &amp; Risks</a></li>
+    <li><a href="#macro">Macro &amp; Competition</a></li>
+    <li><a href="#conclusion">Investment Conclusion</a></li>
+    <li><a href="#disclaimer">Disclaimer</a></li>
+  </ol>
+</section>
+
+<!-- 02 EXECUTIVE SUMMARY -->
+<section class="section" id="summary">
+  <span class="section-label">02 — Executive Summary</span>
+  <h2>The Setup</h2>
+  <div class="card card-blue">
+    <p><strong>AMAT is the broadest-portfolio winner in a structurally elevated WFE cycle — and the market has already paid for that story.</strong> The stock has compounded 183% in 12 months, trades at ~46× trailing GAAP EPS against a 5-year historical forward P/E of ~25×, and sits one cent off its 52-week high. The bull thesis (AI-driven WFE spend reaching $185B+ by 2027, DRAM concentration as a feature, advanced packaging via the NEXX acquisition) is real and visible in customer slot schedules — but it is no longer a discovery trade.</p>
+    <p>Our base case has FY26–FY29 EPS compounding from $9.42 to roughly $16.00, with operating margins holding above 30%. The friction is multiple compression: even with strong execution, a return to historical multiples cuts most of the share-price upside. The contrarian observation is that AMAT bears need <em>both</em> a cycle stall and persistent China headwinds; the bulls need the AI WFE upcycle to genuinely extend through 2028. Neither side has yet been falsified.</p>
+  </div>
+</section>
+
+<!-- 03 CURRENT SNAPSHOT -->
+<section class="section" id="snapshot">
+  <span class="section-label">03 — Current Snapshot</span>
+  <h2>Where AMAT Stands Today</h2>
+  <p>A near-vertical 12-month rally has compressed the margin of safety on multiple metrics. Most operating signals (margins, ROIC, FCF generation, balance sheet) remain pristine. Most valuation signals look stretched.</p>
+
+  <div class="snap-grid">
+    <div class="snap-tile highlighted">
+      <div class="snap-tile-label">Price</div>
+      <div class="snap-tile-value">$435.44</div>
+      <div class="snap-tile-sub">May 8, 2026 close</div>
+    </div>
+    <div class="snap-tile highlighted">
+      <div class="snap-tile-label">Market Cap</div>
+      <div class="snap-tile-value">$345.6B</div>
+      <div class="snap-tile-sub">~794M shares out</div>
+    </div>
+
+    <div class="range-tile">
+      <div class="range-tile-label">52-Week Range</div>
+      <div class="range-bar">
+        <div class="range-bar-marker" style="left: 99%"></div>
+      </div>
+      <div class="range-bar-labels">
+        <span>$153.47</span>
+        <span>$438.04</span>
+      </div>
+      <div class="range-bar-current">Current: $435.44 (99% of range)</div>
+    </div>
+
+    <div class="snap-tile">
+      <div class="snap-tile-label">P/E Trailing</div>
+      <div class="snap-tile-value">44.6×</div>
+      <div class="snap-tile-sub">vs 5Y avg ~25× forward</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">P/E Forward FY26</div>
+      <div class="snap-tile-value">~40×</div>
+      <div class="snap-tile-sub">Street FY26 EPS $11.10</div>
+    </div>
+    <div class="snap-tile green-hi">
+      <div class="snap-tile-label">12-Month Return</div>
+      <div class="snap-tile-value">+183%</div>
+      <div class="snap-tile-sub">vs S&amp;P 500 +32%</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">Beta</div>
+      <div class="snap-tile-value">1.45</div>
+      <div class="snap-tile-sub">cyclical equipment name</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">Dividend Yield</div>
+      <div class="snap-tile-value">0.49%</div>
+      <div class="snap-tile-sub">$2.12 annual, 18% payout</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">FY25 Revenue</div>
+      <div class="snap-tile-value">$28.4B</div>
+      <div class="snap-tile-sub">+4% YoY, 6th straight</div>
+    </div>
+    <div class="snap-tile green-hi">
+      <div class="snap-tile-label">FY25 Non-GAAP EPS</div>
+      <div class="snap-tile-value">$9.42</div>
+      <div class="snap-tile-sub">+9% YoY, record</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">Next Earnings</div>
+      <div class="snap-tile-value">May 14</div>
+      <div class="snap-tile-sub">Q2 FY26 (~$7.65B est.)</div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 FINANCIAL STRENGTH -->
+<section class="section" id="strength">
+  <span class="section-label">04 — Financial Strength</span>
+  <h2>Bankruptcy Risk &amp; Balance Sheet Quality</h2>
+  <p>Can AMAT survive the next downturn comfortably, and is the balance sheet a source of strategic option-value or a constraint? With investment-grade credit (S&amp;P A / Moody's A2), more cash than debt, and an Altman Z-Score deep in the safe zone, the verdict here is unambiguous.</p>
+
+  <div class="card card-blue">
+    <div class="verdict-row">
+      <span class="verdict-badge verdict-safe">✓ Safe</span>
+      <div class="grade-badge grade-A">A</div>
+      <div class="verdict-text">
+        <strong>Fortress balance sheet for a capital equipment cyclical.</strong> Interest coverage of 32×, debt/EBITDA near 0.8×, A-rated paper, and $11B+ in cash &amp; investments give AMAT the runway to invest through a downcycle without dilution or covenant pressure. The few caveats are about cycle scarring of FCF, not solvency.
+      </div>
+    </div>
+    <p style="font-style: italic; color: var(--text-muted); font-size: 0.88rem; margin: 0;">Framework: Standard Industrial</p>
+  </div>
+
+  <h3>Layer 1 — Bankruptcy Risk</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+          <th>Safe Threshold</th>
+          <th>What It Catches</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Altman Z-Score</td>
+          <td>10.3</td>
+          <td>&gt; 2.99</td>
+          <td>Manufacturer bankruptcy risk</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Beneish M-Score</td>
+          <td>−2.55</td>
+          <td>&lt; −2.22</td>
+          <td>Earnings manipulation</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Debt-to-EBITDA</td>
+          <td>~0.8×</td>
+          <td>&lt; 3×</td>
+          <td>Leverage burden</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Interest Coverage</td>
+          <td>32×</td>
+          <td>&gt; 5×</td>
+          <td>Servicing capacity</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p style="font-style: italic; color: var(--text-muted); font-size: 0.88rem;">AMAT is a manufacturer of semiconductor capital equipment, so the standard Altman framework applies cleanly. All four metrics point to the same conclusion.</p>
+
+  <h3>Layer 2 — Balance Sheet Quality</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Value</th>
+          <th>What It Tells You</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cash-to-Debt</td>
+          <td>1.12×</td>
+          <td>Net cash position</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+        <tr>
+          <td>Equity-to-Asset</td>
+          <td>63%</td>
+          <td>Capital structure is equity-heavy</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+        <tr>
+          <td>Debt-to-Equity</td>
+          <td>0.30</td>
+          <td>Modest, declined from 1.03 5Y ago</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+        <tr>
+          <td>Piotroski F-Score</td>
+          <td>6 / 9</td>
+          <td>Solid; held back by FCF decline FY25</td>
+          <td><span class="grade-mini grade-mini-B">B</span></td>
+        </tr>
+        <tr>
+          <td>ROIC vs WACC Spread</td>
+          <td>+22 pts</td>
+          <td>Massive value creation per $ invested</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Industry Context &amp; Caveats</h3>
+  <div class="card card-yellow">
+    <p><strong>Standard Industrial framework fits cleanly — but with one nuance worth flagging.</strong> AMAT is a textbook case for the Altman model (large manufacturer, hard assets, identifiable working capital cycle), so the 10.3 Z-Score is meaningful — historically AMAT has ranged 4.2 to 11.4, and the current reading is near the top of that band.</p>
+    <p>The one wrinkle: FY25 free cash flow declined 24% YoY to $5.7B (versus $7.5B in FY24) despite revenue growing — a function of $1B+ in higher capex spending tied to capacity buildout for FY26 demand. This drags the Piotroski score one point but is not a red flag; it is the trade-off between near-term cash and forward earnings power, and it reverses if utilization picks up as guided.</p>
+    <p>Lastly, the BIS settlement (Mar 2026, $252.5M) for past China shipments is now resolved, not a forward-looking concern. The ongoing China-export controls hit revenue and gross margin, not solvency.</p>
+  </div>
+
+  <p style="font-size: 0.82rem; color: var(--text-muted); font-style: italic; margin-top: 14px;">Altman Z-Score blends profitability, leverage, liquidity, and asset turnover; above 2.99 is the "safe" zone for manufacturers. Beneish M-Score is a forensic accounting screen — readings below −2.22 indicate low likelihood of earnings manipulation. Piotroski F-Score is a 9-point fundamentals checklist; 7–9 is strong, 4–6 is mixed.</p>
+</section>
+
+<!-- 05 QUALITY TRACK RECORD -->
+<section class="section" id="track-record">
+  <span class="section-label">05 — Quality Track Record</span>
+  <h2>Has The Business Actually Compounded?</h2>
+  <p>Whether the business has delivered over the long run. This section tracks profitability, capital returns, and growth consistency over 5- and 10-year periods to separate genuine compounders from optical performers.</p>
+
+  <div class="snap-grid">
+    <div class="snap-tile green-hi">
+      <div class="snap-tile-label">10Y Revenue CAGR</div>
+      <div class="snap-tile-value">~11%</div>
+      <div class="snap-tile-sub">$9.7B → $28.4B</div>
+    </div>
+    <div class="snap-tile green-hi">
+      <div class="snap-tile-label">10Y EPS CAGR</div>
+      <div class="snap-tile-value">~26%</div>
+      <div class="snap-tile-sub">buyback-amplified</div>
+    </div>
+    <div class="snap-tile green-hi">
+      <div class="snap-tile-label">5Y Avg ROIC</div>
+      <div class="snap-tile-value">31.5%</div>
+      <div class="snap-tile-sub">elite tier</div>
+    </div>
+    <div class="snap-tile green-hi">
+      <div class="snap-tile-label">5Y Avg Op Margin</div>
+      <div class="snap-tile-value">~30%</div>
+      <div class="snap-tile-sub">structural expansion</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">5Y Avg FCF Margin</div>
+      <div class="snap-tile-value">~24%</div>
+      <div class="snap-tile-sub">dipped to 20% in FY25</div>
+    </div>
+  </div>
+
+  <h3>Profitability Quality</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Current</th>
+          <th>5Y Avg</th>
+          <th>10Y Avg</th>
+          <th>Trend</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gross Margin</td>
+          <td class="pos-val">48.7%</td>
+          <td>47.5%</td>
+          <td>~45%</td>
+          <td class="pos-val">↑</td>
+          <td>Pricing power</td>
+        </tr>
+        <tr>
+          <td>Operating Margin</td>
+          <td class="pos-val">30.7%</td>
+          <td>~30%</td>
+          <td>~26%</td>
+          <td class="pos-val">↑</td>
+          <td>Operating leverage</td>
+        </tr>
+        <tr>
+          <td>Net Margin</td>
+          <td class="pos-val">24.7%</td>
+          <td>~22%</td>
+          <td>~19%</td>
+          <td class="pos-val">↑</td>
+          <td>Moat strength</td>
+        </tr>
+        <tr>
+          <td>FCF Margin</td>
+          <td class="neg-val">20.1%</td>
+          <td>~24%</td>
+          <td>~21%</td>
+          <td class="neg-val">↓</td>
+          <td>Earnings quality</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Returns on Capital</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Current</th>
+          <th>5Y Avg</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ROIC</td>
+          <td class="pos-val">31.9%</td>
+          <td>31.5%</td>
+          <td>Capital efficiency</td>
+        </tr>
+        <tr>
+          <td>ROE</td>
+          <td class="neg-val">34.3%</td>
+          <td>~40%</td>
+          <td>Equity returns (declining as equity base grows)</td>
+        </tr>
+        <tr>
+          <td>ROA</td>
+          <td class="pos-val">~21%</td>
+          <td>~20%</td>
+          <td>Asset productivity</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Growth Track Record</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>10Y CAGR</th>
+          <th>5Y CAGR</th>
+          <th>1Y</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Revenue Growth</td>
+          <td class="pos-val">~11%</td>
+          <td class="pos-val">~10.5%</td>
+          <td class="pos-val">+4.4%</td>
+          <td>Top-line story</td>
+        </tr>
+        <tr>
+          <td>EPS Growth</td>
+          <td class="pos-val">~26%</td>
+          <td class="pos-val">~25%</td>
+          <td class="pos-val">+9%</td>
+          <td>Headline number</td>
+        </tr>
+        <tr>
+          <td>FCF Growth</td>
+          <td class="pos-val">~17%</td>
+          <td class="pos-val">~14%</td>
+          <td class="neg-val">−24%</td>
+          <td>Cash quality (capex-driven dip)</td>
+        </tr>
+        <tr>
+          <td>Book Value Growth</td>
+          <td class="pos-val">~12%</td>
+          <td class="pos-val">~14%</td>
+          <td class="pos-val">+18%</td>
+          <td>Compounding check</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Consistency Scorecard</h3>
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px;">
+      <span><strong>Profitable Years</strong> — 10 / 10</span>
+      <span class="status-badge status-safe">✓ Excellent</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px;">
+      <span><strong>Positive FCF Years</strong> — 10 / 10</span>
+      <span class="status-badge status-safe">✓ Excellent</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px;">
+      <span><strong>Revenue Growth Years</strong> — 9 / 10</span>
+      <span class="status-badge status-safe">✓ Strong</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px;">
+      <span><strong>Buyback Discipline</strong> — 914M → 794M shares (5Y −13%)</span>
+      <span class="status-badge status-safe">✓ Yes</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; flex-wrap: wrap; gap: 8px;">
+      <span><strong>Margin Stability</strong> — operating margin SD ~3 pts over 5Y</span>
+      <span class="status-badge status-watch">⚠ Medium</span>
+    </div>
+  </div>
+  <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;"><em>Operating margin variance reflects the underlying cyclicality of WFE — peak-to-trough swings are real, but the trajectory has been firmly higher across cycles. A "Low" stability rating is typically reserved for non-cyclicals.</em></p>
+</section>
+
+<!-- 06 BUSINESS MODEL & MOAT -->
+<section class="section" id="moat">
+  <span class="section-label">06 — Business Model &amp; Moat</span>
+  <h2>What AMAT Actually Sells, And Why It Wins</h2>
+  <p>AMAT is the broadest-portfolio supplier of the tools that turn silicon wafers into chips — etch, deposition, ion implant, CMP, thermal processing, metrology — across nearly every step except lithography (where ASML has a monopoly). The moat comes from co-development relationships with chipmakers that build AMAT's tools into multi-year roadmaps, and from a high-margin services tail attached to a $300B+ installed base.</p>
+  <ul class="bull-list">
+    <li><strong>Process breadth.</strong> AMAT competes in more WFE categories than any peer (~20% of the global $130B+ market vs ~18% for ASML and 12–14% for LRCX). Customers consolidating vendor relationships favors the broadest portfolio.</li>
+    <li><strong>Deposition leadership.</strong> Estimated 30% market share in deposition (PVD, CVD, ALD) — the layering step where new materials enable each new node. Gate-all-around transistors and advanced HBM packaging both lean on AMAT's lead.</li>
+    <li><strong>Installed-base services.</strong> Applied Global Services hit a record $6.4B in FY25 (22% of revenue) at 28% operating margin. Recurring, less cyclical, and tied to long-lived equipment that compounds with each new tool sold.</li>
+    <li><strong>Co-investment with customers.</strong> The EPIC Center brings TSMC, Intel, Samsung, and Micron engineers into AMAT facilities for joint development — designing AMAT tools into next-generation processes before they hit volume.</li>
+    <li><strong>Switching costs.</strong> A chipmaker that has qualified a deposition tool over 6–18 months and embedded it in a process recipe does not swap vendors lightly — the recipe risk is enormous.</li>
+  </ul>
+</section>
+
+<!-- 07 SEGMENTS -->
+<section class="section" id="segments">
+  <span class="section-label">07 — Revenue Sources</span>
+  <h2>Where The Money Comes From</h2>
+  <p>FY25 revenue mix is heavily weighted to Semiconductor Systems (the capital equipment business), with Applied Global Services as the stabilizing recurring tail. Within Semiconductor Systems, foundry/logic still dominates, but DRAM share has grown to 26% on AI-driven HBM demand.</p>
+  <div class="card">
+    <div class="seg-bar-row">
+      <div class="seg-bar-label">Semi Systems</div>
+      <div class="seg-bar-track"><div class="seg-bar-fill" style="width: 73%;">$20.8B · 73%</div></div>
+    </div>
+    <div class="seg-bar-row">
+      <div class="seg-bar-label">Global Services</div>
+      <div class="seg-bar-track"><div class="seg-bar-fill" style="width: 22.5%;">$6.4B · 23%</div></div>
+    </div>
+    <div class="seg-bar-row">
+      <div class="seg-bar-label">Display + Other</div>
+      <div class="seg-bar-track"><div class="seg-bar-fill" style="width: 4.5%;">$1.0B · 4%</div></div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 14px;"><strong>Within Semi Systems:</strong> Foundry/Logic 67%, DRAM 26%, Flash 7%. <strong>By geography:</strong> China 28% (down from ~40% in 2023 on export controls), with the balance across Taiwan, Korea, US, Japan, Southeast Asia.</p>
+  </div>
+</section>
+
+<!-- 08 REVENUE PER SHARE FORECAST -->
+<section class="section" id="rps">
+  <span class="section-label">08 — Revenue Per Share Forecast</span>
+  <h2>Buyback-Amplified Top Line</h2>
+  <p>My revenue model is slightly more conservative than the Street's because I assume the China headwind plateaus (rather than reverses) and the AI cycle peaks around FY28. Continued buybacks amplify per-share growth above headline revenue growth.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY25 Actual</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Revenue ($B)</td>
+          <td class="act-col">28.4</td>
+          <td>32.0</td>
+          <td>36.5</td>
+          <td>40.0</td>
+          <td>41.5</td>
+        </tr>
+        <tr>
+          <td>YoY %</td>
+          <td class="act-col pos-val">+4.4%</td>
+          <td class="pos-val">+12.8%</td>
+          <td class="pos-val">+14.1%</td>
+          <td class="pos-val">+9.6%</td>
+          <td class="pos-val">+3.8%</td>
+        </tr>
+        <tr>
+          <td>Street Revenue ($B)</td>
+          <td class="act-col">28.4</td>
+          <td>32.5</td>
+          <td>37.5</td>
+          <td>41.0</td>
+          <td>43.0</td>
+        </tr>
+        <tr>
+          <td>My Rev/Share ($)</td>
+          <td class="act-col">35.02</td>
+          <td>41.03</td>
+          <td>47.71</td>
+          <td>53.33</td>
+          <td>56.46</td>
+        </tr>
+        <tr>
+          <td>Rev/Share YoY %</td>
+          <td class="act-col pos-val">+8.0%</td>
+          <td class="pos-val">+17.2%</td>
+          <td class="pos-val">+16.3%</td>
+          <td class="pos-val">+11.8%</td>
+          <td class="pos-val">+5.9%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <div class="card-insight">
+    <strong>Insight:</strong> The buyback effect is real and material. Rev/share growth runs ~3–4 points above raw revenue growth annually because share count is on track to decline from 794M today to ~735M by FY29 — a ~7.5% reduction over four years.
+  </div>
+</section>
+
+<!-- 09 MARGIN FORECAST -->
+<section class="section" id="margins">
+  <span class="section-label">09 — Margin Forecast</span>
+  <h2>Margin Expansion Has A Ceiling</h2>
+  <p>Non-GAAP operating margin reached a 25-year high of ~30.7% in FY25 on richer mix and pricing. Further expansion is possible if AI-driven DRAM/advanced-packaging mix continues to outgrow the rest, but pricing in another 200–300 bps of operating leverage requires the cycle to extend.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Margin</th>
+          <th class="act-col">FY25 Actual</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Operating Margin</td>
+          <td class="act-col">30.7%</td>
+          <td class="neg-val">30.5%</td>
+          <td class="pos-val">31.5%</td>
+          <td class="pos-val">31.0%</td>
+          <td class="neg-val">30.0%</td>
+        </tr>
+        <tr>
+          <td>Street Op Margin</td>
+          <td class="act-col">30.7%</td>
+          <td>30.8%</td>
+          <td>32.0%</td>
+          <td>31.8%</td>
+          <td>30.5%</td>
+        </tr>
+        <tr>
+          <td>My Net Margin</td>
+          <td class="act-col">24.7%</td>
+          <td class="neg-val">24.5%</td>
+          <td class="pos-val">25.0%</td>
+          <td class="neg-val">24.5%</td>
+          <td class="neg-val">24.0%</td>
+        </tr>
+        <tr>
+          <td>My Gross Margin</td>
+          <td class="act-col">48.7%</td>
+          <td class="pos-val">49.0%</td>
+          <td class="pos-val">49.5%</td>
+          <td class="pos-val">49.0%</td>
+          <td>48.5%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+</section>
+
+<!-- 10 EPS FORECAST -->
+<section class="section" id="eps">
+  <span class="section-label">10 — EPS Forecast</span>
+  <h2>The Compounding Engine</h2>
+  <p>EPS growth is the cleanest single metric for AMAT — it captures revenue growth, margin trajectory, and buyback discipline in one number. My base case is roughly 11% annualized EPS growth FY25–FY29, well below the 25% historical 10Y CAGR (which benefitted from a low FY15 base) but solidly above market.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY25 Actual</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Non-GAAP EPS ($)</td>
+          <td class="act-col">9.42</td>
+          <td>10.85</td>
+          <td>13.50</td>
+          <td>15.50</td>
+          <td>16.00</td>
+        </tr>
+        <tr>
+          <td>EPS YoY %</td>
+          <td class="act-col pos-val">+9.0%</td>
+          <td class="pos-val">+15.2%</td>
+          <td class="pos-val">+24.4%</td>
+          <td class="pos-val">+14.8%</td>
+          <td class="pos-val">+3.2%</td>
+        </tr>
+        <tr>
+          <td>Street Low</td>
+          <td class="act-col">—</td>
+          <td>10.40</td>
+          <td>12.80</td>
+          <td>14.50</td>
+          <td>15.50</td>
+        </tr>
+        <tr>
+          <td>Street Avg</td>
+          <td class="act-col">—</td>
+          <td>11.10</td>
+          <td>14.03</td>
+          <td>16.00</td>
+          <td>17.50</td>
+        </tr>
+        <tr>
+          <td>Street High</td>
+          <td class="act-col">—</td>
+          <td>11.80</td>
+          <td>16.21</td>
+          <td>18.50</td>
+          <td>20.00</td>
+        </tr>
+        <tr>
+          <td>My vs Street %</td>
+          <td class="act-col">—</td>
+          <td class="neg-val">−2.3%</td>
+          <td class="neg-val">−3.8%</td>
+          <td class="neg-val">−3.1%</td>
+          <td class="neg-val">−8.6%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <div class="card-insight">
+    <strong>Why I'm below Street:</strong> The Street's FY27 number ($14.03) and Morgan Stanley's $16.21 are predicated on the WFE upcycle extending cleanly through CY2027 at $185B+. I assign that ~60% probability; the remaining 40% includes a 2027 digestion pause as China local-content rules bite and Korean/US fabs absorb the equipment already shipped. The gap widens by FY29 because I assume cycle maturation rather than continued acceleration.
+  </div>
+</section>
+
+<!-- 11 ROIC FORECAST -->
+<section class="section" id="roic">
+  <span class="section-label">11 — ROIC Forecast</span>
+  <h2>Returns On Capital Stay Elite</h2>
+  <p>ROIC stays well above WACC (estimated 9–10%) throughout the forecast, peaking with cycle margins and the lighter capex year in FY27 before normalizing. This is the single most important metric for sustained compounding, and AMAT clears the bar emphatically.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY24</th>
+          <th class="act-col">FY25</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+          <th>Commentary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ROIC %</td>
+          <td class="act-col">~30%</td>
+          <td class="act-col">31.9%</td>
+          <td class="pos-val">33%</td>
+          <td class="pos-val">35%</td>
+          <td class="pos-val">34%</td>
+          <td>32%</td>
+          <td>Peak with cycle</td>
+        </tr>
+        <tr>
+          <td>ROIC vs WACC</td>
+          <td class="act-col pos-val">+20pts</td>
+          <td class="act-col pos-val">+22pts</td>
+          <td class="pos-val">+23pts</td>
+          <td class="pos-val">+25pts</td>
+          <td class="pos-val">+24pts</td>
+          <td class="pos-val">+22pts</td>
+          <td>Massive value spread</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+</section>
+
+<!-- 12 P/E MULTIPLE FORECAST -->
+<section class="section" id="pe">
+  <span class="section-label">12 — P/E Multiple Forecast</span>
+  <h2>The Variable That Matters Most</h2>
+  <p>AMAT's 5-year historical average <em>forward</em> P/E is about 25×. Today the stock trades at ~40× forward FY26E EPS and 46× trailing — a sharp premium to its own history. My P/E assumptions assume some compression toward the historical band in the base case, with the bull case requiring the AI premium to stick.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>P/E (Year-End)</th>
+          <th class="act-col">FY25 Trailing</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Bear Multiple</td>
+          <td class="act-col">~46×</td>
+          <td>20×</td>
+          <td>20×</td>
+          <td>20×</td>
+          <td>20×</td>
+        </tr>
+        <tr>
+          <td>My Base Multiple</td>
+          <td class="act-col">~46×</td>
+          <td>27×</td>
+          <td>27×</td>
+          <td>27×</td>
+          <td>27×</td>
+        </tr>
+        <tr>
+          <td>My Bull Multiple</td>
+          <td class="act-col">~46×</td>
+          <td>35×</td>
+          <td>35×</td>
+          <td>35×</td>
+          <td>35×</td>
+        </tr>
+        <tr>
+          <td>5Y Historical Fwd P/E</td>
+          <td class="act-col">~25×</td>
+          <td>25×</td>
+          <td>25×</td>
+          <td>25×</td>
+          <td>25×</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <div class="card-insight">
+    <strong>Reading the multiples:</strong> Bear (20×) is a cycle-trough multiple consistent with past corrections; Base (27×) is a modest premium to history reflecting durable AI exposure; Bull (35×) requires the market to permanently re-rate AMAT alongside scarcity assets like ASML. Multiple compression — not EPS — is the dominant driver of the bear outcome.
+  </div>
+</section>
+
+<!-- 13 PRICE TARGETS -->
+<section class="section" id="targets">
+  <span class="section-label">13 — Price Targets &amp; Scenarios</span>
+  <h2>Where The Stock Could Trade</h2>
+  <p>Applying the three P/E scenarios to my EPS estimates yields the price target grid below. Note the asymmetry: the FY29 base case is roughly flat to today's price, while the bear case unwinds ~25% and the bull case adds ~30%. From a 99%-of-52W-range entry point, the risk/reward is tighter than it appears on a 4-year horizon.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Year-End Target</th>
+          <th>Bear</th>
+          <th>Base</th>
+          <th>Bull</th>
+          <th>Street 1Y Target</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FY26E (yr 1)</td>
+          <td class="neg-val">$217</td>
+          <td class="neg-val">$293</td>
+          <td class="neg-val">$380</td>
+          <td>$427 avg ($170 low – $517 high)</td>
+        </tr>
+        <tr>
+          <td>FY27E (yr 2)</td>
+          <td class="neg-val">$270</td>
+          <td class="neg-val">$365</td>
+          <td class="pos-val">$473</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>FY28E (yr 3)</td>
+          <td class="neg-val">$310</td>
+          <td class="neg-val">$419</td>
+          <td class="pos-val">$543</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>FY29E (yr 4)</td>
+          <td class="neg-val">$320</td>
+          <td class="neg-val">$432</td>
+          <td class="pos-val">$560</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>4-Year Terminal Scenarios</h3>
+  <div class="scenario-bars">
+    <div class="scenario-row">
+      <span class="scenario-label">Bear</span>
+      <div class="scenario-track"><div class="scenario-fill scenario-bear" style="width: 57%;">$320</div></div>
+    </div>
+    <div class="scenario-row">
+      <span class="scenario-label">Base</span>
+      <div class="scenario-track"><div class="scenario-fill scenario-base" style="width: 77%;">$432</div></div>
+    </div>
+    <div class="scenario-row">
+      <span class="scenario-label">Bull</span>
+      <div class="scenario-track"><div class="scenario-fill scenario-bull" style="width: 100%;">$560</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 YEAR-BY-YEAR -->
+<section class="section" id="years">
+  <span class="section-label">14 — Year-By-Year Rationale</span>
+  <h2>What Drives Each Year</h2>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <h3>FY26 — Cycle Re-Acceleration</h3>
+      <span class="eps-badge">EPS +15.2%</span>
+    </div>
+    <div class="year-metrics">
+      <div class="year-metric">
+        <div class="year-metric-label">Rev/Share</div>
+        <div class="year-metric-value">$41.03</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">EPS</div>
+        <div class="year-metric-value">$10.85</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">P/E Range</div>
+        <div class="year-metric-value">20–35×</div>
+      </div>
+    </div>
+    <div class="year-rationale">
+      <p>Management has explicitly guided to "higher demand beginning in the second half of calendar 2026" — the prepared remarks framing of a back-loaded year. H1 absorbs the $600M China-export headwind and the 2H ramps on memory and advanced-node capacity adds. The NEXX integration starts contributing to advanced packaging from mid-year. Margin gives back a touch on mix; EPS still grows mid-teens on revenue acceleration and buybacks.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <h3>FY27 — Peak Cycle Year</h3>
+      <span class="eps-badge">EPS +24.4%</span>
+    </div>
+    <div class="year-metrics">
+      <div class="year-metric">
+        <div class="year-metric-label">Rev/Share</div>
+        <div class="year-metric-value">$47.71</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">EPS</div>
+        <div class="year-metric-value">$13.50</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">P/E Range</div>
+        <div class="year-metric-value">20–35×</div>
+      </div>
+    </div>
+    <div class="year-rationale">
+      <p>The setup year for the entire investment case. Morgan Stanley pegs CY27 industry WFE at $185B+ — if directionally right, AMAT captures 20%+ at peak margins. AI-driven DRAM/HBM continues to scale, gate-all-around logic ramps at TSMC and Samsung. Operating margin expands ~100 bps on volume leverage and richer mix. The biggest single year of earnings power, but also the year multiple compression starts: as investors look past peak, the P/E typically contracts even as EPS lands.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <h3>FY28 — Digestion Begins</h3>
+      <span class="eps-badge">EPS +14.8%</span>
+    </div>
+    <div class="year-metrics">
+      <div class="year-metric">
+        <div class="year-metric-label">Rev/Share</div>
+        <div class="year-metric-value">$53.33</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">EPS</div>
+        <div class="year-metric-value">$15.50</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">P/E Range</div>
+        <div class="year-metric-value">20–35×</div>
+      </div>
+    </div>
+    <div class="year-rationale">
+      <p>Cleanroom capacity built in 2026–2027 starts coming online, slowing the rate of WFE growth. Revenue still grows but at ~10% rather than 14%. AGS becomes more important as a percentage of growth (services compound on every tool sold in the prior two years). This is a year where the differentiation between AMAT and peers matters more than the cycle — and AMAT's portfolio breadth gives it more places to hide.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <h3>FY29 — Cycle Maturity</h3>
+      <span class="eps-badge">EPS +3.2%</span>
+    </div>
+    <div class="year-metrics">
+      <div class="year-metric">
+        <div class="year-metric-label">Rev/Share</div>
+        <div class="year-metric-value">$56.46</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">EPS</div>
+        <div class="year-metric-value">$16.00</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">P/E Range</div>
+        <div class="year-metric-value">20–35×</div>
+      </div>
+    </div>
+    <div class="year-rationale">
+      <p>The mature year of the forecast — revenue grows ~4%, operating margin gives back 100 bps, but FCF normalizes (capex tapers). Buybacks plus dividend growth deliver a modest EPS bump. This is the year the bull thesis needs the EPIC Center, advanced packaging, and next-generation node nodes (sub-2nm gate-all-around) to demonstrably extend the cycle — otherwise the multiple compresses toward cycle-trough.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 15 ROI -->
+<section class="section" id="roi">
+  <span class="section-label">15 — Yearly ROI From Today</span>
+  <h2>What You Actually Earn From Here</h2>
+  <p>The same forecast looked at as a returns table from the current $435.44 entry. Tab 2 lets you stress-test what happens if you wait for a 5–15% pullback before committing.</p>
+
+  <div class="roi-tabs">
+    <button class="roi-tab-button active" data-tab="current" onclick="switchRoiTab('current')">At Current Price</button>
+    <button class="roi-tab-button" data-tab="custom" onclick="switchRoiTab('custom')">Try Different Price</button>
+  </div>
+
+  <div class="roi-tab-content active" data-tab="current">
+    <h3>Cumulative &amp; Annualized Returns from $435.44</h3>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Bear Cum</th>
+            <th>Bear Ann</th>
+            <th>Base Cum</th>
+            <th>Base Ann</th>
+            <th>Bull Cum</th>
+            <th>Bull Ann</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1yr (FY26)</td>
+            <td class="neg-val">−50.2%</td>
+            <td class="neg-val">−50.2%</td>
+            <td class="neg-val">−32.7%</td>
+            <td class="neg-val">−32.7%</td>
+            <td class="neg-val">−12.7%</td>
+            <td class="neg-val">−12.7%</td>
+          </tr>
+          <tr>
+            <td>2yr (FY27)</td>
+            <td class="neg-val">−38.0%</td>
+            <td class="neg-val">−21.2%</td>
+            <td class="neg-val">−16.2%</td>
+            <td class="neg-val">−8.4%</td>
+            <td class="pos-val">+8.6%</td>
+            <td class="pos-val">+4.2%</td>
+          </tr>
+          <tr>
+            <td>3yr (FY28)</td>
+            <td class="neg-val">−28.8%</td>
+            <td class="neg-val">−10.7%</td>
+            <td class="neg-val">−3.8%</td>
+            <td class="neg-val">−1.3%</td>
+            <td class="pos-val">+24.7%</td>
+            <td class="pos-val">+7.6%</td>
+          </tr>
+          <tr>
+            <td>4yr (FY29)</td>
+            <td class="neg-val">−26.5%</td>
+            <td class="neg-val">−7.4%</td>
+            <td class="neg-val">−0.8%</td>
+            <td class="neg-val">−0.2%</td>
+            <td class="pos-val">+28.6%</td>
+            <td class="pos-val">+6.5%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+  </div>
+
+  <div class="roi-tab-content" data-tab="custom">
+    <div class="price-control">
+      <button class="price-control-button" onclick="adjustRoiPrice(-5)">−5%</button>
+      <div class="price-control-display">
+        <span class="price-control-price" id="roiCustomPrice">$435.44</span>
+        <span class="price-control-delta" id="roiPriceDelta">+0.0% vs current</span>
+      </div>
+      <button class="price-control-button" onclick="adjustRoiPrice(5)">+5%</button>
+      <button class="price-control-button price-control-reset" onclick="resetRoiPrice()">Reset</button>
+    </div>
+
+    <div class="custom-range">
+      <div class="custom-range-marker" style="left: 0%">$153.47<br><span style="font-size:0.68rem;">52W Low</span></div>
+      <div class="custom-range-marker" style="left: 99%">$435.44<br><span style="font-size:0.68rem;">Today</span></div>
+      <div class="custom-range-marker you" id="roiYouMarker" style="left: 99%;">You</div>
+    </div>
+
+    <h3 id="roiCustomTitle">Cumulative &amp; Annualized Returns from $435.44</h3>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Bear Cum</th>
+            <th>Bear Ann</th>
+            <th>Base Cum</th>
+            <th>Base Ann</th>
+            <th>Bull Cum</th>
+            <th>Bull Ann</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1yr (FY26)</td>
+            <td data-roi="bear-1-cum" class="neg-val">−50.2%</td>
+            <td data-roi="bear-1-ann" class="neg-val">−50.2%</td>
+            <td data-roi="base-1-cum" class="neg-val">−32.7%</td>
+            <td data-roi="base-1-ann" class="neg-val">−32.7%</td>
+            <td data-roi="bull-1-cum" class="neg-val">−12.7%</td>
+            <td data-roi="bull-1-ann" class="neg-val">−12.7%</td>
+          </tr>
+          <tr>
+            <td>2yr (FY27)</td>
+            <td data-roi="bear-2-cum" class="neg-val">−38.0%</td>
+            <td data-roi="bear-2-ann" class="neg-val">−21.2%</td>
+            <td data-roi="base-2-cum" class="neg-val">−16.2%</td>
+            <td data-roi="base-2-ann" class="neg-val">−8.4%</td>
+            <td data-roi="bull-2-cum" class="pos-val">+8.6%</td>
+            <td data-roi="bull-2-ann" class="pos-val">+4.2%</td>
+          </tr>
+          <tr>
+            <td>3yr (FY28)</td>
+            <td data-roi="bear-3-cum" class="neg-val">−28.8%</td>
+            <td data-roi="bear-3-ann" class="neg-val">−10.7%</td>
+            <td data-roi="base-3-cum" class="neg-val">−3.8%</td>
+            <td data-roi="base-3-ann" class="neg-val">−1.3%</td>
+            <td data-roi="bull-3-cum" class="pos-val">+24.7%</td>
+            <td data-roi="bull-3-ann" class="pos-val">+7.6%</td>
+          </tr>
+          <tr>
+            <td>4yr (FY29)</td>
+            <td data-roi="bear-4-cum" class="neg-val">−26.5%</td>
+            <td data-roi="bear-4-ann" class="neg-val">−7.4%</td>
+            <td data-roi="base-4-cum" class="neg-val">−0.8%</td>
+            <td data-roi="base-4-ann" class="neg-val">−0.2%</td>
+            <td data-roi="bull-4-cum" class="pos-val">+28.6%</td>
+            <td data-roi="bull-4-ann" class="pos-val">+6.5%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+  </div>
+
+  <div class="card-insight">
+    <strong>The clear takeaway:</strong> Even on a 4-year horizon, the base case is roughly flat at today's price. The bull case clears 6.5% annualized — fine, but not the multi-bagger setup the trailing 12-month chart implies. Entering 10–15% lower would meaningfully reshape the return profile. Use the slider to see.
+  </div>
+</section>
+
+<!-- 16 ADVANTAGES & RISKS -->
+<section class="section" id="advrisks">
+  <span class="section-label">16 — Advantages &amp; Risks</span>
+  <h2>What Could Go Right, What Could Go Wrong</h2>
+
+  <div class="proscons-grid">
+    <div class="pro-card">
+      <h4>Structural Advantages</h4>
+      <ul>
+        <li>Broadest WFE portfolio (~20% market share, leads deposition at ~30%)</li>
+        <li>$11B+ cash + investments; A-rated balance sheet</li>
+        <li>Recurring services tail at $6.4B and 28% margin</li>
+        <li>Co-development partnerships designed in to next-gen nodes</li>
+        <li>Strong DRAM/HBM exposure (~26% of Semi Systems) on AI tailwind</li>
+        <li>Disciplined buybacks: 914M → 794M shares over 5 years</li>
+      </ul>
+    </div>
+    <div class="con-card">
+      <h4>Key Risks</h4>
+      <ul>
+        <li>China export controls: $600M FY26 revenue hit, more rules possible</li>
+        <li>Valuation: trading at ~46× trailing P/E vs 5Y average of ~25× forward</li>
+        <li>Cyclicality: beta 1.45, peak-to-trough WFE swings can be severe</li>
+        <li>Customer concentration: top 3 (TSMC, Samsung, Intel) ~50%+</li>
+        <li>Non-US competition (ASML, Tokyo Electron) less restricted in China</li>
+        <li>Stock at 99% of 52-week range — limited margin of safety</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Risk Severity Assessment</h3>
+  <div class="risk-item risk-high">
+    <span class="risk-badge">High</span>
+    <span class="risk-text"><strong>Valuation compression.</strong> A return to historical forward P/E (~25×) at current EPS strips ~30–40% from the multiple alone. This is the binding constraint on the bear case.</span>
+  </div>
+  <div class="risk-item risk-high">
+    <span class="risk-badge">High</span>
+    <span class="risk-text"><strong>China policy escalation.</strong> Already $600M FY26 headwind from licensing. Further restrictions, an additional local-content rule tightening, or a renewed BIS enforcement cycle could compound the hit. China was ~40% of revenue as recently as 2023.</span>
+  </div>
+  <div class="risk-item risk-med">
+    <span class="risk-badge">Medium</span>
+    <span class="risk-text"><strong>WFE cycle digestion.</strong> If 2026–2027 capacity buildout proves front-loaded, FY28 could see a sharper-than-expected revenue stall — historically AMAT's revenue has declined 10–20% in down years.</span>
+  </div>
+  <div class="risk-item risk-med">
+    <span class="risk-badge">Medium</span>
+    <span class="risk-text"><strong>Customer concentration.</strong> A capex pause from TSMC, Samsung, or Intel — particularly if leading-edge node ramps slip — would meaningfully reset estimates.</span>
+  </div>
+  <div class="risk-item risk-low">
+    <span class="risk-badge">Low</span>
+    <span class="risk-text"><strong>Technology obsolescence.</strong> AMAT is at the leading edge of deposition and process control. Disruption typically takes 5+ years to play out in this industry; not a near-term concern.</span>
+  </div>
+  <div class="risk-item risk-low">
+    <span class="risk-badge">Low</span>
+    <span class="risk-text"><strong>Balance sheet / solvency risk.</strong> Not a meaningful concern given net cash position and A-rated debt.</span>
+  </div>
+</section>
+
+<!-- 17 MACRO & COMPETITION -->
+<section class="section" id="macro">
+  <span class="section-label">17 — Macro, Regulation &amp; Competition</span>
+  <h2>The External Backdrop</h2>
+
+  <h3>Macro factors</h3>
+  <ul class="bull-list">
+    <li><strong>Interest rates:</strong> A rate-cutting cycle would help capital-intensive customers (TSMC, Samsung, Micron) accelerate fab buildouts; rates staying higher for longer could slow specific capex plans, especially at memory makers.</li>
+    <li><strong>FX:</strong> ~60% of revenue is non-US; a stronger dollar pressures reported numbers but is partially offset by Asian supplier cost base. Manageable.</li>
+    <li><strong>Inflation/recession sensitivity:</strong> WFE is durable goods, leveraged to capex cycles; a US/global recession typically pushes orders out by 6–12 months but rarely cancels them — chipmakers cannot stop investing without losing competitive position.</li>
+    <li><strong>AI capex super-cycle:</strong> The defining tailwind. Hyperscaler chip orders → foundry/IDM capex → WFE spend. As long as the AI capex narrative holds, AMAT participates.</li>
+  </ul>
+
+  <h3>Regulatory landscape</h3>
+  <div class="card card-yellow">
+    <p><strong>The dominant variable.</strong> US export controls have moved China from ~40% of revenue (FY23) to 28% (FY25), with a $600M projected hit for FY26 and additional licensing burdens. The March 2026 BIS settlement ($252.5M) closed the prior SMIC routing case but did not relax current rules. A Trump-Xi summit in mid-2026 is the next discrete catalyst; both sides have incentives for a partial thaw, but the underlying competitive logic (advanced chips as strategic technology) is bipartisan US policy.</p>
+    <p>China's own 50% local-equipment mandate adds a second leg — even where AMAT can legally ship, mature-node capex is increasingly going to domestic Chinese vendors (AMEC, Naura, SMEE).</p>
+  </div>
+
+  <h3>Competition landscape</h3>
+  <ul class="bull-list">
+    <li><strong>ASML</strong> — lithography monopoly (100% of EUV), competitor in pre-process inspection. Different category for the most part; ASML's growth rate often diverges from AMAT's.</li>
+    <li><strong>Lam Research (LRCX)</strong> — direct competitor in etch (LRCX leads) and deposition (AMAT leads). Most overlap of the four. LRCX has higher services mix (~43% of revenue).</li>
+    <li><strong>KLA Corp (KLAC)</strong> — process control and inspection leader; less direct overlap but competes for capex wallet share. Highest margins in the group.</li>
+    <li><strong>Tokyo Electron</strong> — Japanese rival across multiple WFE categories, less restricted in China; took share in 2024 partly on that basis.</li>
+    <li><strong>Chinese domestics</strong> — AMEC, Naura, SMEE growing share inside China; not yet a leading-edge competitor outside China.</li>
+  </ul>
+</section>
+
+<!-- 18 CONCLUSION -->
+<section class="section" id="conclusion">
+  <span class="section-label">18 — Investment Conclusion</span>
+  <h2>The Verdict</h2>
+
+  <div class="conclusion-box">
+    <h3>Excellent Business, Demanding Entry Point</h3>
+    <p>AMAT is one of the highest-quality industrials in the public market — net cash, A-rated, 32% ROIC, 25-year-high gross margins, and the broadest portfolio in a structurally elevated WFE cycle. The franchise deserves a premium multiple. The question is whether 46× trailing earnings, at the very top of a 52-week range that has tripled the stock, is too much premium.</p>
+    <p>Our base case says the 4-year return from $435 is roughly flat — fine return characteristics for a quality business, but the asymmetry runs in the wrong direction (bear cuts ~25%, bull adds ~30%). Patient buyers waiting for a 10–15% pullback materially improve their risk/reward. Existing holders should not sell on valuation alone, but should size the position with the understanding that multiple compression is the dominant downside risk, not earnings.</p>
+    <div class="target-row">
+      <div class="target-box">
+        <div class="target-label">1-Year Target</div>
+        <div class="target-value">$293</div>
+      </div>
+      <div class="target-box">
+        <div class="target-label">4-Year Base</div>
+        <div class="target-value">$432</div>
+      </div>
+      <div class="target-box">
+        <div class="target-label">4-Year Bull</div>
+        <div class="target-value">$560</div>
+      </div>
+    </div>
+    <p><strong>Rating: HOLD with bias to add on pullback.</strong> Bull case requires the AI WFE upcycle to extend cleanly through 2028 and the market to permanently re-rate AMAT toward ASML's multiple band. Both are plausible but neither is yet certain — and at the current entry, the market is paying as though both are.</p>
+  </div>
+</section>
+
+<!-- 19 DISCLAIMER -->
+<section class="section" id="disclaimer">
+  <span class="section-label">19 — Disclaimer</span>
+  <div class="disclaimer">
+    This report is for educational and informational purposes only and is not investment, financial, tax, or legal advice. Forecasts represent the author's analytical view, not promises of outcome. Stock prices and underlying business conditions can change rapidly; all forward-looking estimates carry meaningful uncertainty. Readers should conduct their own due diligence and consult a licensed financial advisor before making investment decisions. Past performance does not guarantee future results.
+  </div>
+</section>
+
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="toolbar-button" onclick="changeFont(-1)" aria-label="Decrease font">A−</button>
+  <span class="toolbar-display" id="fsDisplay">16px</span>
+  <button class="toolbar-button" onclick="changeFont(1)" aria-label="Increase font">A+</button>
+  <span class="toolbar-sep"></span>
+  <button class="toolbar-button" id="modeBtn" onclick="toggleMode()" aria-label="Toggle mode">🌙</button>
+</div>
+
+<script>
+const MIN_FS = 12, MAX_FS = 26, STEP = 1;
+let currentFs = parseInt(localStorage.getItem('AMAT_fs') || '16', 10);
+let isDark = localStorage.getItem('AMAT_dark') === '1';
+
+function applyFont(size) {
+  currentFs = Math.min(MAX_FS, Math.max(MIN_FS, size));
+  document.documentElement.style.setProperty('--fs-base', currentFs + 'px');
+  document.getElementById('fsDisplay').textContent = currentFs + 'px';
+  localStorage.setItem('AMAT_fs', currentFs);
+}
+function changeFont(delta) { applyFont(currentFs + delta * STEP); }
+function applyMode() {
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('modeBtn').textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('AMAT_dark', isDark ? '1' : '0');
+}
+function toggleMode() { isDark = !isDark; applyMode(); }
+applyFont(currentFs);
+applyMode();
+
+/* ROI Tab + Price Simulator */
+const ROI_CURRENT_PRICE = 435.44;
+const ROI_52W_LOW = 153.47;
+const ROI_52W_HIGH = 438.04;
+const ROI_TARGETS = {
+  bear: { 1: 217, 2: 270, 3: 310, 4: 320 },
+  base: { 1: 293, 2: 365, 3: 419, 4: 432 },
+  bull: { 1: 380, 2: 473, 3: 543, 4: 560 }
+};
+
+let roiCustomPrice = ROI_CURRENT_PRICE;
+
+function switchRoiTab(tabName) {
+  document.querySelectorAll('.roi-tab-button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.roi-tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector('.roi-tab-button[data-tab="' + tabName + '"]').classList.add('active');
+  document.querySelector('.roi-tab-content[data-tab="' + tabName + '"]').classList.add('active');
+}
+
+function adjustRoiPrice(deltaPct) {
+  roiCustomPrice = roiCustomPrice * (1 + deltaPct / 100);
+  recalcRoiTable();
+}
+function resetRoiPrice() {
+  roiCustomPrice = ROI_CURRENT_PRICE;
+  recalcRoiTable();
+}
+
+function recalcRoiTable() {
+  document.getElementById('roiCustomPrice').textContent = '$' + roiCustomPrice.toFixed(2);
+  const deltaPct = (roiCustomPrice - ROI_CURRENT_PRICE) / ROI_CURRENT_PRICE * 100;
+  const sign = deltaPct >= 0 ? '+' : '';
+  document.getElementById('roiPriceDelta').textContent = sign + deltaPct.toFixed(1) + '% vs current';
+  document.getElementById('roiCustomTitle').textContent = 'Cumulative & Annualized Returns from $' + roiCustomPrice.toFixed(2);
+
+  const range = ROI_52W_HIGH - ROI_52W_LOW;
+  const rawPct = ((roiCustomPrice - ROI_52W_LOW) / range) * 100;
+  const pct = Math.max(-15, Math.min(115, rawPct));
+  document.getElementById('roiYouMarker').style.left = pct + '%';
+
+  ['bear','base','bull'].forEach(scenario => {
+    [1,2,3,4].forEach(year => {
+      const target = ROI_TARGETS[scenario][year];
+      const cum = (target / roiCustomPrice - 1) * 100;
+      const ann = (Math.pow(target / roiCustomPrice, 1/year) - 1) * 100;
+      const cumStr = (cum >= 0 ? '+' : '') + cum.toFixed(1) + '%';
+      const annStr = (ann >= 0 ? '+' : '') + ann.toFixed(1) + '%';
+      const cumCell = document.querySelector('[data-roi="' + scenario + '-' + year + '-cum"]');
+      const annCell = document.querySelector('[data-roi="' + scenario + '-' + year + '-ann"]');
+      if (cumCell && annCell) {
+        cumCell.textContent = cumStr;
+        annCell.textContent = annStr;
+        cumCell.className = cum >= 0 ? 'pos-val' : 'neg-val';
+        annCell.className = ann >= 0 ? 'pos-val' : 'neg-val';
+      }
+    });
+  });
+}
+</script>
+
+</body>
+</html>

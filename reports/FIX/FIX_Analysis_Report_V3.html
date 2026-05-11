@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Comfort Systems USA (FIX) — Deep Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-2: #edf3fb;
+  --text: #111d29;
+  --text-muted: #3a526a;
+  --border: #d0dcea;
+  --navy: #0f2444;
+  --blue: #1a5fa8;
+  --sky: #3b8fd4;
+  --gold: #f5c842;
+  --accent: #e8a020;
+  --green: #1a7a4a;
+  --green-bg: #e8f5ee;
+  --red: #b93232;
+  --red-bg: #fbeaea;
+  --orange: #c45c10;
+  --card-shadow: 0 2px 16px rgba(15,36,68,0.10);
+  --fs-base: 16px;
+}
+body.dark {
+  --bg: #0e1520;
+  --surface: #172032;
+  --surface-2: #1e2d44;
+  --text: #dde4ef;
+  --text-muted: #8fa3be;
+  --border: #2a3d58;
+  --navy: #1e3a60;
+  --blue: #4b8ed4;
+  --sky: #6ab0e8;
+  --green: #2ecc78;
+  --green-bg: #0e2a1c;
+  --red: #e05555;
+  --red-bg: #2a1212;
+  --card-shadow: 0 2px 20px rgba(0,0,0,0.40);
+}
+* { box-sizing: border-box; }
+html { font-size: var(--fs-base); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 400;
+  line-height: 1.6;
+  transition: background .3s, color .3s;
+}
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 18px 100px;
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  background: linear-gradient(145deg, #0a1e38 0%, #0f2f5c 50%, #1a5fa8 100%);
+  color: #fff;
+  padding: 60px 24px 70px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(245,200,66,0.30) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(59,143,212,0.35) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.ticker-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #f5c842, #e8a020);
+  color: #0a1e38;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.15em;
+  padding: 7px 16px;
+  border-radius: 999px;
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2.7rem;
+  line-height: 1.05;
+  margin: 0 0 16px;
+  letter-spacing: -0.5px;
+}
+.hero h1 span { color: var(--gold); }
+.hero-sub {
+  font-style: italic;
+  font-size: 1.08rem;
+  opacity: 0.92;
+  max-width: 560px;
+  margin: 0 0 26px;
+  font-weight: 300;
+}
+.meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.meta-chip {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.20);
+  color: #fff;
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+/* SECTIONS */
+.section {
+  margin: 38px 0;
+  animation: fadeUp 0.5s ease both;
+}
+.section:nth-of-type(1)  { animation-delay: 0.05s; }
+.section:nth-of-type(2)  { animation-delay: 0.10s; }
+.section:nth-of-type(3)  { animation-delay: 0.15s; }
+.section:nth-of-type(4)  { animation-delay: 0.20s; }
+.section:nth-of-type(5)  { animation-delay: 0.25s; }
+.section:nth-of-type(6)  { animation-delay: 0.30s; }
+.section:nth-of-type(7)  { animation-delay: 0.35s; }
+.section:nth-of-type(8)  { animation-delay: 0.40s; }
+.section:nth-of-type(9)  { animation-delay: 0.45s; }
+.section:nth-of-type(10) { animation-delay: 0.50s; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.section-label {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--accent);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.85rem;
+  line-height: 1.15;
+  margin: 4px 0 14px;
+  color: var(--navy);
+}
+body.dark h2 { color: var(--sky); }
+h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin: 18px 0 8px;
+  color: var(--navy);
+}
+body.dark h3 { color: var(--sky); }
+p { margin: 0 0 12px; }
+em { color: var(--text-muted); }
+
+/* TOC */
+.toc-list {
+  margin: 0;
+  padding-left: 22px;
+  font-size: 0.96rem;
+}
+.toc-list li { margin: 5px 0; }
+.toc-list a {
+  color: var(--blue);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--border);
+}
+.toc-list a:hover { color: var(--accent); }
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin: 10px 0;
+  box-shadow: var(--card-shadow);
+}
+.card-blue {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+  border-left: 4px solid var(--blue);
+}
+.card-yellow {
+  background: #fff8df;
+  border-left: 4px solid var(--gold);
+}
+body.dark .card-yellow {
+  background: #2a2410;
+  border-left-color: var(--gold);
+}
+.card-green {
+  background: var(--green-bg);
+  border-left: 4px solid var(--green);
+}
+.card-red {
+  background: var(--red-bg);
+  border-left: 4px solid var(--red);
+}
+
+/* SNAPSHOT GRID */
+.snap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 14px 0 6px;
+}
+.snap-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: var(--card-shadow);
+}
+.snap-tile-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.snap-tile-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.35rem;
+  color: var(--navy);
+  line-height: 1.1;
+}
+.snap-tile-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+  font-style: italic;
+}
+body.dark .snap-tile-value { color: var(--sky); }
+.snap-tile.hi {
+  background: var(--navy);
+  border-color: var(--navy);
+}
+.snap-tile.hi .snap-tile-label { color: rgba(245,200,66,0.85); }
+.snap-tile.hi .snap-tile-value { color: var(--gold); }
+.snap-tile.hi .snap-tile-sub { color: rgba(255,255,255,0.75); }
+.snap-tile.green-hi {
+  background: var(--green-bg);
+  border-color: var(--green);
+}
+.snap-tile.green-hi .snap-tile-value { color: var(--green); }
+body.dark .snap-tile.green-hi .snap-tile-value { color: var(--green); }
+
+/* 52W RANGE TILE */
+.range-tile {
+  grid-column: span 2;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: var(--card-shadow);
+}
+.range-tile-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.range-bar {
+  position: relative;
+  height: 8px;
+  background: linear-gradient(90deg, #fce8e8 0%, #fdeede 50%, #daf2e8 100%);
+  border-radius: 999px;
+  margin: 18px 4px 14px;
+}
+.range-bar-marker {
+  position: absolute;
+  top: -6px;
+  width: 14px;
+  height: 20px;
+  background: var(--navy);
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(15,36,68,0.30);
+}
+.range-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.range-bar-current {
+  text-align: center;
+  margin-top: 6px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 0.92rem;
+}
+body.dark .range-bar {
+  background: linear-gradient(90deg, #2a1212 0%, #2a1e08 50%, #0e2a1c 100%);
+}
+body.dark .range-bar-current { color: var(--gold); }
+
+/* FORECAST TABLES */
+.forecast-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin: 10px 0 6px;
+  background: var(--surface);
+}
+.forecast-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 520px;
+  background: var(--surface);
+}
+.forecast-table thead th {
+  background: var(--navy);
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  padding: 12px 10px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.forecast-table thead th:first-child {
+  text-align: left;
+  border-radius: 12px 0 0 0;
+}
+.forecast-table thead th:last-child {
+  border-radius: 0 12px 0 0;
+}
+.forecast-table tbody td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  color: var(--text);
+}
+.forecast-table tbody td:first-child {
+  text-align: left;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--blue);
+}
+.forecast-table tbody tr:nth-child(even) td:not(:first-child) {
+  background: var(--surface-2);
+}
+.forecast-table .act-col {
+  background: #e8f0f8 !important;
+  color: var(--navy) !important;
+}
+.forecast-table thead th.act-col {
+  background: #c8ddf5 !important;
+  color: var(--navy) !important;
+}
+body.dark .forecast-table .act-col {
+  background: #1a2e4a !important;
+  color: #c8d8f0 !important;
+}
+body.dark .forecast-table thead th.act-col {
+  background: #223a5c !important;
+  color: #c8d8f0 !important;
+}
+.pos-val { color: var(--green) !important; font-weight: 600; }
+.neg-val { color: var(--red)   !important; font-weight: 600; }
+.scroll-hint {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: right;
+  margin: 0 0 16px;
+}
+
+/* FINANCIAL STRENGTH */
+.verdict-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  padding: 9px 22px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+.verdict-safe     { background: #daf2e8; color: #1a7a4a; }
+.verdict-watch    { background: #fdeede; color: #c45c10; }
+.verdict-distress { background: #fce8e8; color: #b93232; }
+body.dark .verdict-safe     { background: #0a2016; color: #2ecc78; }
+body.dark .verdict-watch    { background: #2a1e08; color: #f5b042; }
+body.dark .verdict-distress { background: #2a1010; color: #e05555; }
+
+.grade-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2rem;
+  border: 3px solid;
+  flex-shrink: 0;
+}
+.grade-A, .grade-B { background: var(--navy); color: var(--gold); border-color: var(--gold); }
+.grade-C           { background: #edf3fb; color: var(--navy); border-color: var(--navy); }
+.grade-D, .grade-F { background: #fce8e8; color: var(--red); border-color: var(--red); }
+body.dark .grade-C { background: #1e2d44; color: var(--text); border-color: var(--text-muted); }
+body.dark .grade-D, body.dark .grade-F { background: #2a1010; }
+
+.status-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status-safe     { background: #daf2e8; color: #1a7a4a; }
+.status-watch    { background: #fdeede; color: #c45c10; }
+.status-distress { background: #fce8e8; color: #b93232; }
+body.dark .status-safe     { background: #0a2016; color: #2ecc78; }
+body.dark .status-watch    { background: #2a1e08; color: #f5b042; }
+body.dark .status-distress { background: #2a1010; color: #e05555; }
+
+.grade-mini {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 0.95rem;
+  line-height: 28px;
+  text-align: center;
+  border: 2px solid;
+}
+.grade-mini-A, .grade-mini-B { background: var(--navy); color: var(--gold); border-color: var(--gold); }
+.grade-mini-C                { background: #edf3fb; color: var(--navy); border-color: var(--navy); }
+.grade-mini-D, .grade-mini-F { background: #fce8e8; color: var(--red); border-color: var(--red); }
+body.dark .grade-mini-C { background: #1e2d44; color: var(--text); border-color: var(--text-muted); }
+body.dark .grade-mini-D, body.dark .grade-mini-F { background: #2a1010; }
+
+.verdict-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 10px 0 14px;
+  flex-wrap: wrap;
+}
+.verdict-row .verdict-text {
+  flex: 1;
+  min-width: 200px;
+}
+@media (max-width: 480px) {
+  .verdict-row { flex-direction: column; align-items: flex-start; }
+}
+
+/* CONSISTENCY SCORECARD */
+.scorecard-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+  gap: 10px;
+}
+.scorecard-row:last-child { border-bottom: none; }
+.scorecard-label { font-weight: 600; color: var(--text); }
+.scorecard-value { color: var(--text-muted); font-size: 0.86rem; }
+
+/* SEGMENT BARS */
+.seg-row {
+  margin: 10px 0;
+}
+.seg-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+.seg-name { font-weight: 600; }
+.seg-pct { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy); }
+body.dark .seg-pct { color: var(--gold); }
+.seg-bar-bg {
+  height: 10px;
+  background: var(--surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.seg-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy), var(--blue), var(--sky));
+  border-radius: 999px;
+}
+
+/* BULL LISTS */
+.bull-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+}
+.bull-list li {
+  padding: 8px 0 8px 32px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.96rem;
+}
+.bull-list li:last-child { border-bottom: none; }
+.bull-list li::before {
+  content: attr(data-icon);
+  position: absolute;
+  left: 0;
+  top: 8px;
+  font-size: 1.1rem;
+}
+
+/* YEAR CARDS */
+.year-card {
+  background: var(--surface);
+  border-radius: 12px;
+  margin: 14px 0;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+}
+.year-header {
+  background: linear-gradient(90deg, #0f2444, #1a5fa8);
+  color: #fff;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.year-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.25rem;
+}
+.eps-badge {
+  background: rgba(245,200,66,0.25);
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(245,200,66,0.4);
+}
+.year-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.year-metric {
+  padding: 12px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.year-metric:last-child { border-right: none; }
+.year-metric-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.year-metric-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+  color: var(--navy);
+}
+body.dark .year-metric-value { color: var(--sky); }
+.year-rationale {
+  padding: 14px 18px;
+  font-size: 0.93rem;
+  color: var(--text);
+}
+
+/* RISK ITEMS */
+.risk-item {
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin: 8px 0;
+  font-size: 0.93rem;
+}
+.risk-item.high   { background: #fce8e8; }
+.risk-item.medium { background: #fdeede; }
+.risk-item.low    { background: #daf2e8; }
+body.dark .risk-item.high   { background: #2a1010; }
+body.dark .risk-item.medium { background: #2a1e08; }
+body.dark .risk-item.low    { background: #0a2016; }
+.risk-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  color: #fff;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.risk-badge.high   { background: #b93232; }
+.risk-badge.medium { background: #c45c10; }
+.risk-badge.low    { background: #1a7a4a; }
+.risk-title { font-weight: 600; }
+
+/* PROS/CONS GRID */
+.pc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 10px 0;
+}
+@media (min-width: 560px) {
+  .pc-grid { grid-template-columns: 1fr 1fr; }
+}
+.pc-card {
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 0.93rem;
+}
+.pc-card.pro { background: var(--green-bg); border-left: 3px solid var(--green); }
+.pc-card.con { background: var(--red-bg);   border-left: 3px solid var(--red); }
+.pc-card h4 {
+  margin: 0 0 8px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--navy);
+}
+body.dark .pc-card.pro h4 { color: var(--green); }
+body.dark .pc-card.con h4 { color: var(--red); }
+
+/* SCENARIO BARS */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: 60px 1fr 100px;
+  gap: 10px;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 0.92rem;
+}
+.scen-label {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.scen-bar-bg {
+  height: 14px;
+  background: var(--surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.scen-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+.scen-bar-fill.bear { background: linear-gradient(90deg, #b93232, #d96565); }
+.scen-bar-fill.base { background: linear-gradient(90deg, #0f2444, #1a5fa8); }
+.scen-bar-fill.bull { background: linear-gradient(90deg, #1a7a4a, #2ecc78); }
+.scen-val {
+  text-align: right;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--navy);
+}
+body.dark .scen-val { color: var(--gold); }
+
+/* CONCLUSION BOX */
+.conclusion-box {
+  position: relative;
+  background: linear-gradient(135deg, #0f2444 0%, #0d3568 100%);
+  color: #fff;
+  border-radius: 14px;
+  padding: 28px 24px;
+  margin: 18px 0;
+  overflow: hidden;
+}
+.conclusion-box::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(245,200,66,0.30) 0%, transparent 70%);
+  pointer-events: none;
+}
+.conclusion-box h3 {
+  color: var(--gold);
+  margin-top: 0;
+  font-size: 1.3rem;
+}
+.target-row {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0;
+  flex-wrap: wrap;
+}
+.target-box {
+  flex: 1;
+  min-width: 140px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+.target-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 4px;
+}
+.target-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: var(--gold);
+}
+.target-sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.75);
+  font-style: italic;
+  margin-top: 3px;
+}
+@media (max-width: 400px) {
+  .target-row { flex-direction: column; }
+  .year-metrics { grid-template-columns: repeat(2, 1fr); }
+  .year-metrics .year-metric:nth-child(3) { grid-column: span 2; }
+  .snap-grid { grid-template-columns: 1fr; }
+  .range-tile { grid-column: span 1; }
+}
+
+/* ROI TABS */
+.roi-tabs {
+  display: flex;
+  gap: 0;
+  margin: 12px 0 0;
+  border-bottom: 2px solid var(--border);
+}
+.roi-tab-button {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 10px 18px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color .2s, border-color .2s;
+}
+.roi-tab-button:hover { color: var(--blue); }
+.roi-tab-button.active {
+  color: var(--blue);
+  border-bottom-color: var(--gold);
+}
+.roi-tab-content { display: none; padding-top: 14px; }
+.roi-tab-content.active { display: block; }
+.price-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 8px 0 14px;
+  box-shadow: var(--card-shadow);
+  flex-wrap: wrap;
+}
+.price-control-button {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.price-control-button:hover { background: var(--blue); }
+.price-control-reset {
+  background: transparent;
+  color: var(--blue);
+  border: 1px solid var(--blue);
+}
+.price-control-reset:hover { background: var(--blue); color: #fff; }
+.price-control-display {
+  text-align: center;
+  min-width: 120px;
+}
+.price-control-price {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: var(--navy);
+  display: block;
+}
+body.dark .price-control-price { color: var(--gold); }
+.price-control-delta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.roi-range-bar {
+  position: relative;
+  height: 10px;
+  background: linear-gradient(90deg, #fce8e8 0%, #fdeede 50%, #daf2e8 100%);
+  border-radius: 999px;
+  margin: 26px 4px 30px;
+}
+body.dark .roi-range-bar {
+  background: linear-gradient(90deg, #2a1212 0%, #2a1e08 50%, #0e2a1c 100%);
+}
+.roi-range-anchor {
+  position: absolute;
+  top: -4px;
+  width: 4px;
+  height: 18px;
+  background: var(--text-muted);
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+.roi-range-you {
+  position: absolute;
+  top: -8px;
+  width: 14px;
+  height: 26px;
+  background: var(--navy);
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(15,36,68,0.30);
+  transition: left .3s;
+}
+.roi-range-tick-label {
+  position: absolute;
+  top: 18px;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.roi-range-tick-label.above {
+  top: -28px;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.78rem;
+  color: var(--navy);
+  font-weight: 700;
+}
+body.dark .roi-range-tick-label.above { color: var(--gold); }
+
+/* DISCLAIMER */
+.disclaimer {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  margin-top: 30px;
+}
+
+/* TOOLBAR */
+.reader-toolbar {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f2444;
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.30);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+}
+.reader-toolbar button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 999px;
+  transition: background .2s;
+}
+.reader-toolbar button:hover { background: rgba(255,255,255,0.15); }
+#fsDisplay {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem;
+  min-width: 44px;
+  text-align: center;
+  color: var(--gold);
+}
+.toolbar-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(255,255,255,0.25);
+  margin: 0 2px;
+}
+
+@media print {
+  .reader-toolbar { display: none; }
+  body { background: #fff; color: #000; }
+  .section { animation: none; page-break-inside: avoid; }
+  .roi-tabs { display: none; }
+  .roi-tab-content { display: none !important; }
+  .roi-tab-content[data-tab="current"] { display: block !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="ticker-badge">NYSE: FIX · COMFORT SYSTEMS USA</span>
+    <h1>Comfort Systems USA <span>Deep Analysis</span></h1>
+    <p class="hero-sub">A four-year investment framework for the dominant U.S. mechanical and electrical contractor riding — and concentrated in — the AI data center build-out. Independent model, scenario targets, and a honest read on whether the multiple has run too far.</p>
+    <div class="meta-chips">
+      <span class="meta-chip">May 11, 2026</span>
+      <span class="meta-chip">Price: $1,950</span>
+      <span class="meta-chip">Consensus: Buy</span>
+      <span class="meta-chip">YTD: +47.8%</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 01 TOC -->
+<section class="section" id="toc">
+  <div class="section-label">01 — Contents</div>
+  <h2>Table of Contents</h2>
+  <ol class="toc-list">
+    <li><a href="#summary">Executive Summary</a></li>
+    <li><a href="#snapshot">Current Snapshot</a></li>
+    <li><a href="#strength">Financial Strength &amp; Bankruptcy Risk</a></li>
+    <li><a href="#quality">Quality Track Record</a></li>
+    <li><a href="#moat">Business Model &amp; Moat</a></li>
+    <li><a href="#segments">Revenue Sources &amp; Segments</a></li>
+    <li><a href="#rev-fc">Revenue Per Share Forecast</a></li>
+    <li><a href="#margin-fc">Margin Forecast</a></li>
+    <li><a href="#eps-fc">EPS Forecast</a></li>
+    <li><a href="#roic-fc">ROIC Forecast</a></li>
+    <li><a href="#pe-fc">P/E Multiple Forecast</a></li>
+    <li><a href="#targets">Price Targets &amp; Scenarios</a></li>
+    <li><a href="#rationale">Year-by-Year Rationale</a></li>
+    <li><a href="#roi">Yearly ROI from Today</a></li>
+    <li><a href="#risks">Structural Advantages &amp; Key Risks</a></li>
+    <li><a href="#macro">Macro, Regulation &amp; Competition</a></li>
+    <li><a href="#conclusion">Investment Conclusion</a></li>
+    <li><a href="#disclaimer">Disclaimer</a></li>
+  </ol>
+</section>
+
+<!-- 02 EXECUTIVE SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-label">02 — Executive Summary</div>
+  <h2>The Thesis in Three Sentences</h2>
+  <div class="card card-blue">
+    <p><strong>Comfort Systems is the single best-positioned MEP contractor in the U.S. data center super-cycle, but the market knows it.</strong> Backlog of $12.5B (1.2x trailing revenue), 26.3% record gross margins, ROIC north of 60%, and a near-fortress balance sheet justify a premium — but the stock has compounded at 80% annually for five years and now trades at 53x trailing / 43x forward earnings versus a 10-year average P/E of 29x. The base case for the next four years is that the business keeps delivering, but the multiple compresses, leaving fundamentally exceptional execution producing flat-to-modestly-negative returns from the current $1,950 entry — the bull case requires multiple persistence, the bear case requires only a normalisation of either growth or multiple.</p>
+  </div>
+  <p>This report builds an independent four-year model that is slightly conservative versus Street consensus on growth and explicitly bearish on terminal multiple. The result is a base-case 2029 price target of approximately $1,400 — below current levels. We respect the business; we are sceptical of the entry point.</p>
+</section>
+
+<!-- 03 CURRENT SNAPSHOT -->
+<section class="section" id="snapshot">
+  <div class="section-label">03 — Current Snapshot</div>
+  <h2>Where the Stock Sits Today</h2>
+  <div class="snap-grid">
+    <div class="snap-tile hi">
+      <div class="snap-tile-label">Price</div>
+      <div class="snap-tile-value">$1,950</div>
+      <div class="snap-tile-sub">As of May 8, 2026</div>
+    </div>
+    <div class="snap-tile hi">
+      <div class="snap-tile-label">Market Cap</div>
+      <div class="snap-tile-value">$68.7B</div>
+      <div class="snap-tile-sub">35.2M shares out</div>
+    </div>
+    <div class="snap-tile green-hi">
+      <div class="snap-tile-label">YTD Return</div>
+      <div class="snap-tile-value">+47.8%</div>
+      <div class="snap-tile-sub">vs S&amp;P 500 ~flat</div>
+    </div>
+    <div class="snap-tile green-hi">
+      <div class="snap-tile-label">1-Yr Total Return</div>
+      <div class="snap-tile-value">+329%</div>
+      <div class="snap-tile-sub">5Y CAGR: ~81%</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">P/E (TTM)</div>
+      <div class="snap-tile-value">56.3x</div>
+      <div class="snap-tile-sub">10Y avg: 29.1x</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">Fwd P/E (FY26)</div>
+      <div class="snap-tile-value">~43x</div>
+      <div class="snap-tile-sub">EPS est: $36.97</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">Div Yield</div>
+      <div class="snap-tile-value">0.16%</div>
+      <div class="snap-tile-sub">$2.80 annual</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">Beta</div>
+      <div class="snap-tile-value">1.36</div>
+      <div class="snap-tile-sub">High-beta industrial</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">Backlog</div>
+      <div class="snap-tile-value">$12.5B</div>
+      <div class="snap-tile-sub">+81% YoY, record</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">TTM Revenue</div>
+      <div class="snap-tile-value">$10.1B</div>
+      <div class="snap-tile-sub">+38% YoY</div>
+    </div>
+    <div class="range-tile">
+      <div class="range-tile-label">52-Week Range</div>
+      <div class="range-bar">
+        <div class="range-bar-marker" style="left: 95.6%;"></div>
+      </div>
+      <div class="range-bar-labels">
+        <span>$430.79</span>
+        <span>$2,018.05</span>
+      </div>
+      <div class="range-bar-current">Current: $1,950.10 (96% of 52W range)</div>
+    </div>
+  </div>
+  <p style="margin-top:14px;">The stock is sitting roughly 3% below its all-time high after a +329% one-year run. Both Morningstar (Fair Value $4,117 — Overvalued by their reading at -53%) and GuruFocus (GF Value $640 — Significantly Overvalued at +205%) flag the stock as significantly overvalued, but from opposite sides; the market itself, via multi-analyst consensus, sits roughly at fair value with a 1-year target of $1,991.</p>
+</section>
+
+<!-- 04 FINANCIAL STRENGTH -->
+<section class="section" id="strength">
+  <div class="section-label">04 — Financial Strength &amp; Bankruptcy Risk</div>
+  <h2>Can the Balance Sheet Survive a Bad Cycle?</h2>
+  <p>This section answers two questions: <em>could this company fail?</em> and <em>how is the balance sheet really structured?</em> The first is a binary risk verdict; the second is a quality grade across the standard dimensions.</p>
+
+  <div class="card card-blue">
+    <div class="verdict-row">
+      <span class="verdict-badge verdict-safe">✓ Safe</span>
+      <div class="grade-badge grade-A">A</div>
+      <div class="verdict-text">
+        <strong>Fortress balance sheet, top-tier quality.</strong> $1.05B cash against $39M total debt, interest coverage of 180x, and a Piotroski F-Score of 9 (out of 9) — there is virtually no scenario in which solvency becomes a question for Comfort Systems. The risk to shareholders is multiple compression and growth deceleration, not financial distress.
+      </div>
+    </div>
+    <p style="font-size:0.86rem; margin:6px 0 0;"><em>Framework: Standard Industrial (GICS Sub-Industry: Construction &amp; Engineering)</em></p>
+  </div>
+
+  <h3>Layer 1 — Bankruptcy Risk</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+          <th>Safe Threshold</th>
+          <th>What It Catches</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Altman Z-Score</td><td>10.31</td><td>&gt; 2.99</td><td>Distress risk</td><td><span class="status-badge status-safe">✓ Safe</span></td></tr>
+        <tr><td>Beneish M-Score</td><td>−2.33</td><td>&lt; −2.22</td><td>Earnings manipulation</td><td><span class="status-badge status-safe">✓ Safe</span></td></tr>
+        <tr><td>Debt-to-EBITDA</td><td>0.02x</td><td>&lt; 3x</td><td>Leverage</td><td><span class="status-badge status-safe">✓ Safe</span></td></tr>
+        <tr><td>Interest Coverage</td><td>~180x</td><td>&gt; 5x</td><td>Ability to service debt</td><td><span class="status-badge status-safe">✓ Safe</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p><em>All four metrics in the safe zone — verdict is unambiguously SAFE under the standard industrial framework.</em></p>
+
+  <h3>Layer 2 — Balance Sheet Quality</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Value</th>
+          <th>What It Tells You</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Cash-to-Debt</td><td>26.9x</td><td>Net cash position</td><td><span class="grade-mini grade-mini-A">A</span></td></tr>
+        <tr><td>Equity-to-Asset</td><td>0.54</td><td>Solid equity base</td><td><span class="grade-mini grade-mini-A">A</span></td></tr>
+        <tr><td>Debt-to-Equity</td><td>0.02</td><td>Almost no leverage</td><td><span class="grade-mini grade-mini-A">A</span></td></tr>
+        <tr><td>Piotroski F-Score</td><td>9 / 9</td><td>Improving on every line</td><td><span class="grade-mini grade-mini-A">A</span></td></tr>
+        <tr><td>ROIC vs WACC Spread</td><td>~+53 pts</td><td>Massive value creation</td><td><span class="grade-mini grade-mini-A">A</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Industry Context &amp; Caveats</h3>
+  <div class="card">
+    <p>The Standard Industrial framework fits perfectly here — Comfort Systems is a textbook capital-light specialty contractor with no unusual industry distortions. Altman Z-Score is fully appropriate (this is a manufacturing-adjacent services firm, not a bank, REIT, or pre-profit growth company), and the result of 10.31 is roughly 3.5x the safety threshold.</p>
+    <p>A common misread on FIX is treating the $12.5B backlog as a debt-like obligation. It is the opposite: backlog represents <em>committed customer revenue</em>, not committed company spend. With $1.05B in cash, positive free cash flow for 27 consecutive years, and a credit facility of $1.1B that is essentially untouched, the company has the working-capital firepower to fund growth from cash alone.</p>
+    <p>The only balance-sheet sensitivity worth flagging is contract receivables: industrial construction is a working-capital-heavy business, and a sharp deceleration in bookings could cause cash conversion timing noise (as it did in Q1 2025). This is a cash-flow timing issue, not a solvency issue.</p>
+  </div>
+
+  <p style="font-size:0.82rem; color:var(--text-muted); margin-top:14px;"><em>Notes on scoring metrics: <strong>Altman Z-Score</strong> blends profitability, leverage, liquidity, and asset turnover; readings above 2.99 indicate negligible bankruptcy risk. <strong>Beneish M-Score</strong> screens for earnings manipulation by analysing receivables, margins, depreciation, and accruals; below −2.22 indicates very low manipulation probability. <strong>Piotroski F-Score</strong> is a 9-point checklist of year-over-year improvements in profitability, leverage, liquidity, and efficiency — 9/9 is rare and signals broad-based fundamental strength.</em></p>
+</section>
+
+<!-- 05 QUALITY TRACK RECORD -->
+<section class="section" id="quality">
+  <div class="section-label">05 — Quality Track Record</div>
+  <h2>Has the Business Actually Delivered?</h2>
+  <p>Whether the business has actually delivered over the long run. This section tracks profitability, capital returns, and growth consistency over 5- and 10-year periods to separate genuine compounders from optical performers.</p>
+
+  <div class="snap-grid">
+    <div class="snap-tile">
+      <div class="snap-tile-label">10Y Revenue CAGR</div>
+      <div class="snap-tile-value">21.6%</div>
+      <div class="snap-tile-sub">$1.55B → $9.10B</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">10Y EPS CAGR</div>
+      <div class="snap-tile-value">~33%</div>
+      <div class="snap-tile-sub">$1.71 → $28.88</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">5Y Avg ROIC</div>
+      <div class="snap-tile-value">34%</div>
+      <div class="snap-tile-sub">TTM: 61.7%</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">5Y Avg Op Margin</div>
+      <div class="snap-tile-value">~10.5%</div>
+      <div class="snap-tile-sub">Now 15.7% TTM</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">5Y Avg FCF Margin</div>
+      <div class="snap-tile-value">~10%</div>
+      <div class="snap-tile-sub">TTM: 13.6%</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-tile-label">Pos. FCF Years</div>
+      <div class="snap-tile-value">27</div>
+      <div class="snap-tile-sub">Consecutive</div>
+    </div>
+  </div>
+
+  <h3>Profitability Quality</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Current</th>
+          <th>5Y Avg</th>
+          <th>10Y Avg</th>
+          <th>Trend</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Gross Margin</td><td class="pos-val">25.1%</td><td>20.5%</td><td>19.0%</td><td class="pos-val">↑</td><td>Pricing power</td></tr>
+        <tr><td>Operating Margin</td><td class="pos-val">15.7%</td><td>10.5%</td><td>8.2%</td><td class="pos-val">↑</td><td>Operating leverage</td></tr>
+        <tr><td>Net Margin</td><td class="pos-val">12.1%</td><td>7.8%</td><td>6.0%</td><td class="pos-val">↑</td><td>Moat strength</td></tr>
+        <tr><td>FCF Margin</td><td class="pos-val">13.6%</td><td>10.0%</td><td>8.5%</td><td class="pos-val">↑</td><td>Earnings quality</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Returns on Capital</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Current</th>
+          <th>5Y Avg</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>ROIC</td><td class="pos-val">61.7%</td><td>34%</td><td>Capital efficiency</td></tr>
+        <tr><td>ROE</td><td class="pos-val">53.3%</td><td>28%</td><td>Equity returns</td></tr>
+        <tr><td>ROA</td><td class="pos-val">28%</td><td>14%</td><td>Asset productivity</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Growth Track Record</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>10Y CAGR</th>
+          <th>5Y CAGR</th>
+          <th>1Y</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Revenue Growth</td><td class="pos-val">21.6%</td><td class="pos-val">26.1%</td><td class="pos-val">+29.5%</td><td>Top-line story</td></tr>
+        <tr><td>EPS Growth</td><td class="pos-val">~33%</td><td class="pos-val">47.8%</td><td class="pos-val">+97.8%</td><td>Headline number</td></tr>
+        <tr><td>FCF Growth</td><td class="pos-val">~30%</td><td class="pos-val">~38%</td><td class="pos-val">+~50%</td><td>Cash quality (tracking EPS)</td></tr>
+        <tr><td>Book Value Growth</td><td class="pos-val">~18%</td><td class="pos-val">~24%</td><td class="pos-val">+~35%</td><td>Compounding check</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p><em>FCF growth has tracked EPS growth closely, which means earnings quality is high — the reported numbers are real cash, not accrual-driven phantom profits.</em></p>
+
+  <h3>Consistency Scorecard</h3>
+  <div class="card">
+    <div class="scorecard-row">
+      <div>
+        <div class="scorecard-label">Profitable Years</div>
+        <div class="scorecard-value">10 of last 10 fiscal years</div>
+      </div>
+      <span class="status-badge status-safe">✓ Excellent</span>
+    </div>
+    <div class="scorecard-row">
+      <div>
+        <div class="scorecard-label">Positive FCF Years</div>
+        <div class="scorecard-value">27 consecutive years (10 of 10 in window)</div>
+      </div>
+      <span class="status-badge status-safe">✓ Excellent</span>
+    </div>
+    <div class="scorecard-row">
+      <div>
+        <div class="scorecard-label">Revenue Growth Years</div>
+        <div class="scorecard-value">10 of last 10 (every single year since 2016)</div>
+      </div>
+      <span class="status-badge status-safe">✓ Excellent</span>
+    </div>
+    <div class="scorecard-row">
+      <div>
+        <div class="scorecard-label">Buyback Discipline</div>
+        <div class="scorecard-value">Modest net buybacks; share count down slightly over 5Y</div>
+      </div>
+      <span class="status-badge status-safe">✓ Yes</span>
+    </div>
+    <div class="scorecard-row">
+      <div>
+        <div class="scorecard-label">Margin Stability</div>
+        <div class="scorecard-value">Op margin trending up; SD elevated due to rapid expansion</div>
+      </div>
+      <span class="status-badge status-watch">↑ Improving</span>
+    </div>
+  </div>
+</section>
+
+<!-- 06 BUSINESS MODEL & MOAT -->
+<section class="section" id="moat">
+  <div class="section-label">06 — Business Model &amp; Moat</div>
+  <h2>What Comfort Systems Actually Does</h2>
+  <p>Comfort Systems USA is the largest pure-play specialty MEP contractor in the United States — mechanical (HVAC, plumbing, piping), electrical, fire-protection, and modular construction services delivered through 197 locations across 143 cities. The company has executed a decentralised acquire-and-empower model since its 1997 spin-off: ~25 operating subsidiaries run their own books, with corporate handling capital allocation, M&amp;A, and shared technology platforms. The model works because MEP contracting is fundamentally local — relationships with general contractors, knowledge of local code, and on-the-ground project-management capacity matter more than scale economics.</p>
+  <p>The strategic shift over the past four years is the move into <strong>large, complex, repeatable tech-customer mega-projects</strong> — data centres, semiconductor fabs, biotech facilities — that are not local in nature. This is where modular construction (off-site prefabrication, now 17% of revenue, scaling to 4M square feet of capacity by end-2026) creates a genuine moat: <em>FIX can build standardised data-centre cooling modules in factory conditions, ship them, and bolt them in</em>, compressing project timelines that hyperscalers value more than dollars.</p>
+  <ul class="bull-list">
+    <li data-icon="🏗️"><strong>Scale + decentralisation:</strong> $9.1B revenue, but each unit operates with start-up nimbleness. Competitors are either too small (regional contractors) or too bureaucratic (ENR Top 10 generals).</li>
+    <li data-icon="🏭"><strong>Modular factories as the moat:</strong> Off-site fabrication of full mechanical and electrical assemblies is hard to replicate without years of capex. Direct hyperscaler partnerships now span multiple projects.</li>
+    <li data-icon="📋"><strong>Backlog visibility:</strong> $12.5B booked represents 15-18 months of forward revenue at the current run-rate — unusually high for a contractor.</li>
+    <li data-icon="🤝"><strong>Tech-customer concentration cuts both ways:</strong> Recurring multi-project relationships with hyperscalers (45% of revenue) are the moat <em>and</em> the principal risk.</li>
+    <li data-icon="💵"><strong>Capital-light economics:</strong> ROIC of 61% with capex at 3-5% of revenue means growth funds itself; the dividend, M&amp;A, and modular capex are all paid from current cash flow.</li>
+  </ul>
+</section>
+
+<!-- 07 SEGMENTS -->
+<section class="section" id="segments">
+  <div class="section-label">07 — Revenue Sources &amp; Segments</div>
+  <h2>Where the $10B+ Comes From</h2>
+  <div class="card">
+    <h3 style="margin-top:0;">By Customer Vertical (FY2025)</h3>
+    <div class="seg-row">
+      <div class="seg-header"><span class="seg-name">Technology / Data Centres</span><span class="seg-pct">45%</span></div>
+      <div class="seg-bar-bg"><div class="seg-bar-fill" style="width:45%"></div></div>
+    </div>
+    <div class="seg-row">
+      <div class="seg-header"><span class="seg-name">Industrial &amp; Manufacturing</span><span class="seg-pct">18%</span></div>
+      <div class="seg-bar-bg"><div class="seg-bar-fill" style="width:18%"></div></div>
+    </div>
+    <div class="seg-row">
+      <div class="seg-header"><span class="seg-name">Institutional (healthcare, education, gov)</span><span class="seg-pct">17%</span></div>
+      <div class="seg-bar-bg"><div class="seg-bar-fill" style="width:17%"></div></div>
+    </div>
+    <div class="seg-row">
+      <div class="seg-header"><span class="seg-name">Commercial</span><span class="seg-pct">12%</span></div>
+      <div class="seg-bar-bg"><div class="seg-bar-fill" style="width:12%"></div></div>
+    </div>
+    <div class="seg-row">
+      <div class="seg-header"><span class="seg-name">Service / Recurring Maintenance</span><span class="seg-pct">8%</span></div>
+      <div class="seg-bar-bg"><div class="seg-bar-fill" style="width:8%"></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0;">By Reporting Segment</h3>
+    <div class="seg-row">
+      <div class="seg-header"><span class="seg-name">Mechanical (HVAC, plumbing, piping)</span><span class="seg-pct">65%</span></div>
+      <div class="seg-bar-bg"><div class="seg-bar-fill" style="width:65%"></div></div>
+    </div>
+    <div class="seg-row">
+      <div class="seg-header"><span class="seg-name">Electrical</span><span class="seg-pct">35%</span></div>
+      <div class="seg-bar-bg"><div class="seg-bar-fill" style="width:35%"></div></div>
+    </div>
+  </div>
+  <p>The 45% tech-customer exposure is the single most important number in the entire investment story — up from 33% in 2024 and just 30% in 2023. Electrical revenue grew 88% organically in Q1 2026; mechanical grew 47%. The fastest-growing exposure is also the most concentrated and most cyclical.</p>
+</section>
+
+<!-- 08 REVENUE PER SHARE FORECAST -->
+<section class="section" id="rev-fc">
+  <div class="section-label">08 — Revenue Per Share Forecast</div>
+  <h2>Revenue / Share &amp; Growth Trajectory</h2>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>My Revenue ($B)</td><td class="act-col">$9.10</td><td>$11.00</td><td>$12.70</td><td>$14.00</td><td>$14.80</td></tr>
+        <tr><td>My YoY Growth %</td><td class="act-col pos-val">+29.5%</td><td class="pos-val">+20.9%</td><td class="pos-val">+15.5%</td><td class="pos-val">+10.2%</td><td class="pos-val">+5.7%</td></tr>
+        <tr><td>My Rev / Share</td><td class="act-col">$257</td><td>$313</td><td>$362</td><td>$400</td><td>$424</td></tr>
+        <tr><td>My Rev/Share YoY %</td><td class="act-col pos-val">+29.4%</td><td class="pos-val">+21.7%</td><td class="pos-val">+15.7%</td><td class="pos-val">+10.5%</td><td class="pos-val">+6.0%</td></tr>
+        <tr><td>Street Revenue ($B)</td><td class="act-col">$9.10</td><td>$10.95</td><td>$12.40</td><td>$13.70</td><td>~$14.50</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p>My model is essentially in line with Street for FY26 (within 1%) and slightly more bullish in FY27-28 — the rationale is that backlog of $12.5B forces revenue visibility into 2027 even if bookings normalise meaningfully. The deceleration profile (21% → 16% → 10% → 6%) reflects the natural maths of comparing against the 2025-2026 super-cycle base and tougher comps as hyperscaler capex moderates.</p>
+</section>
+
+<!-- 09 MARGIN FORECAST -->
+<section class="section" id="margin-fc">
+  <div class="section-label">09 — Margin Forecast</div>
+  <h2>Operating &amp; Net Margins</h2>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>My Operating Margin</td><td class="act-col">14.4%</td><td class="pos-val">15.5%</td><td class="pos-val">14.8%</td><td class="pos-val">14.2%</td><td class="neg-val">13.5%</td></tr>
+        <tr><td>Street Op Margin</td><td class="act-col">14.4%</td><td>15.8%</td><td>15.2%</td><td>14.6%</td><td>14.0%</td></tr>
+        <tr><td>My Net Margin</td><td class="act-col">11.2%</td><td class="pos-val">11.7%</td><td class="pos-val">11.4%</td><td class="neg-val">11.0%</td><td class="neg-val">10.6%</td></tr>
+        <tr><td>Street Net Margin</td><td class="act-col">11.2%</td><td>11.9%</td><td>11.6%</td><td class="pos-val">11.3%</td><td class="neg-val">10.9%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p>Q1 2026 already put operating margin at 17.0% and gross margin at a record 26.3%, but management has flagged that some of this is one-time project closeout gains. The model assumes FY26 hits 15.5% as a full-year average (peak quarter compresses through the year), then declines ~70bps annually as labour costs, modular ramp inefficiencies, and project-mix normalisation press margins lower. My estimates run slightly below Street because Street is implicitly modelling that Q1's exceptional gross margin holds.</p>
+</section>
+
+<!-- 10 EPS FORECAST -->
+<section class="section" id="eps-fc">
+  <div class="section-label">10 — EPS Forecast</div>
+  <h2>Earnings Per Share — Mine vs. Street</h2>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>My EPS</td><td class="act-col">$28.88</td><td>$36.50</td><td>$42.50</td><td>$47.00</td><td>$50.00</td></tr>
+        <tr><td>My YoY %</td><td class="act-col pos-val">+97.8%</td><td class="pos-val">+26.4%</td><td class="pos-val">+16.4%</td><td class="pos-val">+10.6%</td><td class="pos-val">+6.4%</td></tr>
+        <tr><td>Street Low</td><td class="act-col">$28.88</td><td>$34.36</td><td>$35.95</td><td>$40.00</td><td>$42.00</td></tr>
+        <tr><td>Street Avg</td><td class="act-col">$28.88</td><td>$36.97</td><td>$44.29</td><td>$50.00</td><td>$54.00</td></tr>
+        <tr><td>Street High</td><td class="act-col">$28.88</td><td>$40.04</td><td>$52.20</td><td>$58.00</td><td>$62.00</td></tr>
+        <tr><td>My vs Street Avg</td><td class="act-col">—</td><td class="neg-val">−1.3%</td><td class="neg-val">−4.0%</td><td class="neg-val">−6.0%</td><td class="neg-val">−7.4%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <div class="card card-yellow">
+    <p style="margin:0;"><strong>Why I'm conservative vs Street:</strong> Consensus has been chasing upward revisions for six quarters and tends to extrapolate the most recent margin print. My model assumes (1) gross margin normalises from 26.3% Q1 toward 24% by FY28 as Texas data-centre mega-projects' favourable mix dilutes, and (2) labour bottlenecks (management flagged these on the Q1 call) cap how fast revenue can convert. Net: I'm within 1.3% of Street for FY26 but 7.4% lower by FY29, where consensus is the weakest.</p>
+  </div>
+</section>
+
+<!-- 11 ROIC FORECAST -->
+<section class="section" id="roic-fc">
+  <div class="section-label">11 — ROIC Forecast</div>
+  <h2>Return on Invested Capital</h2>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY23A</th>
+          <th class="act-col">FY24A</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+          <th>Commentary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ROIC %</td>
+          <td class="act-col">28%</td>
+          <td class="act-col">42%</td>
+          <td class="act-col">56%</td>
+          <td class="pos-val">58%</td>
+          <td class="pos-val">52%</td>
+          <td class="neg-val">46%</td>
+          <td class="neg-val">40%</td>
+          <td>Peaks in FY26, normalises as capital base grows from modular capex</td>
+        </tr>
+        <tr>
+          <td>WACC %</td>
+          <td class="act-col">8.5%</td>
+          <td class="act-col">8.5%</td>
+          <td class="act-col">8.8%</td>
+          <td>9.0%</td>
+          <td>9.0%</td>
+          <td>9.0%</td>
+          <td>9.0%</td>
+          <td>Higher beta lifts cost of equity</td>
+        </tr>
+        <tr>
+          <td>Spread (ROIC − WACC)</td>
+          <td class="act-col pos-val">+19.5</td>
+          <td class="act-col pos-val">+33.5</td>
+          <td class="act-col pos-val">+47.2</td>
+          <td class="pos-val">+49.0</td>
+          <td class="pos-val">+43.0</td>
+          <td class="pos-val">+37.0</td>
+          <td class="pos-val">+31.0</td>
+          <td>Massive value creation even at the trough</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p>Even at the trough of the forecast, ROIC remains roughly 4x WACC — this is one of the most capital-efficient industrials businesses in the public market. The decline through the forecast period reflects normal expectation that the marginal dollar of capex into modular factories earns somewhat less than the existing asset base, plus modest mean-reversion as competitors deploy similar strategies.</p>
+</section>
+
+<!-- 12 P/E MULTIPLE FORECAST -->
+<section class="section" id="pe-fc">
+  <div class="section-label">12 — P/E Multiple Forecast</div>
+  <h2>What the Market Should Pay</h2>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">Current</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>My P/E — Bear</td><td class="act-col">53.4x</td><td class="neg-val">30x</td><td class="neg-val">25x</td><td class="neg-val">22x</td><td class="neg-val">20x</td></tr>
+        <tr><td>My P/E — Base</td><td class="act-col">53.4x</td><td class="neg-val">45x</td><td class="neg-val">38x</td><td class="neg-val">32x</td><td class="neg-val">28x</td></tr>
+        <tr><td>My P/E — Bull</td><td class="act-col">53.4x</td><td class="pos-val">55x</td><td class="pos-val">48x</td><td class="neg-val">42x</td><td class="neg-val">35x</td></tr>
+        <tr><td>10Y Avg P/E (Reference)</td><td class="act-col">29.1x</td><td>29.1x</td><td>29.1x</td><td>29.1x</td><td>29.1x</td></tr>
+        <tr><td>5Y Avg P/E (Reference)</td><td class="act-col">31.1x</td><td>31.1x</td><td>31.1x</td><td>31.1x</td><td>31.1x</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p>This is the most consequential table in the report. The stock currently trades at 53x TTM versus a 10-year average of 29x — the multiple has roughly <em>doubled</em> in two years. My base case assumes the multiple compresses to 28x by FY29, broadly back to the long-term mean. The bull case assumes the multiple holds in the high-30s, reflecting persistent above-average growth. The bear case assumes a return to 20x as data-centre demand normalises and growth slows. Note that even my "bear" multiples for FY26-27 (30x, 25x) sit at or above the 10-year average — these are not stretched bear assumptions.</p>
+</section>
+
+<!-- 13 PRICE TARGETS & SCENARIOS -->
+<section class="section" id="targets">
+  <div class="section-label">13 — Price Targets &amp; Scenarios</div>
+  <h2>Where the Stock Could Go</h2>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+          <th>Street 1Y Tgt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Bear</td><td class="neg-val">$1,065</td><td class="neg-val">$1,000</td><td class="neg-val">$968</td><td class="neg-val">$920</td><td>$1,196</td></tr>
+        <tr><td>Base</td><td class="neg-val">$1,643</td><td class="neg-val">$1,615</td><td class="neg-val">$1,504</td><td class="neg-val">$1,400</td><td>$1,991</td></tr>
+        <tr><td>Bull</td><td class="pos-val">$2,118</td><td class="pos-val">$2,256</td><td class="pos-val">$2,184</td><td class="pos-val">$1,960</td><td>$2,050</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>FY2029 Terminal Scenario Bars</h3>
+  <div class="card">
+    <div class="scenario-grid">
+      <div class="scen-label">Bear</div>
+      <div class="scen-bar-bg"><div class="scen-bar-fill bear" style="width:42%"></div></div>
+      <div class="scen-val">$920</div>
+    </div>
+    <div class="scenario-grid">
+      <div class="scen-label">Base</div>
+      <div class="scen-bar-bg"><div class="scen-bar-fill base" style="width:64%"></div></div>
+      <div class="scen-val">$1,400</div>
+    </div>
+    <div class="scenario-grid">
+      <div class="scen-label">Bull</div>
+      <div class="scen-bar-bg"><div class="scen-bar-fill bull" style="width:90%"></div></div>
+      <div class="scen-val">$1,960</div>
+    </div>
+  </div>
+  <p>The fundamental tension: even my <em>bull</em> case for FY29 ($1,960) is roughly flat with today's price. Returns require multiple persistence above the 10-year average — not impossible (the business is materially better than its 10-year-average self), but the entry price requires you to believe the market continues to award a structural re-rating that has historically not lasted.</p>
+</section>
+
+<!-- 14 YEAR BY YEAR RATIONALE -->
+<section class="section" id="rationale">
+  <div class="section-label">14 — Year-by-Year Rationale</div>
+  <h2>What Drives Each Year</h2>
+
+  <div class="year-card">
+    <div class="year-header">
+      <div class="year-title">FY2026</div>
+      <span class="eps-badge">EPS +26%</span>
+    </div>
+    <div class="year-metrics">
+      <div class="year-metric">
+        <div class="year-metric-label">Rev/Share</div>
+        <div class="year-metric-value">$313</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">EPS</div>
+        <div class="year-metric-value">$36.50</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">P/E Range</div>
+        <div class="year-metric-value">30–55x</div>
+      </div>
+    </div>
+    <div class="year-rationale">FY26 is the easiest year to call: $12.5B backlog + 51% same-store Q1 growth → mid-to-high 20% full-year revenue growth is essentially booked. The earnings risk is margin: Q1 gross margin of 26.3% likely doesn't repeat, so full-year operating margin lands at ~15.5%. The interesting question is the multiple — if FY27 visibility deteriorates as the year progresses, the multiple compresses even on a 26% EPS beat.</div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-header">
+      <div class="year-title">FY2027</div>
+      <span class="eps-badge">EPS +16%</span>
+    </div>
+    <div class="year-metrics">
+      <div class="year-metric">
+        <div class="year-metric-label">Rev/Share</div>
+        <div class="year-metric-value">$362</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">EPS</div>
+        <div class="year-metric-value">$42.50</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">P/E Range</div>
+        <div class="year-metric-value">25–48x</div>
+      </div>
+    </div>
+    <div class="year-rationale">This is the "show me" year. Hyperscaler capex commitments for 2027-2028 were largely set in 2024-2025, so revenue is visible — but bookings <em>during</em> 2026 will dictate the FY28 setup. If new bookings decelerate from current ~$3B/quarter pace toward $2B/quarter, the market starts marking down the terminal multiple. Margins normalise toward 14.8% as labour costs reassert.</div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-header">
+      <div class="year-title">FY2028</div>
+      <span class="eps-badge">EPS +11%</span>
+    </div>
+    <div class="year-metrics">
+      <div class="year-metric">
+        <div class="year-metric-label">Rev/Share</div>
+        <div class="year-metric-value">$400</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">EPS</div>
+        <div class="year-metric-value">$47.00</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">P/E Range</div>
+        <div class="year-metric-value">22–42x</div>
+      </div>
+    </div>
+    <div class="year-rationale">The first year where hyperscaler capex moderation could meaningfully bite. Industry forecasts already show 2028 data-centre capex growth in the low-single-digits — most of the "AI super-cycle" demand is front-loaded into 2026-2027. Comfort Systems offsets some of this with modular capacity at 4M sq ft, life-sciences and semi-fab work, and acquisitions. EPS still grows, but the deceleration is now obvious to the market.</div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-header">
+      <div class="year-title">FY2029</div>
+      <span class="eps-badge">EPS +6%</span>
+    </div>
+    <div class="year-metrics">
+      <div class="year-metric">
+        <div class="year-metric-label">Rev/Share</div>
+        <div class="year-metric-value">$424</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">EPS</div>
+        <div class="year-metric-value">$50.00</div>
+      </div>
+      <div class="year-metric">
+        <div class="year-metric-label">P/E Range</div>
+        <div class="year-metric-value">20–35x</div>
+      </div>
+    </div>
+    <div class="year-rationale">Maturity. Revenue growth slows to mid-single-digits as the super-cycle base is fully lapped, and the multiple reverts most of the way to the 10-year mean of 29x. The business is still spectacular by any normal measure — 10%+ FCF margins, 40%+ ROIC, growing 6% — but the stock has stopped behaving like a growth name. This is the "great business, fair price" scenario; the bull case requires a new structural catalyst (industrial reshoring? grid build-out?) to extend the cycle.</div>
+  </div>
+</section>
+
+<!-- 15 ROI -->
+<section class="section" id="roi">
+  <div class="section-label">15 — Yearly ROI from Today</div>
+  <h2>What You Actually Earn from Here</h2>
+  <p>Cumulative and annualised returns from the current entry price, by year and scenario. The Try Different Price tab lets you explore how the math changes if you wait for a pullback (or chase higher).</p>
+
+  <div class="roi-tabs">
+    <button class="roi-tab-button active" data-tab="current" onclick="switchRoiTab('current')">At Current Price</button>
+    <button class="roi-tab-button" data-tab="custom" onclick="switchRoiTab('custom')">Try Different Price</button>
+  </div>
+
+  <div class="roi-tab-content active" data-tab="current">
+    <h3>Cumulative &amp; Annualized Returns from $1,950</h3>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Bear Cum</th>
+            <th>Bear Ann</th>
+            <th>Base Cum</th>
+            <th>Base Ann</th>
+            <th>Bull Cum</th>
+            <th>Bull Ann</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1yr (FY26)</td><td class="neg-val">−45.4%</td><td class="neg-val">−45.4%</td><td class="neg-val">−15.7%</td><td class="neg-val">−15.7%</td><td class="pos-val">+8.6%</td><td class="pos-val">+8.6%</td></tr>
+          <tr><td>2yr (FY27)</td><td class="neg-val">−48.7%</td><td class="neg-val">−28.4%</td><td class="neg-val">−17.2%</td><td class="neg-val">−9.0%</td><td class="pos-val">+15.7%</td><td class="pos-val">+7.6%</td></tr>
+          <tr><td>3yr (FY28)</td><td class="neg-val">−50.4%</td><td class="neg-val">−20.6%</td><td class="neg-val">−22.9%</td><td class="neg-val">−8.3%</td><td class="pos-val">+12.0%</td><td class="pos-val">+3.8%</td></tr>
+          <tr><td>4yr (FY29)</td><td class="neg-val">−52.8%</td><td class="neg-val">−16.6%</td><td class="neg-val">−28.2%</td><td class="neg-val">−7.9%</td><td class="pos-val">+0.5%</td><td class="pos-val">+0.1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+    <p>The honest takeaway: even the bull case from current levels returns roughly nothing over four years on an annualised basis. This is what happens when a great business runs faster than its fundamentals: the future returns get pulled forward into the present.</p>
+  </div>
+
+  <div class="roi-tab-content" data-tab="custom">
+    <h3 id="roiCustomTitle">Cumulative &amp; Annualized Returns from $1,950.00</h3>
+
+    <div class="price-control">
+      <button class="price-control-button" onclick="adjustRoiPrice(-5)">−5%</button>
+      <div class="price-control-display">
+        <span class="price-control-price" id="roiCustomPrice">$1,950.00</span>
+        <span class="price-control-delta" id="roiPriceDelta">+0.0% vs current</span>
+      </div>
+      <button class="price-control-button" onclick="adjustRoiPrice(5)">+5%</button>
+      <button class="price-control-button price-control-reset" onclick="resetRoiPrice()">Reset</button>
+    </div>
+
+    <div class="roi-range-bar">
+      <div class="roi-range-anchor" style="left:0%"></div>
+      <div class="roi-range-tick-label" style="left:0%">$430</div>
+      <div class="roi-range-anchor" style="left:95.6%"></div>
+      <div class="roi-range-tick-label" style="left:95.6%">$2,018</div>
+      <div class="roi-range-anchor" style="left:95.6%; background:var(--blue);"></div>
+      <div class="roi-range-you" id="roiYouMarker" style="left:95.6%"></div>
+      <div class="roi-range-tick-label above" id="roiYouLabel" style="left:95.6%">You</div>
+    </div>
+
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Bear Cum</th>
+            <th>Bear Ann</th>
+            <th>Base Cum</th>
+            <th>Base Ann</th>
+            <th>Bull Cum</th>
+            <th>Bull Ann</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1yr (FY26)</td>
+            <td data-roi="bear-1-cum" class="neg-val">−45.4%</td>
+            <td data-roi="bear-1-ann" class="neg-val">−45.4%</td>
+            <td data-roi="base-1-cum" class="neg-val">−15.7%</td>
+            <td data-roi="base-1-ann" class="neg-val">−15.7%</td>
+            <td data-roi="bull-1-cum" class="pos-val">+8.6%</td>
+            <td data-roi="bull-1-ann" class="pos-val">+8.6%</td>
+          </tr>
+          <tr>
+            <td>2yr (FY27)</td>
+            <td data-roi="bear-2-cum" class="neg-val">−48.7%</td>
+            <td data-roi="bear-2-ann" class="neg-val">−28.4%</td>
+            <td data-roi="base-2-cum" class="neg-val">−17.2%</td>
+            <td data-roi="base-2-ann" class="neg-val">−9.0%</td>
+            <td data-roi="bull-2-cum" class="pos-val">+15.7%</td>
+            <td data-roi="bull-2-ann" class="pos-val">+7.6%</td>
+          </tr>
+          <tr>
+            <td>3yr (FY28)</td>
+            <td data-roi="bear-3-cum" class="neg-val">−50.4%</td>
+            <td data-roi="bear-3-ann" class="neg-val">−20.6%</td>
+            <td data-roi="base-3-cum" class="neg-val">−22.9%</td>
+            <td data-roi="base-3-ann" class="neg-val">−8.3%</td>
+            <td data-roi="bull-3-cum" class="pos-val">+12.0%</td>
+            <td data-roi="bull-3-ann" class="pos-val">+3.8%</td>
+          </tr>
+          <tr>
+            <td>4yr (FY29)</td>
+            <td data-roi="bear-4-cum" class="neg-val">−52.8%</td>
+            <td data-roi="bear-4-ann" class="neg-val">−16.6%</td>
+            <td data-roi="base-4-cum" class="neg-val">−28.2%</td>
+            <td data-roi="base-4-ann" class="neg-val">−7.9%</td>
+            <td data-roi="bull-4-cum" class="pos-val">+0.5%</td>
+            <td data-roi="bull-4-ann" class="pos-val">+0.1%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+    <p>Press −5% repeatedly to see what entry below the 52-week range would do to returns. A 20% pullback to ~$1,560 makes the base case roughly break-even over four years; a 35% pullback to $1,267 (still above the FY24 average price) makes the base case attractive.</p>
+  </div>
+</section>
+
+<!-- 16 RISKS -->
+<section class="section" id="risks">
+  <div class="section-label">16 — Structural Advantages &amp; Key Risks</div>
+  <h2>The Pros and Cons</h2>
+  <div class="pc-grid">
+    <div class="pc-card pro">
+      <h4>✓ Advantages</h4>
+      <ul style="margin:0; padding-left:18px;">
+        <li>Dominant U.S. MEP contractor with 197 locations &amp; modular capacity moat</li>
+        <li>$12.5B backlog = ~15-18 months of forward revenue visibility</li>
+        <li>ROIC of 61.7% and FCF margin of 13.6% — extraordinary capital efficiency</li>
+        <li>Fortress balance sheet: $1.05B cash vs $39M debt, 0.02x D/EBITDA</li>
+        <li>Direct hyperscaler relationships that compound across multi-year programs</li>
+        <li>27 consecutive years of positive FCF, 14 years of dividend increases</li>
+      </ul>
+    </div>
+    <div class="pc-card con">
+      <h4>✗ Risks</h4>
+      <ul style="margin:0; padding-left:18px;">
+        <li>45% revenue concentrated in technology / data centres</li>
+        <li>Heavy geographic concentration in Texas (the demand epicentre)</li>
+        <li>Stock trading at 53x TTM vs 10Y avg P/E of 29x</li>
+        <li>Labour constraints flagged by management as a cap on growth</li>
+        <li>Margin compression risk as Q1 26.3% gross margin includes one-offs</li>
+        <li>Hyperscaler capex cycle is set 12-24 months ahead — visibility cliff in 2028</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Risk Severity Assessment</h3>
+  <div class="risk-item high">
+    <span class="risk-badge high">High</span>
+    <span class="risk-title">Valuation re-rating risk.</span> The single most quantifiable risk: a return to the 10-year average P/E of 29x on FY26 EPS of $36.50 implies a stock price of $1,060 — a 46% drawdown. This does not require business deterioration; it only requires multiple normalisation.
+  </div>
+  <div class="risk-item high">
+    <span class="risk-badge high">High</span>
+    <span class="risk-title">Data-centre customer concentration.</span> 45% of revenue from a small handful of hyperscalers means an industry-wide capex re-think (driven by an AI demand pause, a chip-supply problem, or a regulatory event) would hit FIX directly and disproportionately versus a diversified contractor like EMCOR.
+  </div>
+  <div class="risk-item medium">
+    <span class="risk-badge medium">Med</span>
+    <span class="risk-title">Margin sustainability.</span> Q1 2026's record 26.3% gross margin reflects late-stage project close-outs and a particularly favourable mix. The full-year 2026 number is likely 200-300bps lower, and 2027 lower still as the mega-project tailwind moderates.
+  </div>
+  <div class="risk-item medium">
+    <span class="risk-badge medium">Med</span>
+    <span class="risk-title">Texas concentration.</span> CFO George identified Texas as "the biggest epicentre of demand" on the Q1 call. Texas-specific power-grid constraints, water availability, or political headwinds against new data centres would matter.
+  </div>
+  <div class="risk-item medium">
+    <span class="risk-badge medium">Med</span>
+    <span class="risk-title">Labour constraints.</span> The skilled-trades labour pool is genuinely tight. Management has called this out repeatedly. It caps how fast revenue can convert from backlog and may pressure margins through wage inflation.
+  </div>
+  <div class="risk-item low">
+    <span class="risk-badge low">Low</span>
+    <span class="risk-title">Balance sheet / liquidity.</span> Effectively zero financial risk. The company could fund 12 months of operations from cash alone and still have its $1.1B credit line untapped.
+  </div>
+  <div class="risk-item low">
+    <span class="risk-badge low">Low</span>
+    <span class="risk-title">Earnings manipulation / governance.</span> Piotroski 9/9 and Beneish M-Score of −2.33 indicate clean accounting. The company has a long track record of conservative reporting.
+  </div>
+</section>
+
+<!-- 17 MACRO -->
+<section class="section" id="macro">
+  <div class="section-label">17 — Macro, Regulation &amp; Competition</div>
+  <h2>The Wider Picture</h2>
+  <h3>Macro Sensitivities</h3>
+  <ul class="bull-list">
+    <li data-icon="📉"><strong>Interest rates:</strong> Less direct than typical industrials because data-centre construction is funded by hyperscaler operating cash flow, not project finance. But higher rates compress all multiples; the most rate-sensitive thing about FIX is the P/E itself.</li>
+    <li data-icon="💱"><strong>FX:</strong> Negligible — 100% U.S. revenue, U.S. labour, mostly domestic supplied materials.</li>
+    <li data-icon="📊"><strong>Inflation:</strong> Mixed. Cost inflation on copper, steel, and labour is real but largely passed through under cost-plus or escalator clauses on the data-centre work. Service revenue (8% of mix) is fully escalator-protected.</li>
+    <li data-icon="🏭"><strong>Recession sensitivity:</strong> Lower than a typical contractor because the data-centre customer base spends on multi-year capex commitments that are decoupled from the broader cycle. Commercial construction (12%) is recession-sensitive. Service work (8%) is acyclical.</li>
+    <li data-icon="⚡"><strong>Power-grid constraints:</strong> The single biggest macro variable for the data-centre theme. Permitting bottlenecks for new substations and transmission could either delay FIX's pipeline (negative) or extend the cycle longer than expected (positive).</li>
+  </ul>
+
+  <h3>Competition</h3>
+  <ul class="bull-list">
+    <li data-icon="🥇"><strong>EMCOR (EME):</strong> The most direct competitor — also a national MEP platform with $17B+ revenue, broader vertical mix (healthcare, water, government), and a discounted ~30x forward P/E. EMCOR's advantage is diversification; FIX's is data-centre concentration and modular capabilities.</li>
+    <li data-icon="⚡"><strong>Quanta Services (PWR):</strong> Larger ($95B+ market cap) but focused on electrical transmission &amp; grid infrastructure — upstream of where FIX plays. Indirect competitor; the two could pitch against each other for data-centre electrical work but Quanta is more about getting power TO the building, FIX is about distributing power inside it.</li>
+    <li data-icon="🏗️"><strong>MasTec, Dycom, Sterling Infrastructure:</strong> Smaller diversified infrastructure contractors. Sterling has overlap on data-centre work but is much smaller. None has FIX's mechanical-electrical integration or modular capacity.</li>
+    <li data-icon="🏠"><strong>Local regional contractors:</strong> The "long tail" — fragmented, sub-scale, increasingly losing share to nationals on complex tech work. FIX's M&amp;A platform consolidates these.</li>
+  </ul>
+
+  <h3>Recent Strategic Developments</h3>
+  <ul class="bull-list">
+    <li data-icon="🏭">Modular capacity expansion from 3M to 4M sq ft by end-2026; further evaluation under way</li>
+    <li data-icon="🤖">Robotics &amp; automation roll-out across modular factories — early-stage but margin-accretive</li>
+    <li data-icon="💰">Quarterly dividend raised to $0.80 in May 2026 (from $0.70) — 14th consecutive annual increase</li>
+    <li data-icon="🛒">Right Way Plumbing acquisition (2025) plus continued tuck-in M&amp;A in electrical services</li>
+    <li data-icon="🔬">Increasing life-sciences and semiconductor-fab exposure as diversification away from pure data-centre</li>
+  </ul>
+
+  <h3>Regulatory Considerations</h3>
+  <div class="card card-yellow">
+    <p>Three regulatory variables worth tracking: (1) <strong>U.S. data-centre permitting and grid-interconnect policy</strong> — any acceleration would extend the cycle, any tightening would compress it. (2) <strong>Federal infrastructure spending</strong> — the IIJA continues to drive institutional and government contract flow, of which FIX captures some. (3) <strong>Antitrust scrutiny of hyperscalers</strong> — if a major customer were forced to slow capex, FIX would absorb a disproportionate hit given concentration.</p>
+  </div>
+</section>
+
+<!-- 18 INVESTMENT CONCLUSION -->
+<section class="section" id="conclusion">
+  <div class="section-label">18 — Investment Conclusion</div>
+  <h2>The Bottom Line</h2>
+  <div class="conclusion-box">
+    <h3>Great Business, Wrong Price</h3>
+    <p>Comfort Systems is the cleanest expression in U.S. equities of the AI-data-centre construction theme: dominant operator, fortress balance sheet, 61% ROIC, $12.5B backlog. None of that is in dispute. What is in dispute is whether the market should pay 53x trailing earnings for it — and the answer, on any historically-grounded view, is no. The four-year base case from $1,950 produces roughly an 8% annualised <em>loss</em>, even with EPS compounding at a healthy mid-teens rate, because the multiple does the work in reverse.</p>
+    <div class="target-row">
+      <div class="target-box">
+        <div class="target-label">1-Yr Base Target</div>
+        <div class="target-value">$1,643</div>
+        <div class="target-sub">−16% vs current</div>
+      </div>
+      <div class="target-box">
+        <div class="target-label">4-Yr Base Target</div>
+        <div class="target-value">$1,400</div>
+        <div class="target-sub">−28% cumulative</div>
+      </div>
+      <div class="target-box">
+        <div class="target-label">Rating</div>
+        <div class="target-value">Wait</div>
+        <div class="target-sub">Compelling sub-$1,400</div>
+      </div>
+    </div>
+    <p>The contrarian angle: the entire bear case rests on multiple compression, not business deterioration. If a meaningful pullback occurs — a hyperscaler capex scare, an AI air-pocket, a labour-cost flare-up — the stock can re-rate down 30% while EPS continues to grow. That moment is the buy. At $1,950, the business is exceptional and the entry is mediocre; at $1,300-$1,400, the business is exceptional and the entry is excellent. The lesson is straightforward: own this business, just don't pay this price.</p>
+  </div>
+</section>
+
+<!-- 19 DISCLAIMER -->
+<section class="section" id="disclaimer">
+  <div class="section-label">19 — Disclaimer</div>
+  <p class="disclaimer">This report is for informational and educational purposes only and does not constitute investment, financial, legal, or tax advice. The author is not a licensed financial advisor. All forecasts, scenario analyses, and price targets are independent estimates based on publicly available information as of the report date; they are not guarantees of future performance. Equity investments involve risk, including possible loss of principal. Past performance is not indicative of future results. Do your own research and consult a qualified professional before making any investment decision.</p>
+</section>
+
+</div>
+
+<!-- TOOLBAR -->
+<div class="reader-toolbar">
+  <button onclick="changeFont(-1)" aria-label="Decrease font">A−</button>
+  <span id="fsDisplay">16px</span>
+  <button onclick="changeFont(1)" aria-label="Increase font">A+</button>
+  <span class="toolbar-sep"></span>
+  <button id="modeBtn" onclick="toggleMode()" aria-label="Toggle dark mode">🌙</button>
+</div>
+
+<script>
+const MIN_FS = 12, MAX_FS = 26, STEP = 1;
+let currentFs = parseInt(localStorage.getItem('FIX_fs') || '16', 10);
+let isDark = localStorage.getItem('FIX_dark') === '1';
+
+function applyFont(size) {
+  currentFs = Math.min(MAX_FS, Math.max(MIN_FS, size));
+  document.documentElement.style.setProperty('--fs-base', currentFs + 'px');
+  document.getElementById('fsDisplay').textContent = currentFs + 'px';
+  localStorage.setItem('FIX_fs', currentFs);
+}
+function changeFont(delta) { applyFont(currentFs + delta * STEP); }
+function applyMode() {
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('modeBtn').textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('FIX_dark', isDark ? '1' : '0');
+}
+function toggleMode() { isDark = !isDark; applyMode(); }
+applyFont(currentFs);
+applyMode();
+
+/* ===== ROI TABS ===== */
+const ROI_CURRENT_PRICE = 1950.00;
+const ROI_52W_LOW = 430.79;
+const ROI_52W_HIGH = 2018.05;
+const ROI_TARGETS = {
+  bear: { 1: 1065, 2: 1000, 3: 968,  4: 920  },
+  base: { 1: 1643, 2: 1615, 3: 1504, 4: 1400 },
+  bull: { 1: 2118, 2: 2256, 3: 2184, 4: 1960 }
+};
+
+let roiCustomPrice = ROI_CURRENT_PRICE;
+
+function switchRoiTab(tabName) {
+  document.querySelectorAll('.roi-tab-button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.roi-tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector('.roi-tab-button[data-tab="' + tabName + '"]').classList.add('active');
+  document.querySelector('.roi-tab-content[data-tab="' + tabName + '"]').classList.add('active');
+}
+
+function adjustRoiPrice(deltaPct) {
+  roiCustomPrice = roiCustomPrice * (1 + deltaPct / 100);
+  recalcRoiTable();
+}
+function resetRoiPrice() {
+  roiCustomPrice = ROI_CURRENT_PRICE;
+  recalcRoiTable();
+}
+
+function recalcRoiTable() {
+  document.getElementById('roiCustomPrice').textContent = '$' + roiCustomPrice.toFixed(2);
+  const deltaPct = (roiCustomPrice - ROI_CURRENT_PRICE) / ROI_CURRENT_PRICE * 100;
+  const sign = deltaPct >= 0 ? '+' : '';
+  document.getElementById('roiPriceDelta').textContent = sign + deltaPct.toFixed(1) + '% vs current';
+  document.getElementById('roiCustomTitle').textContent = 'Cumulative & Annualized Returns from $' + roiCustomPrice.toFixed(2);
+
+  const range = ROI_52W_HIGH - ROI_52W_LOW;
+  let pctRaw = ((roiCustomPrice - ROI_52W_LOW) / range) * 100;
+  let pct = Math.max(-15, Math.min(115, pctRaw));
+  document.getElementById('roiYouMarker').style.left = pct + '%';
+  document.getElementById('roiYouLabel').style.left = pct + '%';
+
+  ['bear','base','bull'].forEach(scenario => {
+    [1,2,3,4].forEach(year => {
+      const target = ROI_TARGETS[scenario][year];
+      const cum = (target / roiCustomPrice - 1) * 100;
+      const ann = (Math.pow(target / roiCustomPrice, 1/year) - 1) * 100;
+      const cumStr = (cum >= 0 ? '+' : '') + cum.toFixed(1) + '%';
+      const annStr = (ann >= 0 ? '+' : '') + ann.toFixed(1) + '%';
+      const cumCell = document.querySelector('[data-roi="' + scenario + '-' + year + '-cum"]');
+      const annCell = document.querySelector('[data-roi="' + scenario + '-' + year + '-ann"]');
+      if (cumCell) {
+        cumCell.textContent = cumStr;
+        cumCell.className = cum >= 0 ? 'pos-val' : 'neg-val';
+      }
+      if (annCell) {
+        annCell.textContent = annStr;
+        annCell.className = ann >= 0 ? 'pos-val' : 'neg-val';
+      }
+    });
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visa Inc. (V) — Deep Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --fs-base: 16px;
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-2: #edf3fb;
+  --text: #111d29;
+  --text-muted: #3a526a;
+  --border: #d0dcea;
+  --navy: #0f2444;
+  --blue: #1a5fa8;
+  --sky: #3b8fd4;
+  --gold: #f5c842;
+  --accent: #e8a020;
+  --green: #1a7a4a;
+  --green-bg: #e8f5ee;
+  --red: #b93232;
+  --red-bg: #fbeaea;
+  --orange: #c45c10;
+  --card-shadow: 0 2px 16px rgba(15,36,68,0.10);
+}
+body.dark {
+  --bg: #0e1520;
+  --surface: #172032;
+  --surface-2: #1e2d44;
+  --text: #dde4ef;
+  --text-muted: #8fa3be;
+  --border: #2a3d58;
+  --navy: #1e3a60;
+  --blue: #4b8ed4;
+  --sky: #6ab0e8;
+  --green: #2ecc78;
+  --green-bg: #0e2a1c;
+  --red: #e05555;
+  --red-bg: #2a1212;
+  --card-shadow: 0 2px 20px rgba(0,0,0,0.40);
+}
+* { box-sizing: border-box; }
+html { font-size: var(--fs-base); }
+body {
+  margin: 0;
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  transition: background .3s, color .3s;
+  font-weight: 400;
+}
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 18px 100px;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  margin: 0 -18px 32px;
+  padding: 56px 28px 48px;
+  background: linear-gradient(145deg, #0a1e38 0%, #0f2f5c 50%, #1a5fa8 100%);
+  color: #fff;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(245,200,66,0.30), transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: -80px; left: -60px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(59,143,212,0.32), transparent 70%);
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #f5c842, #e8a020);
+  color: #0a1e38;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  padding: 7px 16px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2.6rem;
+  line-height: 1.05;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+.hero h1 span { color: var(--gold); }
+.hero-subtitle {
+  font-style: italic;
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.85);
+  margin: 0 0 26px;
+  max-width: 540px;
+  font-weight: 300;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.meta-chip {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(245,200,66,0.35);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(8px);
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  margin: 36px 0;
+  animation: fadeUp .5s ease both;
+}
+.section:nth-of-type(1) { animation-delay: .05s; }
+.section:nth-of-type(2) { animation-delay: .10s; }
+.section:nth-of-type(3) { animation-delay: .15s; }
+.section:nth-of-type(4) { animation-delay: .20s; }
+.section:nth-of-type(5) { animation-delay: .25s; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 900;
+  margin: 0 0 18px;
+  color: var(--navy);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+}
+body.dark .section h2 { color: var(--text); }
+.section h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin: 22px 0 10px;
+  color: var(--navy);
+}
+body.dark .section h3 { color: var(--gold); }
+.section p { margin: 10px 0; }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: var(--card-shadow);
+  margin: 14px 0;
+}
+.card-blue {
+  background: linear-gradient(135deg, var(--surface-2), var(--surface));
+  border-left: 4px solid var(--blue);
+}
+.card-yellow {
+  background: #fff8df;
+  border-left: 4px solid var(--gold);
+}
+body.dark .card-yellow {
+  background: #2a2410;
+  border-left-color: var(--gold);
+}
+
+/* ===== TOC ===== */
+.toc ol {
+  margin: 0;
+  padding-left: 22px;
+  font-size: 0.95rem;
+}
+.toc li { margin: 4px 0; }
+.toc a {
+  color: var(--blue);
+  text-decoration: none;
+  border-bottom: 1px dotted transparent;
+  transition: border-color .2s;
+}
+.toc a:hover { border-bottom-color: var(--blue); }
+
+/* ===== SNAPSHOT GRID ===== */
+.snap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+.snap-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: var(--card-shadow);
+}
+.snap-tile.tile-dark {
+  background: linear-gradient(135deg, #0f2444, #1a5fa8);
+  color: #fff;
+  border: none;
+}
+.snap-tile.tile-green {
+  background: var(--green-bg);
+  border-color: var(--green);
+}
+body.dark .snap-tile.tile-green {
+  background: #0e2a1c;
+  border-color: var(--green);
+}
+.snap-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.snap-tile.tile-dark .snap-label { color: rgba(255,255,255,0.78); }
+.snap-tile.tile-green .snap-label { color: var(--green); }
+body.dark .snap-tile.tile-green .snap-label { color: #2ecc78; }
+.snap-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.18rem;
+  line-height: 1.15;
+}
+.snap-tile.tile-dark .snap-value { color: var(--gold); }
+.snap-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+  font-style: italic;
+}
+.snap-tile.tile-dark .snap-sub { color: rgba(255,255,255,0.7); }
+
+/* ===== 52W RANGE TILE ===== */
+.range-tile {
+  grid-column: span 2;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: var(--card-shadow);
+}
+.range-tile-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.range-bar {
+  position: relative;
+  height: 8px;
+  background: linear-gradient(90deg, #fce8e8 0%, #fdeede 50%, #daf2e8 100%);
+  border-radius: 999px;
+  margin: 18px 4px 14px;
+}
+.range-bar-marker {
+  position: absolute;
+  top: -6px;
+  width: 14px;
+  height: 20px;
+  background: var(--navy);
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(15,36,68,0.30);
+}
+.range-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.range-bar-current {
+  text-align: center;
+  margin-top: 6px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 0.92rem;
+}
+body.dark .range-bar {
+  background: linear-gradient(90deg, #2a1212 0%, #2a1e08 50%, #0e2a1c 100%);
+}
+body.dark .range-bar-current { color: var(--gold); }
+
+/* ===== FORECAST TABLES ===== */
+.forecast-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin: 10px 0 6px;
+  background: var(--surface);
+}
+.forecast-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 520px;
+  background: var(--surface);
+}
+.forecast-table thead th {
+  background: var(--navy);
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  padding: 12px 10px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.forecast-table thead th:first-child {
+  text-align: left;
+  border-radius: 12px 0 0 0;
+}
+.forecast-table thead th:last-child {
+  border-radius: 0 12px 0 0;
+}
+.forecast-table tbody td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  color: var(--text);
+}
+.forecast-table tbody td:first-child {
+  text-align: left;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--blue);
+}
+.forecast-table tbody tr:nth-child(even) td:not(:first-child) {
+  background: var(--surface-2);
+}
+.forecast-table .act-col {
+  background: #e8f0f8 !important;
+  color: var(--navy) !important;
+}
+.forecast-table thead th.act-col {
+  background: #c8ddf5 !important;
+  color: var(--navy) !important;
+}
+body.dark .forecast-table .act-col {
+  background: #1a2e4a !important;
+  color: #c8d8f0 !important;
+}
+body.dark .forecast-table thead th.act-col {
+  background: #223a5c !important;
+  color: #c8d8f0 !important;
+}
+.pos-val { color: var(--green) !important; font-weight: 600; }
+.neg-val { color: var(--red) !important; font-weight: 600; }
+.scroll-hint {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 2px 0 14px;
+  text-align: center;
+}
+
+/* ===== FINANCIAL STRENGTH ===== */
+.verdict-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  padding: 9px 22px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+.verdict-safe { background: #daf2e8; color: #1a7a4a; }
+.verdict-watch { background: #fdeede; color: #c45c10; }
+.verdict-distress { background: #fce8e8; color: #b93232; }
+body.dark .verdict-safe { background: #0a2016; color: #2ecc78; }
+body.dark .verdict-watch { background: #2a1e08; color: #f5b042; }
+body.dark .verdict-distress { background: #2a1010; color: #e05555; }
+
+.grade-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2rem;
+  border: 3px solid;
+  flex-shrink: 0;
+}
+.grade-A, .grade-B { background: var(--navy); color: var(--gold); border-color: var(--gold); }
+.grade-C { background: #edf3fb; color: var(--navy); border-color: var(--navy); }
+.grade-D, .grade-F { background: #fce8e8; color: var(--red); border-color: var(--red); }
+body.dark .grade-C { background: #1e2d44; color: var(--text); border-color: var(--text-muted); }
+body.dark .grade-D, body.dark .grade-F { background: #2a1010; }
+
+.status-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status-safe { background: #daf2e8; color: #1a7a4a; }
+.status-watch { background: #fdeede; color: #c45c10; }
+.status-distress { background: #fce8e8; color: #b93232; }
+body.dark .status-safe { background: #0a2016; color: #2ecc78; }
+body.dark .status-watch { background: #2a1e08; color: #f5b042; }
+body.dark .status-distress { background: #2a1010; color: #e05555; }
+
+.grade-mini {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 0.95rem;
+  line-height: 28px;
+  text-align: center;
+  border: 2px solid;
+}
+.grade-mini-A, .grade-mini-B { background: var(--navy); color: var(--gold); border-color: var(--gold); }
+.grade-mini-C { background: #edf3fb; color: var(--navy); border-color: var(--navy); }
+.grade-mini-D, .grade-mini-F { background: #fce8e8; color: var(--red); border-color: var(--red); }
+body.dark .grade-mini-C { background: #1e2d44; color: var(--text); border-color: var(--text-muted); }
+body.dark .grade-mini-D, body.dark .grade-mini-F { background: #2a1010; }
+
+.verdict-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 10px 0 14px;
+  flex-wrap: wrap;
+}
+.verdict-row .verdict-text { flex: 1; min-width: 200px; }
+.verdict-row .verdict-text p { margin: 6px 0; }
+@media (max-width: 480px) {
+  .verdict-row { flex-direction: column; align-items: flex-start; }
+}
+
+/* ===== REVENUE BAR CHART ===== */
+.rev-chart { margin: 14px 0; }
+.rev-row {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  gap: 10px;
+}
+.rev-label {
+  flex: 0 0 130px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.rev-bar-track {
+  flex: 1;
+  height: 22px;
+  background: var(--surface-2);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.rev-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy), var(--blue));
+  border-radius: 6px;
+}
+.rev-pct {
+  flex: 0 0 60px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--navy);
+  text-align: right;
+}
+body.dark .rev-pct { color: var(--gold); }
+
+/* ===== YEAR CARDS ===== */
+.year-card {
+  background: var(--surface);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  margin: 16px 0;
+  border: 1px solid var(--border);
+}
+.year-card-header {
+  background: linear-gradient(90deg, #0f2444, #1a5fa8);
+  color: #fff;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.year-card-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+}
+.year-card-badge {
+  background: rgba(245,200,66,0.22);
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 5px 13px;
+  border-radius: 999px;
+  letter-spacing: 0.06em;
+  border: 1px solid rgba(245,200,66,0.4);
+}
+.year-card-body { padding: 16px 20px; }
+.year-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.year-metric {
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+.year-metric-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-family: 'Playfair Display', serif;
+}
+.year-metric-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-top: 2px;
+}
+body.dark .year-metric-value { color: var(--gold); }
+.year-card-body p {
+  font-size: 0.93rem;
+  margin: 8px 0 0;
+}
+
+/* ===== PROS / CONS ===== */
+.pc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+@media (min-width: 560px) {
+  .pc-grid { grid-template-columns: 1fr 1fr; }
+}
+.pc-card {
+  border-radius: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+}
+.pc-pro { background: #e8f5ee; border-left: 4px solid var(--green); }
+.pc-con { background: #fbeaea; border-left: 4px solid var(--red); }
+body.dark .pc-pro { background: #0e2a1c; }
+body.dark .pc-con { background: #2a1212; }
+.pc-card h4 {
+  font-family: 'Playfair Display', serif;
+  margin: 0 0 8px;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+.pc-pro h4 { color: var(--green); }
+.pc-con h4 { color: var(--red); }
+body.dark .pc-pro h4 { color: #2ecc78; }
+body.dark .pc-con h4 { color: #e05555; }
+.pc-card ul { margin: 6px 0 0; padding-left: 20px; }
+.pc-card li { margin: 4px 0; font-size: 0.9rem; }
+
+/* ===== RISK ITEMS ===== */
+.risk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin: 8px 0;
+  border: 1px solid var(--border);
+}
+.risk-high { background: #fce8e8; }
+.risk-medium { background: #fdeede; }
+.risk-low { background: #daf2e8; }
+body.dark .risk-high { background: #2a1010; }
+body.dark .risk-medium { background: #2a1e08; }
+body.dark .risk-low { background: #0a2016; }
+.risk-sev {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.risk-high .risk-sev { background: #b93232; color: #fff; }
+.risk-medium .risk-sev { background: #c45c10; color: #fff; }
+.risk-low .risk-sev { background: #1a7a4a; color: #fff; }
+.risk-text { font-size: 0.92rem; }
+.risk-text strong { color: var(--navy); }
+body.dark .risk-text strong { color: var(--gold); }
+
+/* ===== SCENARIO BARS ===== */
+.scenario-grid {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  gap: 8px;
+  margin: 14px 0;
+}
+.scenario-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 90px;
+  align-items: center;
+  gap: 12px;
+}
+.scenario-label {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+.scenario-track {
+  height: 22px;
+  background: var(--surface-2);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.scenario-fill {
+  height: 100%;
+  border-radius: 5px;
+}
+.scenario-bear .scenario-fill { background: linear-gradient(90deg, #b93232, #db5050); }
+.scenario-base .scenario-fill { background: linear-gradient(90deg, #0f2444, #1a5fa8); }
+.scenario-bull .scenario-fill { background: linear-gradient(90deg, #1a7a4a, #2ecc78); }
+.scenario-bear .scenario-label { color: var(--red); }
+.scenario-base .scenario-label { color: var(--blue); }
+.scenario-bull .scenario-label { color: var(--green); }
+.scenario-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  text-align: right;
+  font-size: 1rem;
+}
+
+/* ===== CONCLUSION ===== */
+.conclusion-box {
+  position: relative;
+  background: linear-gradient(135deg, #0f2444 0%, #0d3568 100%);
+  color: #fff;
+  border-radius: 16px;
+  padding: 30px 26px;
+  margin: 20px 0;
+  overflow: hidden;
+}
+.conclusion-box::before {
+  content: "";
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(245,200,66,0.28), transparent 70%);
+  pointer-events: none;
+}
+.conclusion-box h3 {
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin: 0 0 12px;
+}
+.conclusion-box p {
+  color: rgba(255,255,255,0.92);
+  font-size: 0.97rem;
+}
+.target-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 18px 0 0;
+  position: relative;
+  z-index: 1;
+}
+.target-box {
+  flex: 1 1 30%;
+  min-width: 120px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(245,200,66,0.3);
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: center;
+  backdrop-filter: blur(6px);
+}
+.target-box-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.target-box-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.45rem;
+  color: var(--gold);
+}
+.target-box-sub {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.7);
+  font-style: italic;
+}
+@media (max-width: 400px) {
+  .target-row { flex-direction: column; }
+  .year-metrics { grid-template-columns: repeat(2, 1fr); }
+  .snap-grid { grid-template-columns: 1fr; }
+  .range-tile { grid-column: span 1; }
+}
+
+/* ===== BULL LIST ===== */
+.bull-list { list-style: none; padding: 0; margin: 12px 0; }
+.bull-list li {
+  margin: 8px 0;
+  padding-left: 32px;
+  position: relative;
+  font-size: 0.95rem;
+}
+.bull-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 6px; top: 0;
+  color: var(--gold);
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+/* ===== ROI TABS ===== */
+.roi-tabs {
+  display: flex;
+  gap: 0;
+  margin: 12px 0 0;
+  border-bottom: 2px solid var(--border);
+}
+.roi-tab-button {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 10px 18px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color .2s, border-color .2s;
+}
+.roi-tab-button:hover { color: var(--blue); }
+.roi-tab-button.active {
+  color: var(--blue);
+  border-bottom-color: var(--gold);
+}
+.roi-tab-content { display: none; padding-top: 14px; }
+.roi-tab-content.active { display: block; }
+.roi-table-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--navy);
+  margin: 4px 0 8px;
+}
+body.dark .roi-table-title { color: var(--gold); }
+.price-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 8px 0 14px;
+  box-shadow: var(--card-shadow);
+  flex-wrap: wrap;
+}
+.price-control-button {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.price-control-button:hover { background: var(--blue); }
+.price-control-reset {
+  background: transparent;
+  color: var(--blue);
+  border: 1px solid var(--blue);
+}
+.price-control-reset:hover { background: var(--blue); color: #fff; }
+.price-control-display {
+  text-align: center;
+  min-width: 120px;
+}
+.price-control-price {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: var(--navy);
+  display: block;
+}
+body.dark .price-control-price { color: var(--gold); }
+.price-control-delta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.roi-range-bar {
+  position: relative;
+  height: 8px;
+  background: linear-gradient(90deg, #fce8e8 0%, #fdeede 50%, #daf2e8 100%);
+  border-radius: 999px;
+  margin: 28px 4px 28px;
+}
+body.dark .roi-range-bar {
+  background: linear-gradient(90deg, #2a1212 0%, #2a1e08 50%, #0e2a1c 100%);
+}
+.roi-range-marker {
+  position: absolute;
+  top: -4px;
+  width: 4px;
+  height: 16px;
+  background: var(--text-muted);
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+.roi-range-marker-you {
+  position: absolute;
+  top: -6px;
+  width: 14px;
+  height: 20px;
+  background: var(--gold);
+  border: 2px solid var(--navy);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(15,36,68,0.30);
+  transition: left .3s;
+}
+.roi-range-marker-label {
+  position: absolute;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  transform: translateX(-50%);
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.06em;
+}
+.roi-range-marker-label.top { top: -22px; }
+.roi-range-marker-label.bottom { bottom: -22px; }
+
+@media print {
+  .roi-tabs { display: none; }
+  .roi-tab-content { display: none !important; }
+  .roi-tab-content[data-tab="current"] { display: block !important; }
+  .toolbar { display: none !important; }
+}
+
+/* ===== FLOATING TOOLBAR ===== */
+.toolbar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #0a1e38, #0f2f5c);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.30);
+  z-index: 100;
+  border: 1px solid rgba(245,200,66,0.3);
+}
+.toolbar button {
+  background: rgba(255,255,255,0.10);
+  color: #fff;
+  border: 1px solid rgba(245,200,66,0.25);
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: background .2s;
+}
+.toolbar button:hover { background: rgba(245,200,66,0.30); }
+.toolbar #fsDisplay {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.82rem;
+  color: var(--gold);
+  min-width: 38px;
+  text-align: center;
+}
+.toolbar-sep {
+  width: 1px;
+  height: 16px;
+  background: rgba(255,255,255,0.20);
+  margin: 0 3px;
+}
+
+/* ===== DISCLAIMER ===== */
+.disclaimer {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 32px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  line-height: 1.55;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">NYSE: V · Visa Inc.</div>
+    <h1>Visa Inc.<br><span>Deep Analysis</span></h1>
+    <p class="hero-subtitle">A four-year forward look at the world's largest payment network — modeling growth, margins, and the regulatory threats reshaping the duopoly.</p>
+    <div class="hero-meta">
+      <span class="meta-chip">May 11, 2026</span>
+      <span class="meta-chip">$319.10</span>
+      <span class="meta-chip">Strong Buy Consensus</span>
+      <span class="meta-chip">YTD −8.9%</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== 01 TOC ===== -->
+<div class="section toc" id="toc">
+  <div class="section-label">01 — Table of Contents</div>
+  <h2>What's Inside</h2>
+  <ol>
+    <li><a href="#summary">Executive Summary</a></li>
+    <li><a href="#snapshot">Current Snapshot</a></li>
+    <li><a href="#strength">Financial Strength & Bankruptcy Risk</a></li>
+    <li><a href="#quality">Quality Track Record</a></li>
+    <li><a href="#moat">Business Model & Moat</a></li>
+    <li><a href="#segments">Revenue Sources & Segments</a></li>
+    <li><a href="#revps">Revenue Per Share Forecast</a></li>
+    <li><a href="#margin">Margin Forecast</a></li>
+    <li><a href="#eps">EPS Forecast</a></li>
+    <li><a href="#roic">ROIC Forecast</a></li>
+    <li><a href="#pe">P/E Multiple Forecast</a></li>
+    <li><a href="#targets">Price Targets & Scenarios</a></li>
+    <li><a href="#rationale">Year-by-Year Rationale</a></li>
+    <li><a href="#roi">Yearly ROI from Today</a></li>
+    <li><a href="#risks">Structural Advantages & Key Risks</a></li>
+    <li><a href="#macro">Macro, Regulation & Competition</a></li>
+    <li><a href="#conclusion">Investment Conclusion</a></li>
+  </ol>
+</div>
+
+<!-- ===== 02 EXECUTIVE SUMMARY ===== -->
+<div class="section" id="summary">
+  <div class="section-label">02 — Executive Summary</div>
+  <h2>The Thesis</h2>
+  <div class="card card-blue">
+    <p>Visa is a toll bridge on global commerce — a capital-light network earning 60% operating margins on $40B of revenue, with structural growth tied to the secular shift from cash to electronic payments. The stock has de-rated roughly 15% from its June 2025 peak as regulatory threats (the reintroduced Credit Card Competition Act, EU/UK interchange rulings, stablecoin disruption fears) have crystallized into real headline risk, even as fundamentals just printed the fastest revenue growth since 2022 in Q2 FY26.</p>
+    <p>The setup: a wide-moat compounder trading at 22.9× forward earnings — roughly two turns below its 10-year average — with analysts expecting 11% revenue CAGR and 18% EPS CAGR through FY28, supported by a $33B buyback authorization that should shrink the share count 2–3% annually. The risk: a multi-year fee compression cycle that the market is only beginning to discount.</p>
+  </div>
+</div>
+
+<!-- ===== 03 CURRENT SNAPSHOT ===== -->
+<div class="section" id="snapshot">
+  <div class="section-label">03 — Current Snapshot</div>
+  <h2>Where Things Stand</h2>
+  <p>A capsule of valuation, balance sheet, and trading metrics as of May 11, 2026.</p>
+  <div class="snap-grid">
+    <div class="snap-tile tile-dark">
+      <div class="snap-label">Stock Price</div>
+      <div class="snap-value">$319.10</div>
+      <div class="snap-sub">May 10 close</div>
+    </div>
+    <div class="snap-tile tile-dark">
+      <div class="snap-label">Market Cap</div>
+      <div class="snap-value">$600.6B</div>
+      <div class="snap-sub">1.88B shares out</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">P/E (TTM)</div>
+      <div class="snap-value">27.8×</div>
+      <div class="snap-sub">Fwd P/E 22.9×</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">EPS (TTM)</div>
+      <div class="snap-value">$11.48</div>
+      <div class="snap-sub">FY25 $9.55</div>
+    </div>
+    <div class="snap-tile tile-green">
+      <div class="snap-label">Operating Margin</div>
+      <div class="snap-value">60.0%</div>
+      <div class="snap-sub">FY25 GAAP</div>
+    </div>
+    <div class="snap-tile tile-green">
+      <div class="snap-label">ROIC</div>
+      <div class="snap-value">33.4%</div>
+      <div class="snap-sub">5Y avg 26.1%</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">Beta</div>
+      <div class="snap-value">0.78</div>
+      <div class="snap-sub">Lower than market</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">Dividend Yield</div>
+      <div class="snap-value">0.84%</div>
+      <div class="snap-sub">$2.68 annual</div>
+    </div>
+    <div class="snap-tile tile-green">
+      <div class="snap-label">FCF Margin</div>
+      <div class="snap-value">54.0%</div>
+      <div class="snap-sub">$21.6B FY25</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">Net Debt/EBITDA</div>
+      <div class="snap-value">0.19×</div>
+      <div class="snap-sub">Fortress balance sheet</div>
+    </div>
+    <div class="range-tile">
+      <div class="range-tile-label">52-Week Range</div>
+      <div class="range-bar">
+        <div class="range-bar-marker" style="left: 30.9%;"></div>
+      </div>
+      <div class="range-bar-labels">
+        <span>$293.89</span>
+        <span>$375.51</span>
+      </div>
+      <div class="range-bar-current">Current: $319.10 (31% of range)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 04 FINANCIAL STRENGTH ===== -->
+<div class="section" id="strength">
+  <div class="section-label">04 — Financial Strength & Bankruptcy Risk</div>
+  <h2>Can The Balance Sheet Survive a Storm?</h2>
+  <p>This section answers two separate questions: is there any near-term solvency risk (Layer 1), and how does the balance sheet stack up on quality (Layer 2)? For Visa, the answers are emphatic — but the framework matters because Visa sits in a peculiar accounting category.</p>
+
+  <div class="card card-blue">
+    <div class="verdict-row">
+      <div class="grade-badge grade-A">A</div>
+      <div class="verdict-text">
+        <span class="verdict-badge verdict-safe">✓ Safe</span>
+        <p>Fortress-grade balance sheet: $19B in cash and investments against $25B in debt, 40× interest coverage, AA−/Aa3 credit ratings, and net leverage under 0.2× EBITDA. No realistic scenario short of total franchise collapse threatens solvency.</p>
+        <p style="font-style: italic; color: var(--text-muted); font-size: 0.85rem; margin-top: 8px;">Framework: Standard Industrial — Altman Z-Score and Beneish M-Score remain applicable since Visa is a payment technology company, not a bank.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Layer 1 — Bankruptcy Risk</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+          <th>Safe Threshold</th>
+          <th>What It Catches</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Altman Z-Score</td>
+          <td>~7.5</td>
+          <td>&gt; 2.99</td>
+          <td>Bankruptcy probability</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Beneish M-Score</td>
+          <td>~ −2.6</td>
+          <td>&lt; −2.22</td>
+          <td>Earnings manipulation</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Debt-to-EBITDA</td>
+          <td>0.83×</td>
+          <td>&lt; 3×</td>
+          <td>Cash flow leverage</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+        <tr>
+          <td>Interest Coverage</td>
+          <td>40.7×</td>
+          <td>&gt; 5×</td>
+          <td>Debt service strain</td>
+          <td><span class="status-badge status-safe">✓ Safe</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">All four metrics in the safe zone with significant cushion. The Altman Z and Beneish M apply cleanly here — Visa runs on hard assets (network infrastructure) and traditional accruals, not regulatory capital ratios.</p>
+
+  <h3>Layer 2 — Balance Sheet Quality</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Value</th>
+          <th>What It Tells You</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cash-to-Debt</td>
+          <td>0.76×</td>
+          <td>Decent — net debt position but small</td>
+          <td><span class="grade-mini grade-mini-B">B</span></td>
+        </tr>
+        <tr>
+          <td>Equity-to-Asset</td>
+          <td>0.38</td>
+          <td>Healthy capitalization</td>
+          <td><span class="grade-mini grade-mini-B">B</span></td>
+        </tr>
+        <tr>
+          <td>Debt-to-Equity</td>
+          <td>0.55</td>
+          <td>Conservative leverage</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+        <tr>
+          <td>Piotroski F-Score</td>
+          <td>8 / 9</td>
+          <td>High-quality fundamentals</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+        <tr>
+          <td>ROIC vs WACC Spread</td>
+          <td class="pos-val">+26 pts</td>
+          <td>Massive value creation</td>
+          <td><span class="grade-mini grade-mini-A">A</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Industry Context & Caveats</h3>
+  <div class="card">
+    <p>Visa's only "weakness" is optical: cash-to-debt below 1.0× and a debt-to-equity ratio that has crept up from 0.29 (long-run average) to 0.55 today. This is by design, not distress. Management has issued debt opportunistically to fund the $33B buyback authorization, retiring 11.6% of shares over the last five years at returns that dwarf the after-tax cost of debt.</p>
+    <p>The Altman Z-Score (~7.5) is well into the "safe" zone, and Beneish M-Score offers no signal of earnings manipulation. Visa's accounting is straightforward — payments volume × take rate, minus client incentives — with minimal accrual complexity. The S&P AA− and Moody's Aa3 ratings (both reaffirmed in 2025 with stable outlook) reflect what the market already knows: this is one of the highest-quality issuers on earth.</p>
+    <p>The relevant solvency question for Visa isn't whether it can pay its bills. It's whether the take rate gets compressed by regulators (CCCA), litigation (FTC merchant settlement), or substitution (stablecoins/A2A rails). That's a margin and growth question, addressed below — not a balance sheet question.</p>
+  </div>
+
+  <p style="font-size: 0.78rem; color: var(--text-muted); font-style: italic; margin-top: 14px;">
+    <strong>Footnote on scoring metrics:</strong> Altman Z-Score combines profitability, leverage, liquidity, and turnover into a bankruptcy probability score (&gt;2.99 safe, &lt;1.81 distress). Beneish M-Score flags earnings manipulation risk based on eight ratios (&lt;−2.22 clean). Piotroski F-Score measures fundamental quality across nine binary criteria (8–9 = strongest profile).
+  </p>
+</div>
+
+<!-- ===== 05 QUALITY TRACK RECORD ===== -->
+<div class="section" id="quality">
+  <div class="section-label">05 — Quality Track Record</div>
+  <h2>Has The Business Actually Delivered?</h2>
+  <p>Whether Visa has earned its premium multiple over time. This section tracks profitability, capital returns, and growth consistency over 5- and 10-year periods to separate genuine compounders from optical performers — and Visa is the genuine article.</p>
+
+  <h3>At a Glance</h3>
+  <div class="snap-grid">
+    <div class="snap-tile">
+      <div class="snap-label">10Y Revenue CAGR</div>
+      <div class="snap-value">11.2%</div>
+      <div class="snap-sub">$13.9B → $40B</div>
+    </div>
+    <div class="snap-tile">
+      <div class="snap-label">10Y EPS CAGR</div>
+      <div class="snap-value">13.8%</div>
+      <div class="snap-sub">Compounding above revenue</div>
+    </div>
+    <div class="snap-tile tile-green">
+      <div class="snap-label">5Y Avg ROIC</div>
+      <div class="snap-value">26.1%</div>
+      <div class="snap-sub">Currently 33.4%</div>
+    </div>
+    <div class="snap-tile tile-green">
+      <div class="snap-label">5Y Avg Op Margin</div>
+      <div class="snap-value">~64%</div>
+      <div class="snap-sub">Remarkably stable</div>
+    </div>
+    <div class="snap-tile tile-dark">
+      <div class="snap-label">5Y Avg FCF Margin</div>
+      <div class="snap-value">~55%</div>
+      <div class="snap-sub">Cash-machine quality</div>
+    </div>
+  </div>
+
+  <h3>Profitability Quality</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Current</th>
+          <th>5Y Avg</th>
+          <th>10Y Avg</th>
+          <th>Trend</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gross Margin</td>
+          <td class="neg-val">82.6%</td>
+          <td>84%</td>
+          <td>83%</td>
+          <td class="neg-val">↓</td>
+          <td>Pricing power</td>
+        </tr>
+        <tr>
+          <td>Operating Margin</td>
+          <td class="neg-val">60.0%</td>
+          <td>64%</td>
+          <td>63%</td>
+          <td class="neg-val">↓</td>
+          <td>Operating leverage</td>
+        </tr>
+        <tr>
+          <td>Net Margin</td>
+          <td class="pos-val">51.7%</td>
+          <td>50%</td>
+          <td>48%</td>
+          <td class="pos-val">↑</td>
+          <td>Moat strength</td>
+        </tr>
+        <tr>
+          <td>FCF Margin</td>
+          <td class="neg-val">54.0%</td>
+          <td>55%</td>
+          <td>53%</td>
+          <td>→</td>
+          <td>Earnings quality</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Returns on Capital</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Current</th>
+          <th>5Y Avg</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ROIC</td>
+          <td class="pos-val">33.4%</td>
+          <td>26.1%</td>
+          <td>Capital efficiency</td>
+        </tr>
+        <tr>
+          <td>ROE</td>
+          <td class="pos-val">61.0%</td>
+          <td>~50%</td>
+          <td>Equity returns (buyback-inflated)</td>
+        </tr>
+        <tr>
+          <td>ROA</td>
+          <td class="pos-val">20.9%</td>
+          <td>~18%</td>
+          <td>Asset productivity</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>Growth Track Record</h3>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>10Y CAGR</th>
+          <th>5Y CAGR</th>
+          <th>1Y</th>
+          <th>What It Reveals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Revenue Growth</td>
+          <td class="pos-val">11.2%</td>
+          <td class="pos-val">12.9%</td>
+          <td class="pos-val">11.3%</td>
+          <td>Top-line story</td>
+        </tr>
+        <tr>
+          <td>EPS Growth</td>
+          <td class="pos-val">13.8%</td>
+          <td class="pos-val">13.6%</td>
+          <td class="pos-val">8.4%</td>
+          <td>Headline number</td>
+        </tr>
+        <tr>
+          <td>FCF Growth</td>
+          <td class="pos-val">13.7%</td>
+          <td class="pos-val">19.6%</td>
+          <td class="pos-val">15.4%</td>
+          <td>Cash quality (tracks EPS)</td>
+        </tr>
+        <tr>
+          <td>Book Value Growth</td>
+          <td>~3%</td>
+          <td>~2%</td>
+          <td>~1%</td>
+          <td>Compounding check</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p style="font-style: italic; color: var(--text-muted); font-size: 0.85rem;">Book value is less meaningful for asset-light businesses like Visa where most value lives in the network and brand (intangibles). The relevant test is FCF growth — and FCF has grown faster than EPS over both 5Y and 10Y, confirming earnings quality is high.</p>
+
+  <h3>Consistency Scorecard</h3>
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border);">
+      <div><strong>Profitable Years</strong><br><span style="font-size: 0.85rem; color: var(--text-muted);">10 out of 10 — no losses since IPO</span></div>
+      <span class="status-badge status-safe">✓ 10/10</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border);">
+      <div><strong>Positive FCF Years</strong><br><span style="font-size: 0.85rem; color: var(--text-muted);">10 out of 10 — even through COVID</span></div>
+      <span class="status-badge status-safe">✓ 10/10</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border);">
+      <div><strong>Revenue Growth Years</strong><br><span style="font-size: 0.85rem; color: var(--text-muted);">9 of 10 — only FY20 declined (COVID)</span></div>
+      <span class="status-badge status-safe">✓ 9/10</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border);">
+      <div><strong>Buyback Discipline</strong><br><span style="font-size: 0.85rem; color: var(--text-muted);">Share count down 11.6% over 5Y</span></div>
+      <span class="status-badge status-safe">✓ Yes</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+      <div><strong>Margin Stability</strong><br><span style="font-size: 0.85rem; color: var(--text-muted);">Op margin 60–67% range over 10Y</span></div>
+      <span class="status-badge status-safe">✓ High</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 06 BUSINESS MODEL & MOAT ===== -->
+<div class="section" id="moat">
+  <div class="section-label">06 — Business Model & Moat</div>
+  <h2>The Toll Bridge</h2>
+  <p>Visa runs VisaNet, the rails that authorize, clear, and settle credit and debit card transactions in over 200 countries. The company doesn't issue cards or extend credit — banks do that. Visa charges a small fee (typically a few basis points) every time one of its 4.9 billion cards is swiped. That fee, multiplied by ~$15 trillion in annual payments volume, produces $40B+ of revenue at 60% operating margins.</p>
+  <p>The moat is one of the deepest in any public market:</p>
+  <ul class="bull-list">
+    <li><strong>🌐 Two-sided network effect.</strong> Every additional cardholder makes Visa more valuable to merchants, and every additional merchant makes it more valuable to cardholders. New entrants face a chicken-and-egg problem that has stopped every challenger for 60 years.</li>
+    <li><strong>🏛️ Regulatory moat (the irony).</strong> The very rules that critics call anti-competitive — interchange caps, network exclusivity contracts, settlement standards — also raise the cost of entry. PCI compliance, fraud loss models, and ISO 8583 message specifications are barriers, not features.</li>
+    <li><strong>💰 Capital-light economics.</strong> Visa needs almost no incremental capital to grow. Capex is $1.5B against $24B of operating cash flow. The result: an ROIC of 33% that has averaged 26% for five years and 19% for twenty.</li>
+    <li><strong>🔁 Brand and trust premium.</strong> Consumers know what "Visa accepted here" means. Merchants know what fraud chargeback rates look like. This trust took 60 years to build and has no analog in the stablecoin or A2A world — yet.</li>
+    <li><strong>📈 Secular tailwind.</strong> Global card payments volume still grows mid-single-digits as cash gets digitized — even after 60 years, ~25% of global consumer payments still flow through cash and check.</li>
+  </ul>
+</div>
+
+<!-- ===== 07 REVENUE SOURCES ===== -->
+<div class="section" id="segments">
+  <div class="section-label">07 — Revenue Sources & Segments</div>
+  <h2>What Visa Actually Sells</h2>
+  <p>Visa's revenue is reported in four buckets (before subtracting client incentives, which is how it appears in the income statement). Data Processing is the largest, but International Transactions carry the highest margin per dollar — which matters as cross-border volume continues to outpace domestic growth.</p>
+  <div class="card">
+    <div class="rev-chart">
+      <div class="rev-row">
+        <div class="rev-label">Data Processing</div>
+        <div class="rev-bar-track"><div class="rev-bar-fill" style="width: 100%;"></div></div>
+        <div class="rev-pct">35.9%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">Service Revenue</div>
+        <div class="rev-bar-track"><div class="rev-bar-fill" style="width: 87.7%;"></div></div>
+        <div class="rev-pct">31.5%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">Int'l Transactions</div>
+        <div class="rev-bar-track"><div class="rev-bar-fill" style="width: 70.8%;"></div></div>
+        <div class="rev-pct">25.4%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">Other Services (VAS)</div>
+        <div class="rev-bar-track"><div class="rev-bar-fill" style="width: 20.3%;"></div></div>
+        <div class="rev-pct">7.3%</div>
+      </div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-top: 12px;">FY25 gross revenue breakdown before client incentives. Value-Added Services (VAS) — fraud tools, advisory, Visa Direct, tokenization — is the fastest-growing line, up 27% in Q2 FY26.</p>
+  </div>
+</div>
+
+<!-- ===== 08 REVENUE PER SHARE ===== -->
+<div class="section" id="revps">
+  <div class="section-label">08 — Revenue Per Share Forecast</div>
+  <h2>Top-Line Compounding</h2>
+  <p>My estimates assume revenue growth gradually decelerates from 11% to 8% as Visa Europe lap effects fade and regulatory pressure on take rates begins to bite in FY28–29. Revenue per share grows materially faster than headline revenue thanks to the $33B buyback authorization.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Revenue ($B)</td>
+          <td class="act-col">$40.0</td>
+          <td>$44.5</td>
+          <td>$49.0</td>
+          <td>$53.5</td>
+          <td>$58.0</td>
+        </tr>
+        <tr>
+          <td>YoY Growth</td>
+          <td class="act-col pos-val">+11.3%</td>
+          <td class="pos-val">+11.3%</td>
+          <td class="pos-val">+10.1%</td>
+          <td class="pos-val">+9.2%</td>
+          <td class="pos-val">+8.4%</td>
+        </tr>
+        <tr>
+          <td>My Rev/Share</td>
+          <td class="act-col">$20.30</td>
+          <td>$23.65</td>
+          <td>$26.95</td>
+          <td>$30.05</td>
+          <td>$33.35</td>
+        </tr>
+        <tr>
+          <td>Rev/Share YoY</td>
+          <td class="act-col pos-val">+15.0%</td>
+          <td class="pos-val">+16.5%</td>
+          <td class="pos-val">+14.0%</td>
+          <td class="pos-val">+11.5%</td>
+          <td class="pos-val">+11.0%</td>
+        </tr>
+        <tr>
+          <td>Street Revenue ($B)</td>
+          <td class="act-col">$40.0</td>
+          <td>$45.0</td>
+          <td>$50.0</td>
+          <td>$55.0</td>
+          <td>$60.0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <div class="card card-yellow">
+    <p style="margin: 0; font-size: 0.92rem;"><strong>Why I'm slightly below Street:</strong> Q2 FY26 was Visa's strongest growth quarter since 2022, but management itself flagged that Q3 would be "the lowest-growth quarter of the year." I'm pricing in ~1 point of take-rate compression starting FY27 from the FTC merchant settlement and CCCA-related routing changes. Street appears to be giving Visa full credit for current run-rate growth.</p>
+  </div>
+</div>
+
+<!-- ===== 09 MARGIN FORECAST ===== -->
+<div class="section" id="margin">
+  <div class="section-label">09 — Margin Forecast</div>
+  <h2>Operating Leverage vs. Fee Compression</h2>
+  <p>The tension in the margin line is straightforward: scale should continue to deliver leverage (operating margin has averaged 64% over five years), but client incentives are growing and regulators are squeezing the fee per transaction. My base case has operating margin grinding higher modestly as VAS revenue (higher-margin) mix-shifts up.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Margin</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Operating Margin</td>
+          <td class="act-col">60.0%</td>
+          <td class="pos-val">65.5%</td>
+          <td class="pos-val">66.0%</td>
+          <td class="pos-val">66.5%</td>
+          <td class="pos-val">67.0%</td>
+        </tr>
+        <tr>
+          <td>Street Operating Margin</td>
+          <td class="act-col">60.0%</td>
+          <td class="pos-val">66.0%</td>
+          <td class="pos-val">66.5%</td>
+          <td class="pos-val">67.0%</td>
+          <td class="pos-val">67.5%</td>
+        </tr>
+        <tr>
+          <td>My Net Margin</td>
+          <td class="act-col">49.6%</td>
+          <td class="pos-val">53.0%</td>
+          <td class="pos-val">53.5%</td>
+          <td class="pos-val">54.0%</td>
+          <td class="pos-val">54.0%</td>
+        </tr>
+        <tr>
+          <td>Street Net Margin</td>
+          <td class="act-col">49.6%</td>
+          <td class="pos-val">53.5%</td>
+          <td class="pos-val">53.8%</td>
+          <td class="pos-val">54.5%</td>
+          <td class="pos-val">54.8%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+  <p style="font-size: 0.88rem; color: var(--text-muted);">FY25 GAAP operating margin was 60% — depressed by ~$1B in litigation and special items. The non-GAAP run-rate sits closer to 66%, which is what Street is anchoring to going forward.</p>
+</div>
+
+<!-- ===== 10 EPS FORECAST ===== -->
+<div class="section" id="eps">
+  <div class="section-label">10 — EPS Forecast</div>
+  <h2>The Headline Number</h2>
+  <p>EPS growth outpaces revenue growth by 4–6 points annually because of the aggressive buyback — diluted share count is shrinking 2–3% per year. My estimates land 2–4% below Street consensus across the forecast horizon, reflecting modest take-rate pressure that Street isn't pricing in.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Non-GAAP EPS</td>
+          <td class="act-col">$11.05</td>
+          <td>$12.85</td>
+          <td>$14.50</td>
+          <td>$16.20</td>
+          <td>$17.85</td>
+        </tr>
+        <tr>
+          <td>YoY Growth</td>
+          <td class="act-col pos-val">+16.4%</td>
+          <td class="pos-val">+16.3%</td>
+          <td class="pos-val">+12.8%</td>
+          <td class="pos-val">+11.7%</td>
+          <td class="pos-val">+10.2%</td>
+        </tr>
+        <tr>
+          <td>Street Low</td>
+          <td class="act-col">—</td>
+          <td>$12.41</td>
+          <td>$13.83</td>
+          <td>$15.32</td>
+          <td>$16.80</td>
+        </tr>
+        <tr>
+          <td>Street Avg</td>
+          <td class="act-col">$11.05</td>
+          <td>$13.10</td>
+          <td>$14.81</td>
+          <td>$16.63</td>
+          <td>$18.50</td>
+        </tr>
+        <tr>
+          <td>Street High</td>
+          <td class="act-col">—</td>
+          <td>$13.86</td>
+          <td>$15.72</td>
+          <td>$17.72</td>
+          <td>$19.95</td>
+        </tr>
+        <tr>
+          <td>My vs Street</td>
+          <td class="act-col">—</td>
+          <td class="neg-val">−1.9%</td>
+          <td class="neg-val">−2.1%</td>
+          <td class="neg-val">−2.6%</td>
+          <td class="neg-val">−3.5%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+</div>
+
+<!-- ===== 11 ROIC FORECAST ===== -->
+<div class="section" id="roic">
+  <div class="section-label">11 — ROIC Forecast</div>
+  <h2>Capital Efficiency Stays Elite</h2>
+  <p>Visa's ROIC has compounded from 17% (FY17) to 33% today — a function of growing earnings on a near-flat invested capital base. My forecast assumes ROIC plateaus in the mid-30s as the buyback-driven equity contraction offsets any incremental capex on AI, tokenization, and stablecoin rails.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>ROIC</th>
+          <th>WACC</th>
+          <th>Spread</th>
+          <th>Commentary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FY23A</td>
+          <td class="act-col">25.0%</td>
+          <td class="act-col">7.0%</td>
+          <td class="act-col pos-val">+18.0</td>
+          <td class="act-col">Post-COVID normalization</td>
+        </tr>
+        <tr>
+          <td>FY24A</td>
+          <td class="act-col">28.5%</td>
+          <td class="act-col">7.2%</td>
+          <td class="act-col pos-val">+21.3</td>
+          <td class="act-col">Capex moderating</td>
+        </tr>
+        <tr>
+          <td>FY25A</td>
+          <td class="act-col">33.4%</td>
+          <td class="act-col">7.5%</td>
+          <td class="act-col pos-val">+25.9</td>
+          <td class="act-col">Operating leverage maxed</td>
+        </tr>
+        <tr>
+          <td>FY26E</td>
+          <td>34.0%</td>
+          <td>7.5%</td>
+          <td class="pos-val">+26.5</td>
+          <td>VAS scaling, lean opex</td>
+        </tr>
+        <tr>
+          <td>FY27E</td>
+          <td>35.0%</td>
+          <td>7.5%</td>
+          <td class="pos-val">+27.5</td>
+          <td>Buyback continues</td>
+        </tr>
+        <tr>
+          <td>FY28E</td>
+          <td>35.5%</td>
+          <td>7.5%</td>
+          <td class="pos-val">+28.0</td>
+          <td>Approaches structural ceiling</td>
+        </tr>
+        <tr>
+          <td>FY29E</td>
+          <td>35.5%</td>
+          <td>7.5%</td>
+          <td class="pos-val">+28.0</td>
+          <td>Plateau</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+</div>
+
+<!-- ===== 12 P/E FORECAST ===== -->
+<div class="section" id="pe">
+  <div class="section-label">12 — P/E Multiple Forecast</div>
+  <h2>What Multiple Does Visa Deserve?</h2>
+  <p>Visa has historically traded at 28× trailing earnings (10-year average) and 30× (5-year). Today's 27.8× sits modestly below that band, while the forward 22.9× implies a 5–7 point discount to the long-term mean. My base case assumes the multiple stays around 26–28× as regulatory overhang persists; the bull case re-rates back to historical norms.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th class="act-col">FY25A</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>My Base P/E</td>
+          <td class="act-col">27.8×</td>
+          <td>26×</td>
+          <td>27×</td>
+          <td>28×</td>
+          <td>28×</td>
+        </tr>
+        <tr>
+          <td>Street Implied P/E</td>
+          <td class="act-col">27.8×</td>
+          <td>24×</td>
+          <td>26×</td>
+          <td>27×</td>
+          <td>27×</td>
+        </tr>
+        <tr>
+          <td>10Y Avg P/E</td>
+          <td class="act-col">~28×</td>
+          <td>~28×</td>
+          <td>~28×</td>
+          <td>~28×</td>
+          <td>~28×</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+</div>
+
+<!-- ===== 13 PRICE TARGETS ===== -->
+<div class="section" id="targets">
+  <div class="section-label">13 — Price Targets & Scenarios</div>
+  <h2>Where The Stock Could Trade</h2>
+  <p>Bear case: CCCA passes in some form, EU/UK rulings stand, and the multiple compresses to 21–22× as the market re-prices Visa as a "slow-growth utility." Base case: regulatory threats produce a 1–2 point take-rate haircut but the multiple holds near 26–28×. Bull case: stablecoin and AI threats prove overblown, regulators settle, and Visa re-rates to historical norms.</p>
+  <div class="forecast-wrap">
+    <table class="forecast-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>FY26E</th>
+          <th>FY27E</th>
+          <th>FY28E</th>
+          <th>FY29E</th>
+          <th>Street 1Y</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bear Target</td>
+          <td class="neg-val">$283</td>
+          <td>$319</td>
+          <td class="pos-val">$356</td>
+          <td class="pos-val">$375</td>
+          <td class="pos-val">$340</td>
+        </tr>
+        <tr>
+          <td>Base Target</td>
+          <td class="pos-val">$334</td>
+          <td class="pos-val">$392</td>
+          <td class="pos-val">$454</td>
+          <td class="pos-val">$500</td>
+          <td class="pos-val">$396</td>
+        </tr>
+        <tr>
+          <td>Bull Target</td>
+          <td class="pos-val">$386</td>
+          <td class="pos-val">$450</td>
+          <td class="pos-val">$518</td>
+          <td class="pos-val">$589</td>
+          <td class="pos-val">$450</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← scroll table sideways if needed →</div>
+
+  <h3>FY29 Terminal Scenarios</h3>
+  <div class="scenario-grid">
+    <div class="scenario-row scenario-bear">
+      <div class="scenario-label">Bear</div>
+      <div class="scenario-track"><div class="scenario-fill" style="width: 64%;"></div></div>
+      <div class="scenario-value" style="color: var(--red);">$375</div>
+    </div>
+    <div class="scenario-row scenario-base">
+      <div class="scenario-label">Base</div>
+      <div class="scenario-track"><div class="scenario-fill" style="width: 85%;"></div></div>
+      <div class="scenario-value" style="color: var(--blue);">$500</div>
+    </div>
+    <div class="scenario-row scenario-bull">
+      <div class="scenario-label">Bull</div>
+      <div class="scenario-track"><div class="scenario-fill" style="width: 100%;"></div></div>
+      <div class="scenario-value" style="color: var(--green);">$589</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 14 YEAR RATIONALE ===== -->
+<div class="section" id="rationale">
+  <div class="section-label">14 — Year-by-Year Rationale</div>
+  <h2>Why Each Year Looks This Way</h2>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <div class="year-card-title">FY26 — The Reset Year</div>
+      <div class="year-card-badge">EPS +16.3%</div>
+    </div>
+    <div class="year-card-body">
+      <div class="year-metrics">
+        <div class="year-metric">
+          <div class="year-metric-label">Rev/Share</div>
+          <div class="year-metric-value">$23.65</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">EPS</div>
+          <div class="year-metric-value">$12.85</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">P/E Range</div>
+          <div class="year-metric-value">22–30×</div>
+        </div>
+      </div>
+      <p>H1 FY26 already delivered +16% revenue growth on easy comparables and unusually high FX volatility. Q3 sees the lowest-growth quarter of the year per management guidance, then Q4 rebounds. EPS gets a kicker from the $7.9B Q2 buyback (largest in company history) and the lap of FY25 special items. The multiple stays compressed as CCCA reintroduction headlines persist into Q4 calendar 2026.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <div class="year-card-title">FY27 — Regulatory Resolution Year</div>
+      <div class="year-card-badge">EPS +12.8%</div>
+    </div>
+    <div class="year-card-body">
+      <div class="year-metrics">
+        <div class="year-metric">
+          <div class="year-metric-label">Rev/Share</div>
+          <div class="year-metric-value">$26.95</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">EPS</div>
+          <div class="year-metric-value">$14.50</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">P/E Range</div>
+          <div class="year-metric-value">22–31×</div>
+        </div>
+      </div>
+      <p>The CCCA outcome is known by mid-FY27 (one way or the other). If watered down or defeated, the multiple snaps back to 28–30× and the bull case engages. If passed, take rates compress ~50 bps and the multiple anchors at 24–26×. Either way, headline EPS growth slows modestly as the FY26 buyback flatters the YoY comp.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <div class="year-card-title">FY28 — Cross-Currents Year</div>
+      <div class="year-card-badge">EPS +11.7%</div>
+    </div>
+    <div class="year-card-body">
+      <div class="year-metrics">
+        <div class="year-metric">
+          <div class="year-metric-label">Rev/Share</div>
+          <div class="year-metric-value">$30.05</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">EPS</div>
+          <div class="year-metric-value">$16.20</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">P/E Range</div>
+          <div class="year-metric-value">22–32×</div>
+        </div>
+      </div>
+      <p>The stablecoin/agentic-commerce thesis gets tested in earnest. Either AI-native payment rails meaningfully eat into Visa's volume (bear case) or Visa's CLI integration and stablecoin pilots establish it as the trusted layer (bull case). VAS revenue should be ~$15B by now, doing the work of repricing the company as a higher-margin platform rather than a regulated network.</p>
+    </div>
+  </div>
+
+  <div class="year-card">
+    <div class="year-card-header">
+      <div class="year-card-title">FY29 — Maturation Year</div>
+      <div class="year-card-badge">EPS +10.2%</div>
+    </div>
+    <div class="year-card-body">
+      <div class="year-metrics">
+        <div class="year-metric">
+          <div class="year-metric-label">Rev/Share</div>
+          <div class="year-metric-value">$33.35</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">EPS</div>
+          <div class="year-metric-value">$17.85</div>
+        </div>
+        <div class="year-metric">
+          <div class="year-metric-label">P/E Range</div>
+          <div class="year-metric-value">21–33×</div>
+        </div>
+      </div>
+      <p>Revenue growth decelerates to the high-single-digits as the law of large numbers and the cumulative impact of regulatory changes catch up. The terminal-year story is whether Visa has successfully transitioned from "card network with a wide moat" to "payments platform with a wide moat" — and whether that transition keeps the multiple in the high-20s rather than the low-20s.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 15 ROI ===== -->
+<div class="section" id="roi">
+  <div class="section-label">15 — Yearly ROI from Today</div>
+  <h2>What You Could Earn</h2>
+  <p>Returns assume entry today and exit at the year-end target price under each scenario. Annualized figures use straight CAGR from entry price to year-end target. Use the "Try Different Price" tab to test entry-price sensitivity.</p>
+
+  <div class="roi-tabs">
+    <button class="roi-tab-button active" data-tab="current" onclick="switchRoiTab('current')">At Current Price</button>
+    <button class="roi-tab-button" data-tab="custom" onclick="switchRoiTab('custom')">Try Different Price</button>
+  </div>
+
+  <div class="roi-tab-content active" data-tab="current">
+    <div class="roi-table-title">Cumulative & Annualized Returns from $319.10</div>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Bear Cum</th>
+            <th>Bear Ann</th>
+            <th>Base Cum</th>
+            <th>Base Ann</th>
+            <th>Bull Cum</th>
+            <th>Bull Ann</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1yr (FY26)</td>
+            <td class="neg-val">−11.3%</td>
+            <td class="neg-val">−11.3%</td>
+            <td class="pos-val">+4.7%</td>
+            <td class="pos-val">+4.7%</td>
+            <td class="pos-val">+21.0%</td>
+            <td class="pos-val">+21.0%</td>
+          </tr>
+          <tr>
+            <td>2yr (FY27)</td>
+            <td class="neg-val">−0.03%</td>
+            <td class="neg-val">−0.02%</td>
+            <td class="pos-val">+22.8%</td>
+            <td class="pos-val">+10.8%</td>
+            <td class="pos-val">+41.0%</td>
+            <td class="pos-val">+18.7%</td>
+          </tr>
+          <tr>
+            <td>3yr (FY28)</td>
+            <td class="pos-val">+11.6%</td>
+            <td class="pos-val">+3.7%</td>
+            <td class="pos-val">+42.3%</td>
+            <td class="pos-val">+12.5%</td>
+            <td class="pos-val">+62.3%</td>
+            <td class="pos-val">+17.5%</td>
+          </tr>
+          <tr>
+            <td>4yr (FY29)</td>
+            <td class="pos-val">+17.5%</td>
+            <td class="pos-val">+4.1%</td>
+            <td class="pos-val">+56.7%</td>
+            <td class="pos-val">+11.9%</td>
+            <td class="pos-val">+84.6%</td>
+            <td class="pos-val">+16.5%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+  </div>
+
+  <div class="roi-tab-content" data-tab="custom">
+    <div class="price-control">
+      <button class="price-control-button" onclick="adjustRoiPrice(-5)">−5%</button>
+      <div class="price-control-display">
+        <span class="price-control-price" id="roiCustomPrice">$319.10</span>
+        <span class="price-control-delta" id="roiPriceDelta">+0.0% vs current</span>
+      </div>
+      <button class="price-control-button" onclick="adjustRoiPrice(5)">+5%</button>
+      <button class="price-control-button price-control-reset" onclick="resetRoiPrice()">Reset</button>
+    </div>
+
+    <div class="roi-range-bar">
+      <div class="roi-range-marker" style="left: 0%;"></div>
+      <div class="roi-range-marker-label top" style="left: 0%;">52W LOW</div>
+      <div class="roi-range-marker-label bottom" style="left: 0%;">$293.89</div>
+      <div class="roi-range-marker" style="left: 30.9%;"></div>
+      <div class="roi-range-marker-label top" style="left: 30.9%;">CURRENT</div>
+      <div class="roi-range-marker-label bottom" style="left: 30.9%;">$319.10</div>
+      <div class="roi-range-marker" style="left: 100%;"></div>
+      <div class="roi-range-marker-label top" style="left: 100%;">52W HIGH</div>
+      <div class="roi-range-marker-label bottom" style="left: 100%;">$375.51</div>
+      <div class="roi-range-marker-you" id="roiYouMarker" style="left: 30.9%;"></div>
+    </div>
+
+    <div class="roi-table-title" id="roiCustomTitle">Cumulative & Annualized Returns from $319.10</div>
+    <div class="forecast-wrap">
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Bear Cum</th>
+            <th>Bear Ann</th>
+            <th>Base Cum</th>
+            <th>Base Ann</th>
+            <th>Bull Cum</th>
+            <th>Bull Ann</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1yr (FY26)</td>
+            <td data-roi="bear-1-cum" class="neg-val">−11.3%</td>
+            <td data-roi="bear-1-ann" class="neg-val">−11.3%</td>
+            <td data-roi="base-1-cum" class="pos-val">+4.7%</td>
+            <td data-roi="base-1-ann" class="pos-val">+4.7%</td>
+            <td data-roi="bull-1-cum" class="pos-val">+21.0%</td>
+            <td data-roi="bull-1-ann" class="pos-val">+21.0%</td>
+          </tr>
+          <tr>
+            <td>2yr (FY27)</td>
+            <td data-roi="bear-2-cum" class="neg-val">−0.03%</td>
+            <td data-roi="bear-2-ann" class="neg-val">−0.02%</td>
+            <td data-roi="base-2-cum" class="pos-val">+22.8%</td>
+            <td data-roi="base-2-ann" class="pos-val">+10.8%</td>
+            <td data-roi="bull-2-cum" class="pos-val">+41.0%</td>
+            <td data-roi="bull-2-ann" class="pos-val">+18.7%</td>
+          </tr>
+          <tr>
+            <td>3yr (FY28)</td>
+            <td data-roi="bear-3-cum" class="pos-val">+11.6%</td>
+            <td data-roi="bear-3-ann" class="pos-val">+3.7%</td>
+            <td data-roi="base-3-cum" class="pos-val">+42.3%</td>
+            <td data-roi="base-3-ann" class="pos-val">+12.5%</td>
+            <td data-roi="bull-3-cum" class="pos-val">+62.3%</td>
+            <td data-roi="bull-3-ann" class="pos-val">+17.5%</td>
+          </tr>
+          <tr>
+            <td>4yr (FY29)</td>
+            <td data-roi="bear-4-cum" class="pos-val">+17.5%</td>
+            <td data-roi="bear-4-ann" class="pos-val">+4.1%</td>
+            <td data-roi="base-4-cum" class="pos-val">+56.7%</td>
+            <td data-roi="base-4-ann" class="pos-val">+11.9%</td>
+            <td data-roi="bull-4-cum" class="pos-val">+84.6%</td>
+            <td data-roi="bull-4-ann" class="pos-val">+16.5%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll table sideways if needed →</div>
+  </div>
+</div>
+
+<!-- ===== 16 STRUCTURAL ADVANTAGES & RISKS ===== -->
+<div class="section" id="risks">
+  <div class="section-label">16 — Structural Advantages & Key Risks</div>
+  <h2>The Bull and Bear Case</h2>
+  <div class="pc-grid">
+    <div class="pc-card pc-pro">
+      <h4>✓ Structural Advantages</h4>
+      <ul>
+        <li>Two-sided network effect with 60+ years of compounding</li>
+        <li>4.9B cards in circulation, 200+ countries</li>
+        <li>Capital-light: $1.5B capex on $24B operating cash flow</li>
+        <li>ROIC of 33%, 26 points above WACC</li>
+        <li>$33B buyback authorization shrinking shares 2–3%/yr</li>
+        <li>AA−/Aa3 credit rating, fortress balance sheet</li>
+      </ul>
+    </div>
+    <div class="pc-card pc-con">
+      <h4>✗ Key Risks</h4>
+      <ul>
+        <li>Credit Card Competition Act reintroduced January 2026</li>
+        <li>FTC merchant settlement pending — fee compression</li>
+        <li>EU/UK interchange rulings already adverse</li>
+        <li>Stablecoin disintermediation (Walmart, Amazon issuing)</li>
+        <li>AI agents could route around 2–3% interchange fees</li>
+        <li>UK FCA digital wallet probe launched May 2026</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Risk Severity Assessment</h3>
+  <div class="risk-item risk-high">
+    <span class="risk-sev">High</span>
+    <div class="risk-text"><strong>Credit Card Competition Act:</strong> Reintroduced January 2026 with bipartisan support. Would mandate alternative routing networks for credit card transactions, structurally compressing Visa's take rate. Even watered-down versions reduce per-transaction economics. The single biggest variable in this thesis over the next 24 months.</div>
+  </div>
+  <div class="risk-item risk-high">
+    <span class="risk-sev">High</span>
+    <div class="risk-text"><strong>Stablecoin / Agentic Commerce Disruption:</strong> The GENIUS Act creates a federal framework for non-bank stablecoin issuers. Major retailers (Walmart, Amazon) are exploring their own coins. AI agents optimizing for cost could route around 2–3% interchange fees to settle in stablecoins for fractions of a cent. Visa's CLI and stablecoin pilots are defensive moves — not yet revenue.</div>
+  </div>
+  <div class="risk-item risk-medium">
+    <span class="risk-sev">Medium</span>
+    <div class="risk-text"><strong>EU/UK Regulatory Pile-On:</strong> June 2025 UK Competition Appeal Tribunal ruled Visa/MA interchange fees violated European competition law. May 2026 UK FCA opened digital wallet probe. Each ruling shaves a few basis points; cumulatively they matter.</div>
+  </div>
+  <div class="risk-item risk-medium">
+    <span class="risk-sev">Medium</span>
+    <div class="risk-text"><strong>DOJ Antitrust Action:</strong> Active DOJ case alleges Visa monopolizes the U.S. debit card market through anti-competitive contracts and merchant exclusivity. A settlement could mirror the EU outcome — fee concessions and routing flexibility.</div>
+  </div>
+  <div class="risk-item risk-low">
+    <span class="risk-sev">Low</span>
+    <div class="risk-text"><strong>Consumer Spending Cyclicality:</strong> Visa carries some macro sensitivity, but cross-border travel volume and global digitization tailwinds have buffered domestic softness. Beta of 0.78 confirms below-market volatility.</div>
+  </div>
+</div>
+
+<!-- ===== 17 MACRO ===== -->
+<div class="section" id="macro">
+  <div class="section-label">17 — Macro, Regulation & Competition</div>
+  <h2>The External Picture</h2>
+
+  <h3>Macro Sensitivity</h3>
+  <ul class="bull-list">
+    <li><strong>Interest rates:</strong> Visa is largely rate-insensitive on the income statement (no lending book), but lower rates support consumer discretionary spending which drives payments volume.</li>
+    <li><strong>FX:</strong> Cross-border revenue (~25% of total) is FX-sensitive in both directions. Q2 FY26 benefited from elevated FX volatility — management flagged this won't repeat in Q3.</li>
+    <li><strong>Recession:</strong> Visa is more resilient than most consumer names because card payment penetration keeps growing even as total spend shrinks. The COVID bottom was one quarter; recovery was rapid.</li>
+    <li><strong>Inflation:</strong> Slight tailwind, since fees are ad valorem (% of transaction) rather than per-transaction.</li>
+  </ul>
+
+  <h3>Competitive Landscape</h3>
+  <ul class="bull-list">
+    <li><strong>Mastercard (MA):</strong> The other half of the duopoly. ~$2.8T quarterly volume vs Visa's $4.5T, growing slightly faster. Same business model, same regulatory exposure. Recently acquired BVNK ($1.8B) for stablecoin tech.</li>
+    <li><strong>American Express (AXP):</strong> Closed-loop competitor that issues its own cards. Different economics — Amex earns the full merchant discount but underwrites credit risk.</li>
+    <li><strong>PayPal / Stripe / Adyen:</strong> Acquirer-side competitors that ride on top of Visa rails for now but increasingly offer A2A alternatives.</li>
+    <li><strong>UPI (India) / Pix (Brazil):</strong> Real-time A2A rails that have meaningfully reduced card penetration in two of the largest emerging markets — a template regulators globally are watching.</li>
+    <li><strong>Stablecoin issuers (Circle, Tether, retailer coins):</strong> Not direct competitors yet, but the technical infrastructure for disintermediation is being built.</li>
+  </ul>
+
+  <div class="card card-yellow">
+    <h3 style="margin-top: 0;">Regulatory Assumptions in My Base Case</h3>
+    <p>I assume the CCCA passes in a watered-down form in late FY27, producing ~50 bps of take-rate compression phased in over FY28–FY29. I assume the FTC merchant settlement results in a one-time ~$2–3B charge but no ongoing economic impact. I assume stablecoins capture &lt;3% of total payments volume by FY29 (mostly B2B and crypto-native flows). If any of these assumptions break favorably, the bull case engages; if they break unfavorably, the bear case engages.</p>
+  </div>
+</div>
+
+<!-- ===== 18 CONCLUSION ===== -->
+<div class="section" id="conclusion">
+  <div class="section-label">18 — Investment Conclusion</div>
+  <h2>The Bottom Line</h2>
+
+  <div class="conclusion-box">
+    <h3>Verdict: Quality Compounder at a Discount</h3>
+    <p>Visa is the highest-quality compounder in financial services, trading at a discount to its 10-year average multiple because the market is finally pricing in real regulatory risk. The base case offers ~12% annualized returns over four years with very low downside (the bear case still produces a positive total return). The setup rewards investors who can stomach a multi-quarter regulatory news cycle in exchange for owning a 33% ROIC business at 22.9× forward earnings.</p>
+    <div class="target-row">
+      <div class="target-box">
+        <div class="target-box-label">1-Year Target</div>
+        <div class="target-box-value">$334</div>
+        <div class="target-box-sub">Base · +4.7%</div>
+      </div>
+      <div class="target-box">
+        <div class="target-box-label">4-Year Base</div>
+        <div class="target-box-value">$500</div>
+        <div class="target-box-sub">+11.9% ann.</div>
+      </div>
+      <div class="target-box">
+        <div class="target-box-label">Rating</div>
+        <div class="target-box-value">BUY</div>
+        <div class="target-box-sub">Quality at discount</div>
+      </div>
+    </div>
+  </div>
+
+  <p>The contrarian angle: the consensus view treats CCCA and stablecoins as binary, catastrophic threats. The reality is that Visa has weathered every "this time is different" narrative — Square, PayPal, Apple Pay, blockchain — by absorbing the new rail into its own network. Visa Direct, tokenization, agentic commerce APIs, and stablecoin settlement pilots aren't defensive — they're how a 60-year-old network keeps becoming indispensable. The investor who buys here is betting that the toll bridge keeps collecting tolls even when the road changes.</p>
+
+  <p>Position sizing matters: even a high-conviction long should size for the possibility that the bear case lasts longer than expected. Visa is a coupon-clipper, not a 5× idea. But it's the kind of coupon — 12%/yr with a fortress balance sheet — that compounds quietly while everyone is busy debating the next disruption.</p>
+</div>
+
+<!-- ===== 19 DISCLAIMER ===== -->
+<div class="section">
+  <div class="section-label">19 — Disclaimer</div>
+  <div class="disclaimer">
+    This document is for informational and educational purposes only and does not constitute investment advice, a recommendation, or an offer to buy or sell any security. Forecasts and projections reflect the author's analysis based on publicly available information as of May 11, 2026, and are subject to change without notice. Past performance is not indicative of future results. All investments involve risk, including loss of principal. Readers should consult a qualified financial advisor before making any investment decision. The author may hold positions in securities mentioned herein.
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- ===== TOOLBAR ===== -->
+<div class="toolbar">
+  <button onclick="changeFont(-1)" aria-label="Decrease font">A−</button>
+  <span id="fsDisplay">16px</span>
+  <button onclick="changeFont(1)" aria-label="Increase font">A+</button>
+  <div class="toolbar-sep"></div>
+  <button id="modeBtn" onclick="toggleMode()" aria-label="Toggle mode">🌙</button>
+</div>
+
+<script>
+/* ===== TOOLBAR ===== */
+const MIN_FS = 12, MAX_FS = 26, STEP = 1;
+let currentFs = parseInt(localStorage.getItem('V_fs') || '16', 10);
+let isDark = localStorage.getItem('V_dark') === '1';
+
+function applyFont(size) {
+  currentFs = Math.min(MAX_FS, Math.max(MIN_FS, size));
+  document.documentElement.style.setProperty('--fs-base', currentFs + 'px');
+  document.getElementById('fsDisplay').textContent = currentFs + 'px';
+  localStorage.setItem('V_fs', currentFs);
+}
+function changeFont(delta) { applyFont(currentFs + delta * STEP); }
+function applyMode() {
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('modeBtn').textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('V_dark', isDark ? '1' : '0');
+}
+function toggleMode() { isDark = !isDark; applyMode(); }
+applyFont(currentFs);
+applyMode();
+
+/* ===== ROI TABS ===== */
+const ROI_CURRENT_PRICE = 319.10;
+const ROI_52W_LOW = 293.89;
+const ROI_52W_HIGH = 375.51;
+const ROI_TARGETS = {
+  bear: { 1: 283, 2: 319, 3: 356, 4: 375 },
+  base: { 1: 334, 2: 392, 3: 454, 4: 500 },
+  bull: { 1: 386, 2: 450, 3: 518, 4: 589 }
+};
+
+let roiCustomPrice = ROI_CURRENT_PRICE;
+
+function switchRoiTab(tabName) {
+  document.querySelectorAll('.roi-tab-button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.roi-tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector('.roi-tab-button[data-tab="' + tabName + '"]').classList.add('active');
+  document.querySelector('.roi-tab-content[data-tab="' + tabName + '"]').classList.add('active');
+}
+
+function adjustRoiPrice(deltaPct) {
+  roiCustomPrice = roiCustomPrice * (1 + deltaPct / 100);
+  recalcRoiTable();
+}
+function resetRoiPrice() {
+  roiCustomPrice = ROI_CURRENT_PRICE;
+  recalcRoiTable();
+}
+
+function recalcRoiTable() {
+  document.getElementById('roiCustomPrice').textContent = '$' + roiCustomPrice.toFixed(2);
+  const deltaPct = (roiCustomPrice - ROI_CURRENT_PRICE) / ROI_CURRENT_PRICE * 100;
+  const sign = deltaPct >= 0 ? '+' : '';
+  document.getElementById('roiPriceDelta').textContent = sign + deltaPct.toFixed(1) + '% vs current';
+  document.getElementById('roiCustomTitle').textContent = 'Cumulative & Annualized Returns from $' + roiCustomPrice.toFixed(2);
+
+  const range = ROI_52W_HIGH - ROI_52W_LOW;
+  const pct = Math.max(-15, Math.min(115, ((roiCustomPrice - ROI_52W_LOW) / range) * 100));
+  document.getElementById('roiYouMarker').style.left = pct + '%';
+
+  ['bear', 'base', 'bull'].forEach(function(scenario) {
+    [1, 2, 3, 4].forEach(function(year) {
+      const target = ROI_TARGETS[scenario][year];
+      const cum = (target / roiCustomPrice - 1) * 100;
+      const ann = (Math.pow(target / roiCustomPrice, 1 / year) - 1) * 100;
+      const cumStr = (cum >= 0 ? '+' : '') + cum.toFixed(1) + '%';
+      const annStr = (ann >= 0 ? '+' : '') + ann.toFixed(1) + '%';
+      const cumCell = document.querySelector('[data-roi="' + scenario + '-' + year + '-cum"]');
+      const annCell = document.querySelector('[data-roi="' + scenario + '-' + year + '-ann"]');
+      if (cumCell) {
+        cumCell.textContent = cumStr;
+        cumCell.className = cum >= 0 ? 'pos-val' : 'neg-val';
+      }
+      if (annCell) {
+        annCell.textContent = annStr;
+        annCell.className = ann >= 0 ? 'pos-val' : 'neg-val';
+      }
+    });
+  });
+}
+</script>
+
+</body>
+</html>
